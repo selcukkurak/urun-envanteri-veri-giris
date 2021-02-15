@@ -1,15 +1,9 @@
 import { Fragment } from 'react'
-import { OrtaBolme, YanMenu } from '../../App'
-import YanMenuItem from '../yan-menu/YanMenu'
+import { OrtaBolme } from '../../App'
 import { IdariKayitListe } from '../listeler'
 
 export const IdariKayitSayfa = () => (
   <Fragment>
-    <YanMenu>
-      <YanMenuItem/>
-    </YanMenu>
-    <OrtaBolme>
-      <IdariKayitListe/>
-    </OrtaBolme>
+    <IdariKayitListe/>
   </Fragment>
 )
