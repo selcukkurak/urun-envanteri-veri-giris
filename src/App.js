@@ -17,7 +17,7 @@ import { Fragment } from 'react'
 const Wrapper = styled.div`
     padding: 0;
 `
-export const YanMenu = styled.div`
+const YanMenu = styled.div`
   width: 280px;
   height: 100vh;
   top:0;
@@ -27,7 +27,7 @@ export const YanMenu = styled.div`
   background-color: ${ArayuzRenkleri.yanMenu};
   border-right: 1px solid ${Colors.LIGHT_GRAY3};
 `
-export const OrtaBolme = styled.div`
+const OrtaBolme = styled.div`
   margin-left: 280px;
   height: 100vh;
 `
@@ -44,13 +44,21 @@ function App() {
         <Wrapper>
           <HeaderBar/>
           <GlobalStyle/>
-          <Switch>
-            <Route path={"/urun"} component={UrunSayfa}/>
-            <Route path={"/idari-kayit"} component={IdariKayitSayfa}/>
-            <Route path={"/haber-bulteni"} component={BultenSayfa}/>
-            <Route path={"/anket"} component={AnketSayfa}/>
-            <Route exact path={"/"} component={Anasayfa}/>
-          </Switch>
+          <YanMenu>
+            <YanMenuItem/>
+          </YanMenu>
+          <OrtaBolme>
+            <Switch>
+              <Route exact path={"/"} component={Anasayfa}/>
+
+              <Route path={"/urunler"} component={UrunSayfa}/>
+
+              <Route path={"/idari-kayitlar"} component={IdariKayitSayfa}/>
+
+              <Route path={"/haber-bultenleri"} component={BultenSayfa}/>
+              <Route path={"/anketler"} component={AnketSayfa}/>
+            </Switch>
+          </OrtaBolme>
         </Wrapper>
       </RecoilRoot>
     </Router>
@@ -59,9 +67,6 @@ function App() {
 
 const Anasayfa = () => (
   <Fragment>
-    <YanMenu>
-      <YanMenuItem/>
-    </YanMenu>
     <OrtaBolme>
       <div style={{marginTop:"200px"}}>Yapım Aşamasında</div>
     </OrtaBolme>
