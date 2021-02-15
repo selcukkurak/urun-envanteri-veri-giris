@@ -5,18 +5,18 @@ export const linkler = [
   },
   {
     baslik: 'İstatistiki Ürün',
-    link: '/urun',
+    link: '/urunler',
   },
   {
     baslik: 'İdari Kayıt',
-    link: '/idari-kayit',
+    link: '/idari-kayitlar',
   },
   {
     baslik: 'Anket',
-    link: '/anket',
+    link: '/anketler',
   },
   {
     baslik: 'Haber Bülteni',
-    link: '/haber-bulteni'
+    link: '/haber-bultenleri'
   }
 ]
