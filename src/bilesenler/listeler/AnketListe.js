@@ -12,6 +12,7 @@ function AnketListe(){
       title={"Anketler"}
       butonText={"Yeni Anket Ekle"}
       dizi={anketler}
+      path={"anketler"}
     />
   )
 }

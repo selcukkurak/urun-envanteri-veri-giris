@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Container, Row, Col } from 'react-grid-system'
-import { Button, Card, Colors, HTMLTable, Icon} from '@blueprintjs/core'
+import { Button, Card, Colors, HTMLTable, Tag, Tooltip } from '@blueprintjs/core'
 import { AnaRenkler } from '@tuik/renkler'
+import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 const WrapperListe = styled.div`
   padding: 70px 16px 0;
@@ -61,7 +63,10 @@ const FiltreLabel = styled.label`
 `
 
 function Liste (props) {
-
+  moment.locale("tr")
+  const tarih = (tarihItem) => {
+    return moment(tarihItem)
+  }
   return (
     <WrapperListe>
       <Container>
@@ -80,7 +85,9 @@ function Liste (props) {
                   </FiltreAlani>
                 )}
               </div>
-              <Button intent={'success'} text={props.butonText} onClick={props.handleEklemeSayfasiGecis}/>
+              <Link to={props.path}>
+                <Button intent={'success'} text={props.butonText}/>
+              </Link>
             </div>
             <ListeBaslik>
               <SolaYasli>{props.title}</SolaYasli>
@@ -94,7 +101,9 @@ function Liste (props) {
                 <thead>
                   <th>Adı</th>
                   <th>Ekleyen Kişi</th>
-                  <th>Güncelleme Tarihi</th>
+                  <th>İşlem Tarihi</th>
+                  <th>Taslak</th>
+                  <th>Eylemler</th>
                 </thead>
                 <tbody>
                 {props.secili ? (
@@ -103,9 +112,14 @@ function Liste (props) {
                       <tr key={item.id}>
                         <td>{item.adi}</td>
                         <td>{item.ekleyen}</td>
-                        <td>{item.guncellemeTarihi}</td>
-                        <td><Icon icon={"refresh"} intent={'primary'} iconSize={"20"}/></td>
-                        <td><Icon icon={"trash"} intent={'danger'} iconSize={"20"}/></td>
+                        <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format("DD.MM.YYYY")}</td>
+                        <td>{item.taslak && (<Tooltip content={"Taslak"} position={"left"}><Tag minimal>t</Tag></Tooltip>)}</td>
+                        <td style={{display:'flex'}}>
+                          <Link to={window.location.pathname + "/guncelle" + "/" + item.id }>
+                            <Button style={{flex:1}} minimal icon={"edit"} intent={'primary'}/>
+                          </Link>
+                          <Button minimal icon={"trash"} intent={'danger'}/>
+                        </td>
                       </tr>
                     ))
                   ) :(
@@ -114,9 +128,14 @@ function Liste (props) {
                       <tr key={item.id}>
                         <td>{item.adi}</td>
                         <td>{item.ekleyen}</td>
-                        <td>{item.guncellemeTarihi}</td>
-                        <td><Icon icon={"refresh"} intent={'primary'} iconSize={"20"}/></td>
-                        <td><Icon icon={"trash"} intent={'danger'} iconSize={"20"}/></td>
+                        <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format("DD.MM.YYYY")}</td>
+                        <td>{item.taslak && (<Tooltip content={"Taslak"}><Tag minimal>t</Tag></Tooltip>)}</td>
+                        <td style={{display:'flex'}}>
+                          <Link to={window.location.pathname + "/guncelle" + "/" + item.id }>
+                            <Button style={{flex:1}} minimal icon={"edit"} intent={'primary'}/>
+                          </Link>
+                          <Button minimal icon={"trash"} intent={'danger'}/>
+                        </td>
                       </tr>
                     ))
                   ) : (
@@ -124,9 +143,14 @@ function Liste (props) {
                       <tr key={item.id}>
                         <td>{item.adi}</td>
                         <td>{item.ekleyen}</td>
-                        <td>{item.guncellemeTarihi}</td>
-                        <td><Icon icon={"refresh"} intent={'primary'} iconSize={"20"}/></td>
-                        <td><Icon icon={"trash"} intent={'danger'} iconSize={"20"}/></td>
+                        <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format("DD.MM.YYYY")}</td>
+                        <td>{item.taslak && (<Tooltip content={"Taslak"}><Tag minimal>t</Tag></Tooltip>)}</td>
+                        <td style={{display:'flex'}}>
+                          <Link to={window.location.pathname + "/guncelle" + "/" + item.id }>
+                            <Button style={{flex:1}} minimal icon={"edit"} intent={'primary'}/>
+                          </Link>
+                          <Button minimal icon={"trash"} intent={'danger'}/>
+                        </td>
                       </tr>
                     ))
                   )
@@ -136,9 +160,14 @@ function Liste (props) {
                     <tr key={item.id}>
                       <td>{item.adi}</td>
                       <td>{item.ekleyen}</td>
-                      <td>{item.guncellemeTarihi}</td>
-                      <td><Icon icon={"refresh"} intent={'primary'} iconSize={"20"}/></td>
-                      <td><Icon icon={"trash"} intent={'danger'} iconSize={"20"}/></td>
+                      <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format("DD.MM.YYYY")}</td>
+                      <td>{item.taslak && (<Tooltip content={"Taslak"}><Tag minimal>t</Tag></Tooltip>)}</td>
+                      <td style={{display:'flex'}}>
+                        <Link to={window.location.pathname + "/guncelle" + "/" + item.id }>
+                          <Button style={{flex:1}} minimal icon={"edit"} intent={'primary'}/>
+                        </Link>
+                        <Button minimal icon={"trash"} intent={'danger'}/>
+                      </td>
                     </tr>
                   ))
                 )}

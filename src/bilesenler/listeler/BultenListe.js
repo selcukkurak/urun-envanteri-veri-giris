@@ -12,6 +12,7 @@ function BultenListe() {
       title={"Haber Bültenleri"}
       butonText={"Yeni Haber Bülteni Ekle"}
       dizi={bultenler}
+      path={"bultenler"}
     />
   )
 }

@@ -12,6 +12,7 @@ function IdariKayitListe(){
       title={"İdari Kayitlar"}
       butonText={"Yeni İdari Kayit Ekle"}
       dizi={idariKayitlar}
+      path={"idari-kayitlar"}
     />
   )
 }
