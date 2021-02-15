@@ -9,7 +9,7 @@ export default function HeaderBar() {
       <Navbar.Group align={Alignment.LEFT}>
         <img src={logo} width="40px" alt="banner" />
         <Navbar.Divider/>
-        <Navbar.Heading>İstatistiki Ürün Envanteri</Navbar.Heading>
+        <Navbar.Heading>İstatistiki Ürün Envanteri Veri Giriş Uygulaması</Navbar.Heading>
       </Navbar.Group>
     </Navbar>
   );
