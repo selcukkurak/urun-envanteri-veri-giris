@@ -34,7 +34,7 @@ export default function UrunGenelBilgiler({values, handleChange, setFieldValue})
           <FormGroup label={"İstatistiki Ürün Adı:"}/>
         </Col>
         <Col sm={6} md={6} lg={6}>
-          <InputGroup name={"ad"} value={values.adi} onChange={handleChange}/>
+          <InputGroup name={"adi"} value={values.adi || ""} onChange={handleChange}/>
         </Col>
       </Satir>
       <Satir>
@@ -42,7 +42,7 @@ export default function UrunGenelBilgiler({values, handleChange, setFieldValue})
           <FormGroup label={"İstatistiki Ürün Kodu:"}/>
         </Col>
         <Col sm={6} md={6} lg={6}>
-          <InputGroup name={"kodu"} value={values.kodu} onChange={handleChange}/>
+          <InputGroup name={"kodu"} value={values.kodu || ""} onChange={handleChange}/>
         </Col>
       </Satir>
       <Satir>
@@ -50,7 +50,7 @@ export default function UrunGenelBilgiler({values, handleChange, setFieldValue})
           <FormGroup label={'Sorumlu Grup Başkanlığı:'}/>
         </Col>
         <Col sm={6} md={6} lg={6}>
-          <Field name='birim' isClearable values={values.birim} options={birimOption}
+          <Field name='birim' isClearable values={values.birim || null} options={birimOption}
                  component={SelectField}/>
         </Col>
       </Satir>
@@ -59,7 +59,7 @@ export default function UrunGenelBilgiler({values, handleChange, setFieldValue})
           <FormGroup label={"Üretim Sıklığı:"}/>
         </Col>
         <Col sm={6} md={6} lg={6}>
-          <Field name='periyot' isClearable value={values.periyot} options={periyotOptions}
+          <Field name='periyot' isClearable value={values.periyot || null} options={periyotOptions}
                  component={SelectField}/>
         </Col>
       </Satir>
@@ -68,7 +68,7 @@ export default function UrunGenelBilgiler({values, handleChange, setFieldValue})
           <FormGroup label={"Coğrafi Düzeyi:"}/>
         </Col>
         <Col sm={6} md={6} lg={6}>
-          <Field name='cografiDuzey' isClearable value={values.cografiDuzey} options={cografiDuzeyOptions}
+          <Field name='cografiDuzey' isClearable value={values.cografiDuzey || null} options={cografiDuzeyOptions}
                  component={SelectField}/>
         </Col>
       </Satir>
