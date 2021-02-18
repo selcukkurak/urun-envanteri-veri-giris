@@ -2,16 +2,19 @@ import React  from 'react'
 import { Col, Container, Row } from 'react-grid-system'
 import { FormGroup, InputGroup } from '@blueprintjs/core'
 import { Field } from 'formik'
-import SelectField from './SelectField'
+import SelectField from '../SelectField'
 import styled from 'styled-components'
 import { useRecoilValue } from 'recoil'
-import { birimlerState, referanslarState } from '../store'
+import { birimlerState, referanslarState } from '../../store'
 import ReactQuill from 'react-quill'
 
 const Satir = styled(Row)`
-  padding: 16px 8px;
+  padding: 8px 8px;
 `
-
+const QuillStyled = styled(ReactQuill)`
+  height: 10vh;
+  background-color: white;
+`
 
 export default function UrunGenelBilgiler({values, handleChange, setFieldValue}){
 
@@ -27,6 +30,9 @@ export default function UrunGenelBilgiler({values, handleChange, setFieldValue})
   const birimler = useRecoilValue(birimlerState)
   const birimOption = birimler.length !== 0 && birimler.map(birim => ({ label: birim.adi, value: birim.ustBirimId }))
 
+  const reactQuillHandleChange = (name,icerik) => {
+    setFieldValue(name, icerik)
+  }
   return(
     <Container>
       <Satir>
@@ -74,34 +80,34 @@ export default function UrunGenelBilgiler({values, handleChange, setFieldValue})
       </Satir>
       <Satir>
         <Col sm={3} md={3} lg={3}>
-          <FormGroup label={'Ürünün Amacı:'}/>
-        </Col>
-        <Col>
-          <ReactQuill style={{backgroundColor:"white"}} name={'amac'} value={values.amac || ''} onChange={(e) => setFieldValue('amac', e)}/>
-        </Col>
-      </Satir>
-      <Satir>
-        <Col sm={3} md={3} lg={3}>
-          <FormGroup label={'Ürünün Kapsamı:'}/>
-        </Col>
-        <Col>
-          <ReactQuill style={{backgroundColor:"white"}} name={'kapsam'} value={values.kapsam || ''} onChange={(e) => setFieldValue('kapsam', e)}/>
-        </Col>
-      </Satir>
-      <Satir>
-        <Col sm={3} md={3} lg={3}>
-          <FormGroup label={'Ürünün Yayınlanmasının Sağlayacağı Fayda:'}/>
-        </Col>
-        <Col>
-          <ReactQuill style={{backgroundColor:"white"}} name={'fayda'} value={values.fayda || ''} onChange={(e) => setFieldValue('fayda', e)}/>
-        </Col>
-      </Satir>
-      <Satir>
-        <Col sm={3} md={3} lg={3}>
           <FormGroup label={"Zamanlılık(T+Süre):"}/>
         </Col>
         <Col sm={6} md={6} lg={6}>
           <InputGroup name={"zamanlilik"} value={values.zamanlilik || ""} onChange={handleChange}/>
+        </Col>
+      </Satir>
+      <Satir style={{height:"150px"}}>
+        <Col sm={3} md={3} lg={3}>
+          <FormGroup label={'Ürünün Amacı:'}/>
+        </Col>
+        <Col sm={6} md={6} lg={6}>
+          <QuillStyled  name={'amac'} value={values.amac || ''} onChange={(icerik) => reactQuillHandleChange('amac', icerik)}/>
+        </Col>
+      </Satir>
+      <Satir style={{height:"150px"}}>
+        <Col sm={3} md={3} lg={3}>
+          <FormGroup label={'Ürünün Kapsamı:'}/>
+        </Col>
+        <Col  sm={6} md={6} lg={6}>
+          <QuillStyled name={'kapsam'} value={values.kapsam || ''} onChange={(icerik) => reactQuillHandleChange('kapsam', icerik)}/>
+        </Col>
+      </Satir>
+      <Satir style={{height:"150px"}}>
+        <Col sm={3} md={3} lg={3}>
+          <FormGroup label={'Ürünün Yayınlanmasının Sağlayacağı Fayda:'}/>
+        </Col>
+        <Col  sm={6} md={6} lg={6}>
+          <QuillStyled name={'fayda'} value={values.fayda || ''} onChange={(icerik) => reactQuillHandleChange('fayda', icerik)}/>
         </Col>
       </Satir>
     </Container>

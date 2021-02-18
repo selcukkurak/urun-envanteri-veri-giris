@@ -1,13 +1,13 @@
 import React from 'react'
 import { Col, Row } from 'react-grid-system'
 import { Card, H5, Menu, MenuItem, Tooltip } from '@blueprintjs/core'
-import IdariKayitDialog from '../detaylar/IdariKayitDialog'
+import IdariKayitDialog from '../../detaylar/IdariKayitDialog'
 
 
 
 function FormIdariKayitListe({idariKayitlar, handleKayitItem, seciliIdariKayitItem, open, handleClickCloseModal}){
 
-  if(!idariKayitlar) return null
+  if(idariKayitlar.length === 0) return null
   return(
     <Row>
       <Col>
@@ -16,12 +16,11 @@ function FormIdariKayitListe({idariKayitlar, handleKayitItem, seciliIdariKayitIt
           <Card style={{ padding: 0 }}>
             <Menu>
               {idariKayitlar.map(kayit => (
-                <Tooltip position={'bottom'} key={kayit.value} content={"Detaylarını Görmek İçin Tıklayınız..."}>
                   <MenuItem
-                    text={kayit.label}
+                    key={kayit.value}
+                    text={(<Tooltip position={'bottom'} content={"Detaylarını Görmek İçin Tıklayınız..."}>{kayit.label}</Tooltip>)}
                     onClick={() => handleKayitItem(kayit)}
                   />
-                </Tooltip>
               ))}
               <IdariKayitDialog idariKayit={seciliIdariKayitItem} open={open}
                                 handleClickCloseModal={handleClickCloseModal}/>

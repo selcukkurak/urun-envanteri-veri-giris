@@ -3,16 +3,16 @@ import Select from 'react-select'
 
 
 
-export default function SelectField(FieldProps) {
+export default function SelectField(fieldProps) {
   return (
     <Select
-      options={FieldProps.options}
-      isMulti={FieldProps.isMulti}
-      isClearable={FieldProps.isClearable}
-      placeholder={FieldProps.placeholder}
-      value={FieldProps.value}
-      {...FieldProps.field}
-      onChange={option => FieldProps.form.setFieldValue(FieldProps.field.name, option)}
+      options={fieldProps.options}
+      isMulti={fieldProps.isMulti}
+      isClearable={fieldProps.isClearable}
+      placeholder={fieldProps.placeholder}
+      value={fieldProps.value}
+      {...fieldProps.field}
+      onChange={option => fieldProps.form.setFieldValue(fieldProps.field.name, option)}
     />
   )
 }

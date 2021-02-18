@@ -1,33 +1,34 @@
 import React  from 'react'
 import styled from 'styled-components'
 import { useRecoilValue } from 'recoil'
-import {birimlerState} from '../store'
+import {birimlerState} from '../../store'
 import { Button, ButtonGroup, Colors, Divider } from '@blueprintjs/core'
-import useSayfaIciGecis from '../hook/useSayfaIciGecis'
+import useSayfaIciGecis from '../../hook/useSayfaIciGecis'
 import { Container, Row, Col } from 'react-grid-system'
 import { Form, Formik } from 'formik'
 import UrunGenelBilgiler from './UrunGenelBilgiler'
 import UrunGirdiBilgileri from './UrunGirdiBilgileri'
 import UrunCiktiBilgileri from './UrunCiktiBilgileri'
+import { durumlar } from '../../hook/ortak'
 
 const Wrapper = styled.div`
   padding: 64px 0;
 `
 const ButonAlani = styled.div`
-  margin: 8px 64px;
+  margin: 4px 64px;
   width: 35vw;
 `
 const Baslik = styled.div`
   font-size: 1em;
   font-weight: 600;
   color: ${Colors.GRAY2};
-  padding: 8px 64px;
+  padding: 2px 64px;
 `
 const Satir = styled(Row)`
-  padding: 16px 8px;
+  padding-left:8px;
 `
+export default function UrunForm ({seciliUrun, history}) {
 
-export default function UrunForm ({seciliUrun}) {
 
   const birimler = useRecoilValue(birimlerState)
   const [
@@ -76,7 +77,12 @@ export default function UrunForm ({seciliUrun}) {
       return {label: seciliBirim.adi, value:seciliBirim.id}
     }
     else return null
+  }
 
+  const durumBelirleme = (seciliUrun, dizi, nesne1, nesne2) => {
+    if(seciliUrun && Array.isArray(dizi) && dizi.length !== 0)
+      return nesne1
+    else return nesne2
   }
 
   const initialValues = {
@@ -88,14 +94,21 @@ export default function UrunForm ({seciliUrun}) {
     amac: seciliUrun ? seciliUrun.amac : '',
     kapsam: seciliUrun ? seciliUrun.kapsam : '',
     fayda: seciliUrun ? seciliUrun.fayda : '',
-    urunDurum: null,
-    anketDurum: null,
-    kayitDurum: null,
-    bultenDurum: null,
+    urunDurum: seciliUrun ? durumBelirleme(seciliUrun, seciliUrun.bagliUrunler, durumlar[0], durumlar[1]):durumlar[1],
+    anketDurum:seciliUrun ? durumBelirleme(seciliUrun, seciliUrun.anketler, durumlar[0], durumlar[1]):durumlar[1],
+    kayitDurum:seciliUrun ?durumBelirleme(seciliUrun, seciliUrun.idariKayitlar, durumlar[0], durumlar[1]):durumlar[1],
+    bultenDurum:seciliUrun ?durumBelirleme(seciliUrun, seciliUrun.bultenler, durumlar[0], durumlar[1]):durumlar[1],
+    paylasimDurum:seciliUrun ?durumBelirleme(seciliUrun, seciliUrun.paylasimlar, durumlar[0], durumlar[1]):durumlar[1] ,
     bagliUrunler: seciliUrunBagliUrunler() || [],
     anketler: seciliUrunAnketler() || [],
     idariKayitlar:seciliUrunIdariKayitlar() ||[],
     bultenler:null,
+    paylasimlar:[{
+      adi:"",
+      kurulus:null,
+      arac:null,
+      periyot:null
+    }],
     birim: seciliGrupBaskanligi() ||  null
   }
   const handleSubmit = (event) => {
@@ -121,25 +134,22 @@ export default function UrunForm ({seciliUrun}) {
       >
         {({
           values,
-          resetForm,
           handleReset,
           handleChange,
           handleSubmit,
           setFieldValue
-
         }) =>  (
           <Form onSubmit={handleSubmit}>
-            {console.log(values)}
             <Container fluid>
               <Row>
-                <Col sm={10} md={10} lg={10}></Col>
+                <Col sm={10} md={10} lg={10}/>
                 <Col>
                   <Button fill minimal intent={'primary'} text={'İçeriği Temizle'} onClick={handleReset}/>
                 </Col>
               </Row>
-              <Satir>
+              <Row>
                 <Col><Divider/></Col>
-              </Satir>
+              </Row>
             </Container>
             {genel && (
               <UrunGenelBilgiler
@@ -151,15 +161,28 @@ export default function UrunForm ({seciliUrun}) {
             )}
             {girdi && (
               <UrunGirdiBilgileri
-                seciliUrun={seciliUrun}
                 values={values}
               />
             )}
             {cikti && (
               <UrunCiktiBilgileri
-                values={values}
+                formBultenler={values.bultenler}
+                bultenDurum={values.bultenDurum}
+                paylasimDurum={values.paylasimDurum}
+                paylasimlar={values.paylasimlar}
+                handleChange={handleChange}
+                setFieldValue={setFieldValue}
               />
             )}
+            <Satir>
+              <Col sm={10} md={10} lg={10}/>
+              <Col>
+                <Button intent='danger' text={"Geri Dön"} onClick={history.goBack}/>
+              </Col>
+              <Col>
+                <Button intent='success' text={"Kaydet"}/>
+              </Col>
+            </Satir>
           </Form>
         )}
       </Formik>

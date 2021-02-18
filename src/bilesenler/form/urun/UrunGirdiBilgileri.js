@@ -2,20 +2,20 @@ import React from 'react'
 import { Colors, FormGroup } from '@blueprintjs/core'
 import { Col, Container, Row } from 'react-grid-system'
 import { Field } from 'formik'
-import { durumlar } from '../hook/ortak'
-import SelectField from './SelectField'
+import { durumlar } from '../../hook/ortak'
+import SelectField from '../SelectField'
 import styled from 'styled-components'
-import { localSort } from '../util/sort'
+import { localSort } from '../../util/sort'
 import { useRecoilValue } from 'recoil'
-import { anketlerState, idariKayitlarState, urunlerState } from '../store'
-import handleModal from '../hook/handleModal'
+import { anketlerState, idariKayitlarState, urunlerState } from '../../store'
+import handleModal from '../../hook/handleModal'
 import FormAnketListe from './FormAnketListe'
 import FormIdariKayitListe from './FormIdariKayitListe'
 
 const Satir = styled(Row)`
   padding: 16px 8px;
 `
-function UrunGirdiBilgileri({values, seciliUrun}){
+function UrunGirdiBilgileri({values}){
   const [seciliIdariKayit, setSeciliIdariKayit] = React.useState(null)
   const [seciliAnket, setSeciliAnket] = React.useState(null)
 
@@ -42,14 +42,7 @@ function UrunGirdiBilgileri({values, seciliUrun}){
   const seciliAnketItem = seciliAnket && anketler.find(anket => anket.id === seciliAnket.value)
   const seciliIdariKayitItem = seciliIdariKayit && idariKayitlar.find(kayit => kayit.id === seciliIdariKayit.value)
 
-  const seciliAnketDurum = () => {
-    if(seciliUrun && seciliUrun.anketler.length !==0 ) return durumlar[0]
-    else return values.anketDurum
-  }
-  const seciliBagliUrunDurum = () => {
-    if(seciliUrun && seciliUrun.bagliUrunler.length !== 0) return durumlar[0]
-    else return values.urunDurum
-  }
+
 
   return (
     <Container>
@@ -57,7 +50,7 @@ function UrunGirdiBilgileri({values, seciliUrun}){
         <Col sm={3} md={3} lg={3}><FormGroup
           label={'Başka Bir İstatistiki Ürün Verisi Kullanıyor mu? (Ara Ürün)'}/></Col>
         <Col sm={3} md={3} lg={3}>
-          <Field name='urunDurum' isClearable  value={seciliBagliUrunDurum} options={durumlar}
+          <Field name='urunDurum' isClearable  value={values.urunDurum} options={durumlar}
                  component={SelectField}/>
         </Col>
       </Satir>
@@ -71,12 +64,12 @@ function UrunGirdiBilgileri({values, seciliUrun}){
           </Col>
         </Satir>
       )}
-      <Satir></Satir>
+      <Satir/>
       <Satir style={{ backgroundColor: Colors.LIGHT_GRAY4 }}>
         <Col sm={3} md={3} lg={3}><FormGroup
           label={'Anket Verisi Kullanıyor mu?'}/></Col>
         <Col sm={3} md={3} lg={3}>
-          <Field name='anketDurum' isClearable value={seciliAnketDurum} options={durumlar}
+          <Field name='anketDurum' isClearable value={values.anketDurum} options={durumlar}
                  component={SelectField}/>
         </Col>
       </Satir>
@@ -99,7 +92,7 @@ function UrunGirdiBilgileri({values, seciliUrun}){
           />
         </div>
       )}
-      <Satir></Satir>
+      <Satir/>
       <Satir style={{ backgroundColor: Colors.LIGHT_GRAY4 }}>
         <Col sm={3} md={3} lg={3}><FormGroup
           label={'İdari Kayit Verisi Kullanıyor mu?'}/></Col>

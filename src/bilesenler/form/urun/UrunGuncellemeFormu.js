@@ -1,10 +1,10 @@
 import React from 'react'
-import useUrunDetay from '../hook/useUrunDetay'
+import useUrunDetay from '../../hook/useUrunDetay'
 import UrunForm from './UrunForm'
 
 
 
-export default function UrunGuncellemeFormu({match}){
+export default function UrunGuncellemeFormu({match, history}){
   const seciliUrun = useUrunDetay(Number(match.params.id))
   console.debug('GuncelleForm', seciliUrun)
 
@@ -12,6 +12,7 @@ export default function UrunGuncellemeFormu({match}){
 
   return(
     <UrunForm
+      history={history}
       seciliUrun={seciliUrun}
     />
   )
