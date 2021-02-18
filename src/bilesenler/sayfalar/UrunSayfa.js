@@ -1,7 +1,7 @@
 import UrunListe from '../listeler/UrunListe'
 import { Switch, Route } from 'react-router-dom'
-import UrunEklemeForm from '../form/UrunEklemeForm'
-import UrunGuncellemeFormu from '../form/UrunGuncellemeFormu'
+import UrunEklemeForm from '../form/urun/UrunEklemeForm'
+import UrunGuncellemeFormu from '../form/urun/UrunGuncellemeFormu'
 
 export const UrunSayfa = ({ match }) => (
   <Switch>
