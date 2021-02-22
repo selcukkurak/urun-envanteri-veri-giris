@@ -175,12 +175,12 @@ export default function UrunForm ({seciliUrun, history}) {
               />
             )}
             <Satir>
-              <Col sm={10} md={10} lg={10}/>
+              <Col sm={8} md={8} lg={8}/>
               <Col>
-                <Button intent='danger' text={"Geri Dön"} onClick={history.goBack}/>
+                <Button fill intent='danger' text={"Geri Dön"} onClick={history.goBack}/>
               </Col>
               <Col>
-                <Button intent='success' text={"Kaydet"}/>
+                <Button fill intent='success' text={"Kaydet"}/>
               </Col>
             </Satir>
           </Form>
