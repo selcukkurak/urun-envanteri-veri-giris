@@ -19,8 +19,7 @@ const KartListe = styled(Card)`
 const ListeBaslik = styled.div`
   display: flex;
   align-items: baseline;
-  padding-top: 24px;
-  padding-left: 8px;
+  margin:24px 8px 8px;
 `
 
 const SolaYasli = styled.div`
@@ -61,9 +60,24 @@ const FiltreLabel = styled.label`
   color: ${Colors.DARK_GRAY5};
   font-size: 1.2em;
 `
+const Table = styled(HTMLTable)`
+  text-align: center;
+  width: 100%;
+  position: relative;
+  border-collapse: collapse;
+`
+const TableHeader = styled.th`
+  position: sticky;
+  top: 0;
+  box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.4);
+`
+const Etiket = styled(Tag)`
+  margin-left: 32px;
+  font-size: 14px;
+`
 
 function Liste (props) {
-  moment.locale("tr")
+  moment.locale('tr')
   const tarih = (tarihItem) => {
     return moment(tarihItem)
   }
@@ -76,9 +90,10 @@ function Liste (props) {
               <div style={{ flex: 1 }}>
                 {props.durumlar && (
                   <FiltreAlani>
-                    <FiltreLabel>Taslak:</FiltreLabel>
+                    <FiltreLabel>{props.filtreLabel}</FiltreLabel>
                     {props.durumlar.map((taslak, index) => (
-                      <Button key={index} intent={'primary'} minimal={!props.secili || props.secili.durum !== taslak.durum}
+                      <Button key={index} intent={'primary'}
+                              minimal={!props.secili || props.secili.durum !== taslak.durum}
                               text={taslak.adi}
                               onClick={(event) => props.handleSeciliTaslak(event, taslak)}/>
                     ))}
@@ -93,86 +108,80 @@ function Liste (props) {
               <SolaYasli>{props.title}</SolaYasli>
               <SagaYasli>
                 <BaslikMetin>TOPLAM</BaslikMetin>
-                <SayiGosterge>{props.secili ? (props.secili === null ? props.dizi.length : (props.secili.durum ? props.dizi2.length : props.dizi1.length)) : props.dizi.length}</SayiGosterge>
+                <SayiGosterge>{props.secili ? props.secili.durum ? props.dizi1.length : props.dizi2.length : props.dizi.length}</SayiGosterge>
               </SagaYasli>
             </ListeBaslik>
             <KartListe>
-              <HTMLTable style={{width:"100%"}}>
+              <Table>
                 <thead>
-                  <th>Adı</th>
-                  <th>Ekleyen Kişi</th>
-                  <th>İşlem Tarihi</th>
-                  <th>Taslak</th>
-                  <th>Eylemler</th>
+                <TableHeader>Adı</TableHeader>
+                <TableHeader>Ekleyen Kişi</TableHeader>
+                <TableHeader>İşlem Tarihi</TableHeader>
+                <TableHeader>Eylemler</TableHeader>
                 </thead>
                 <tbody>
                 {props.secili ? (
-                  props.secili === null ? (
-                    props.dizi.map(item => (
-                      <tr key={item.id}>
-                        <td>{item.adi}</td>
-                        <td>{item.ekleyen}</td>
-                        <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format("DD.MM.YYYY")}</td>
-                        <td>{item.taslak && (<Tooltip content={"Taslak"} position={"left"}><Tag minimal>t</Tag></Tooltip>)}</td>
-                        <td style={{display:'flex'}}>
-                          <Link to={window.location.pathname + "/guncelle" + "/" + item.id }>
-                            <Button style={{flex:1}} minimal icon={"edit"} intent={'primary'}/>
-                          </Link>
-                          <Button minimal icon={"trash"} intent={'danger'}/>
-                        </td>
-                      </tr>
-                    ))
-                  ) :(
                   props.secili.durum ? (
-                    props.dizi2.map(item =>(
+                    props.dizi1.map(item => (
                       <tr key={item.id}>
-                        <td>{item.adi}</td>
+                        <td>{item.adi}
+                          {item.taslak && (
+                            <Etiket minimal intent="danger">Taslak</Etiket>
+                          )}
+                        </td>
                         <td>{item.ekleyen}</td>
-                        <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format("DD.MM.YYYY")}</td>
-                        <td>{item.taslak && (<Tooltip content={"Taslak"}><Tag minimal>t</Tag></Tooltip>)}</td>
-                        <td style={{display:'flex'}}>
-                          <Link to={window.location.pathname + "/guncelle" + "/" + item.id }>
-                            <Button style={{flex:1}} minimal icon={"edit"} intent={'primary'}/>
+                        <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format('DD.MM.YYYY')}</td>
+                        <td style={{ display: 'flex' }}>
+                          <Link to={window.location.pathname + '/guncelle' + '/' + item.id}>
+                            <Button style={{ flex: 1 }} minimal icon={'edit'} intent={'primary'}/>
                           </Link>
-                          <Button minimal icon={"trash"} intent={'danger'}/>
+                          <Tooltip content={'Üretiliyor Durumunu Değiştir'}>
+                            <Button minimal icon={'trash'} intent={'danger'}/>
+                          </Tooltip>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    props.dizi1.map(item => (
+                    props.dizi2.map(item => (
                       <tr key={item.id}>
                         <td>{item.adi}</td>
                         <td>{item.ekleyen}</td>
-                        <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format("DD.MM.YYYY")}</td>
-                        <td>{item.taslak && (<Tooltip content={"Taslak"}><Tag minimal>t</Tag></Tooltip>)}</td>
-                        <td style={{display:'flex'}}>
-                          <Link to={window.location.pathname + "/guncelle" + "/" + item.id }>
-                            <Button style={{flex:1}} minimal icon={"edit"} intent={'primary'}/>
+                        <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format('DD.MM.YYYY')}</td>
+                        <td style={{ display: 'flex' }}>
+                          <Link to={window.location.pathname + '/guncelle' + '/' + item.id}>
+                            <Button style={{ flex: 1 }} minimal icon={'edit'} intent={'primary'}/>
                           </Link>
-                          <Button minimal icon={"trash"} intent={'danger'}/>
+                          <Tooltip content={'Üretiliyor Durumunu Değiştir'}>
+                            <Button minimal icon={'trash'} intent={'danger'}/>
+                          </Tooltip>
                         </td>
                       </tr>
                     ))
                   )
-                  )
-                ): (
+                ) : (
                   props.dizi.map(item => (
                     <tr key={item.id}>
-                      <td>{item.adi}</td>
+                      <td>{item.adi}
+                        {item.taslak && (
+                          <Etiket minimal intent="danger">Taslak</Etiket>
+                        )}
+                      </td>
                       <td>{item.ekleyen}</td>
-                      <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format("DD.MM.YYYY")}</td>
-                      <td>{item.taslak && (<Tooltip content={"Taslak"}><Tag minimal>t</Tag></Tooltip>)}</td>
-                      <td style={{display:'flex'}}>
-                        <Link to={window.location.pathname + "/guncelle" + "/" + item.id }>
-                          <Button style={{flex:1}} minimal icon={"edit"} intent={'primary'}/>
+                      <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format('DD.MM.YYYY')}</td>
+                      <td style={{ display: 'flex' }}>
+                        <Link to={window.location.pathname + '/guncelle' + '/' + item.id}>
+                          <Button style={{ flex: 1 }} minimal icon={'edit'} intent={'primary'}/>
                         </Link>
-                        <Button minimal icon={"trash"} intent={'danger'}/>
+                        <Tooltip content={'Üretiliyor Durumunu Değiştir'}>
+                          <Button minimal icon={'trash'} intent={'danger'}/>
+                        </Tooltip>
                       </td>
                     </tr>
                   ))
-                )}
+                )
+                }
                 </tbody>
-              </HTMLTable>
+              </Table>
             </KartListe>
           </Col>
         </Row>

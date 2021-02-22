@@ -28,6 +28,7 @@ export default function UrunListe(){
       <Liste
         title={"İstatistiki Ürünler"}
         butonText={"Yeni İstatistiki Ürün Ekle"}
+        filtreLabel={"Onaylanmış Ürünleri Göster:"}
         dizi={tumUrunler}
         dizi1={urunler}
         dizi2={taslakUrunler}
