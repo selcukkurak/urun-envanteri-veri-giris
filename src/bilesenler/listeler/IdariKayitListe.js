@@ -5,7 +5,7 @@ import Liste from './Liste'
 import { localSort } from '../util/sort'
 import {uniqBy} from 'lodash'
 
-function IdariKayitListe({match}){
+export default function IdariKayitListe({match}){
   const idariKayitlar = uniqBy(localSort(useRecoilValue(idariKayitlarState), 'adi'), 'adi')
   return(
     <Liste
@@ -13,9 +13,7 @@ function IdariKayitListe({match}){
       butonText={"Yeni İdari Kayit Ekle"}
       dizi={idariKayitlar}
       url={match.url}
-      path={match.url + "/yeni-idariKayit"}
+      path={`${match.url}/yeni-idariKayit`}
     />
   )
 }
-
-export default React.memo(IdariKayitListe)

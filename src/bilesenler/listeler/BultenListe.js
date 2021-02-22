@@ -4,7 +4,7 @@ import { bultenlerState } from '../store'
 import Liste from './Liste'
 
 
-function BultenListe({match}) {
+export default function BultenListe({match}) {
   const bultenler = useRecoilValue(bultenlerState)
 
   return(
@@ -13,9 +13,7 @@ function BultenListe({match}) {
       butonText={"Yeni Haber Bülteni Ekle"}
       dizi={bultenler}
       url={match.url}
-      path={match.url + "yeni-bulten"}
+      path={`${match.url}/yeni-bulten`}
     />
   )
 }
-
-export default React.memo(BultenListe)

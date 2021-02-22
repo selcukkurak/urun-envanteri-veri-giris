@@ -5,7 +5,7 @@ import Liste from './Liste'
 import { localSort } from '../util/sort'
 
 
-function AnketListe({match}){
+export default function AnketListe({match}){
   const anketler = localSort(useRecoilValue(anketlerState), 'adi' )
 
   return(
@@ -14,9 +14,7 @@ function AnketListe({match}){
       butonText={"Yeni Anket Ekle"}
       dizi={anketler}
       url={match.url}
-      path={match.url + "/yeni-anket"}
+      path={`${match.url}/yeni-urun`}
     />
   )
 }
-
-export default React.memo(AnketListe)

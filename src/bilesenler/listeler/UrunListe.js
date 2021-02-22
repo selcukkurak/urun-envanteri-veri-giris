@@ -36,7 +36,7 @@ export default function UrunListe({match}){
         secili={secili}
         url={match.url}
         handleSeciliTaslak={handleSeciliTaslak}
-        path={match.url + "/yeni-urun"}
+        path={`${match.url}/yeni-urun`}
       />
   )
 }
