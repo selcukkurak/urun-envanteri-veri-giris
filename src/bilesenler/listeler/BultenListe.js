@@ -4,7 +4,7 @@ import { bultenlerState } from '../store'
 import Liste from './Liste'
 
 
-function BultenListe() {
+function BultenListe({match}) {
   const bultenler = useRecoilValue(bultenlerState)
 
   return(
@@ -12,7 +12,8 @@ function BultenListe() {
       title={"Haber Bültenleri"}
       butonText={"Yeni Haber Bülteni Ekle"}
       dizi={bultenler}
-      path={"bultenler"}
+      url={match.url}
+      path={match.url + "yeni-bulten"}
     />
   )
 }

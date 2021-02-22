@@ -76,7 +76,7 @@ const Etiket = styled(Tag)`
   font-size: 14px;
 `
 
-function Liste (props) {
+function Liste (props ) {
   moment.locale('tr')
   const tarih = (tarihItem) => {
     return moment(tarihItem)
@@ -132,7 +132,7 @@ function Liste (props) {
                         <td>{item.ekleyen}</td>
                         <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format('DD.MM.YYYY')}</td>
                         <td style={{ display: 'flex' }}>
-                          <Link to={window.location.pathname + '/guncelle' + '/' + item.id}>
+                          <Link to={props.url + '/guncelle' + '/' + item.id}>
                             <Button style={{ flex: 1 }} minimal icon={'edit'} intent={'primary'}/>
                           </Link>
                           <Tooltip content={'Üretiliyor Durumunu Değiştir'}>
@@ -148,7 +148,7 @@ function Liste (props) {
                         <td>{item.ekleyen}</td>
                         <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format('DD.MM.YYYY')}</td>
                         <td style={{ display: 'flex' }}>
-                          <Link to={window.location.pathname + '/guncelle' + '/' + item.id}>
+                          <Link to={props.url + '/guncelle' + '/' + item.id}>
                             <Button style={{ flex: 1 }} minimal icon={'edit'} intent={'primary'}/>
                           </Link>
                           <Tooltip content={'Üretiliyor Durumunu Değiştir'}>
@@ -169,7 +169,7 @@ function Liste (props) {
                       <td>{item.ekleyen}</td>
                       <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format('DD.MM.YYYY')}</td>
                       <td style={{ display: 'flex' }}>
-                        <Link to={window.location.pathname + '/guncelle' + '/' + item.id}>
+                        <Link to={props.url + '/guncelle' + '/' + item.id}>
                           <Button style={{ flex: 1 }} minimal icon={'edit'} intent={'primary'}/>
                         </Link>
                         <Tooltip content={'Üretiliyor Durumunu Değiştir'}>

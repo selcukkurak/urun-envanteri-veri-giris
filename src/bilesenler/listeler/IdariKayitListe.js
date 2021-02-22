@@ -5,14 +5,15 @@ import Liste from './Liste'
 import { localSort } from '../util/sort'
 import {uniqBy} from 'lodash'
 
-function IdariKayitListe(){
+function IdariKayitListe({match}){
   const idariKayitlar = uniqBy(localSort(useRecoilValue(idariKayitlarState), 'adi'), 'adi')
   return(
     <Liste
       title={"İdari Kayitlar"}
       butonText={"Yeni İdari Kayit Ekle"}
       dizi={idariKayitlar}
-      path={window.location.pathname + "/yeni-idariKayit"}
+      url={match.url}
+      path={match.url + "/yeni-idariKayit"}
     />
   )
 }

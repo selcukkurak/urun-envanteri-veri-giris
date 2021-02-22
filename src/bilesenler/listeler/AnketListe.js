@@ -5,7 +5,7 @@ import Liste from './Liste'
 import { localSort } from '../util/sort'
 
 
-function AnketListe(){
+function AnketListe({match}){
   const anketler = localSort(useRecoilValue(anketlerState), 'adi' )
 
   return(
@@ -13,7 +13,8 @@ function AnketListe(){
       title={"Anketler"}
       butonText={"Yeni Anket Ekle"}
       dizi={anketler}
-      path={window.location.pathname + "/yeni-anket"}
+      url={match.url}
+      path={match.url + "/yeni-anket"}
     />
   )
 }

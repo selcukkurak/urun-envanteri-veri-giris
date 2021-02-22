@@ -9,7 +9,7 @@ const taslakDurum = [
   {adi:"Evet", durum:true},
   {adi:"Hayır", durum:false}
 ]
-export default function UrunListe(){
+export default function UrunListe({match}){
   const [secili, setSecili] = React.useState(null)
   const urunler = localSort(useRecoilValue(urunlerState), 'adi')
   const tumUrunler = localSort(useRecoilValue(tumUrunlerState), 'adi')
@@ -34,8 +34,9 @@ export default function UrunListe(){
         dizi2={taslakUrunler}
         durumlar={taslakDurum}
         secili={secili}
+        url={match.url}
         handleSeciliTaslak={handleSeciliTaslak}
-        path={window.location.pathname + "/yeni-urun"}
+        path={match.url + "/yeni-urun"}
       />
   )
 }
