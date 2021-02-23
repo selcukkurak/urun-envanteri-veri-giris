@@ -10,7 +10,7 @@ export const MenuItemStyled = styled(MenuItem)`
   padding: 8px 16px 0;
   background-color: ${ArayuzRenkleri.yanMenu};
   height: 56px;
-  width: 279px;
+  width: 209px;
   color: white;
   border-bottom: 1px solid rgb(170, 23, 23);
   font-size:1.1em;

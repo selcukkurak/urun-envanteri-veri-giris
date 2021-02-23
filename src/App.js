@@ -18,7 +18,7 @@ const Wrapper = styled.div`
     padding: 0;
 `
 const YanMenu = styled.div`
-  width: 280px;
+  width: 210px;
   height: 100vh;
   top:0;
   left:0;
@@ -28,7 +28,7 @@ const YanMenu = styled.div`
   border-right: 1px solid ${Colors.LIGHT_GRAY3};
 `
 const OrtaBolme = styled.div`
-  margin-left: 280px;
+  margin-left: 210px;
   height: 100vh;
 `
 function App() {
