@@ -14,7 +14,7 @@ export default function AnketListe({match}){
       butonText={"Yeni Anket Ekle"}
       dizi={anketler}
       url={match.url}
-      path={`${match.url}/yeni-urun`}
+      path={`${match.url}/yeni-anket`}
     />
   )
 }
