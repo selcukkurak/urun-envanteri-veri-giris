@@ -189,21 +189,21 @@ export default function AnketForm ({seciliAnket, history}) {
                 </Col>
               </Satir>
               <Satir>
-                <Col sm={8} md={8} lg={8}/>
-                <Col>
-                  <Button fill intent='danger' text={"Geri Dön"} onClick={history.goBack}/>
-                </Col>
-                <Col>
-                  <Button fill intent='success' text={"Kaydet"}/>
-                </Col>
-              </Satir>
-              <Satir>
                 <Col sm={3} md={3} lg={3}>
                   <FormGroup label={'Mevsimsel Düzeltme Kullanılıyor mu?'}/>
                 </Col>
                 <Col sm={6} md={6} lg={6}>
                   <Field name='duzeltmeDurum' isClearable value={values.duzeltmeDurum || null} options={durumlar}
                          component={SelectField}/>
+                </Col>
+              </Satir>
+              <Satir>
+                <Col sm={8} md={8} lg={8}/>
+                <Col>
+                  <Button fill intent='danger' text={"Geri Dön"} onClick={history.goBack}/>
+                </Col>
+                <Col>
+                  <Button fill intent='success' text={"Kaydet"}/>
                 </Col>
               </Satir>
             </Container>
