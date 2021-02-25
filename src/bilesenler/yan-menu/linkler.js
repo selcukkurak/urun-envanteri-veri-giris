@@ -1,9 +1,5 @@
 export const linkler = [
   {
-    baslik: 'Anasayfa',
-    link: '/'
-  },
-  {
     baslik: 'İstatistiki Ürün',
     link: '/urunler',
   },

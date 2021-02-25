@@ -5,7 +5,7 @@ import BultenLoader from './bilesenler/loader/BultenLoader'
 import ReferansLoader from './bilesenler/loader/ReferansLoader'
 import IdariKayitLoader from './bilesenler/loader/IdariKayitLoader'
 import BirimLoader from './bilesenler/loader/BirimLoader'
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch,Redirect} from 'react-router-dom'
 import styled from 'styled-components'
 import { Colors } from '@blueprintjs/core'
 import HeaderBar from './bilesenler/HeaderBar'
@@ -13,7 +13,6 @@ import YanMenuItem from './bilesenler/yan-menu/YanMenu'
 import {ArayuzRenkleri} from '@tuik/renkler'
 import { IdariKayitSayfa, AnketSayfa, UrunSayfa , BultenSayfa} from './bilesenler/sayfalar'
 import GlobalStyle from './bilesenler/globalStiller'
-import { Fragment } from 'react'
 const Wrapper = styled.div`
     padding: 0;
 `
@@ -49,8 +48,7 @@ function App() {
           </YanMenu>
           <OrtaBolme>
             <Switch>
-              <Route exact path={"/"} component={Anasayfa}/>
-
+              <Redirect exact from={"/"} to={"/urunler"}/>
               <Route path={"/urunler"} component={UrunSayfa}/>
 
               <Route path={"/idari-kayitlar"} component={IdariKayitSayfa}/>
@@ -65,13 +63,5 @@ function App() {
   );
 }
 
-const Anasayfa = () => (
-  <Fragment>
-    <OrtaBolme>
-      <div style={{marginTop:"200px"}}>Yapım Aşamasında</div>
-    </OrtaBolme>
-  </Fragment>
-
-)
 
 export default App;
