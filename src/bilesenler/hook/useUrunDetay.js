@@ -5,7 +5,7 @@ export default function useUrunDetay(seciliUrun){
   const [urunDetay, setUrunDetay] = useState(null)
 
   useEffect(() => {
-    if (seciliUrun !== null) {
+    if (seciliUrun) {
       Axios.get(`/api/urunler/${seciliUrun}`)
         .then(res => setUrunDetay(res.data))
     }
