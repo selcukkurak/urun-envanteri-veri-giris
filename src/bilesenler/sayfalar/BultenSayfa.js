@@ -1,8 +1,8 @@
 import { BultenListe } from '../listeler'
-import { Fragment } from 'react'
+import { Switch,Route } from 'react-router-dom'
 
 export const BultenSayfa = () => (
-  <Fragment>
-    <BultenListe/>
-  </Fragment>
+  <Switch>
+    <Route path={"/haber-bultenleri"} component={BultenListe}/>
+  </Switch>
 )
