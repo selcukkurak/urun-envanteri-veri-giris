@@ -1,8 +1,7 @@
 import React from 'react'
-import { Colors, FormGroup } from '@blueprintjs/core'
+import { Colors, FormGroup, Switch } from '@blueprintjs/core'
 import { Col, Container, Row } from 'react-grid-system'
 import { Field } from 'formik'
-import { durumlar } from '../../hook/ortak'
 import SelectField from '../SelectField'
 import styled from 'styled-components'
 import { localSort } from '../../util/sort'
@@ -15,7 +14,13 @@ import FormIdariKayitListe from './FormIdariKayitListe'
 const Satir = styled(Row)`
   padding: 16px 8px;
 `
-function UrunGirdiBilgileri({values}){
+
+const CheckedSatir = styled(Row)`
+  background-color:${Colors.LIGHT_GRAY4};
+  padding: 16px 8px;
+`
+
+export default function UrunGirdiBilgileri ({ values, handleChange }) {
   const [seciliIdariKayit, setSeciliIdariKayit] = React.useState(null)
   const [seciliAnket, setSeciliAnket] = React.useState(null)
 
@@ -30,7 +35,6 @@ function UrunGirdiBilgileri({values}){
   const idariKayitlar = localSort(useRecoilValue(idariKayitlarState), 'adi')
   const kayitOption = idariKayitlar.map(kayit => ({ label: kayit.adi, value: kayit.id }))
 
-
   const handleAnketItem = (item) => {
     setSeciliAnket(item)
     handleClickOpenModal()
@@ -42,19 +46,17 @@ function UrunGirdiBilgileri({values}){
   const seciliAnketItem = seciliAnket && anketler.find(anket => anket.id === seciliAnket.value)
   const seciliIdariKayitItem = seciliIdariKayit && idariKayitlar.find(kayit => kayit.id === seciliIdariKayit.value)
 
-
-
   return (
     <Container>
-      <Satir style={{ backgroundColor: Colors.LIGHT_GRAY4 }}>
-        <Col sm={3} md={3} lg={3}><FormGroup
-          label={'Başka Bir İstatistiki Ürün Verisi Kullanıyor mu? (Ara Ürün)'}/></Col>
-        <Col sm={3} md={3} lg={3}>
-          <Field name='urunDurum' isClearable  value={values.urunDurum} options={durumlar}
-                 component={SelectField}/>
+      <CheckedSatir>
+        <Col sm={6} md={6} lg={6}>
+          <FormGroup inline>
+            <Switch name="urunDurum" label="Başka Bir İstatistiki Ürün Verisi Kullanıyor mu? (Ara Ürün)" alignIndicator='right'
+                    checked={values.urunDurum} onChange={handleChange}/>
+          </FormGroup>
         </Col>
-      </Satir>
-      {values.urunDurum && values.urunDurum.value && (
+      </CheckedSatir>
+      {values.urunDurum === true && (
         <Satir>
           <Col sm={6} md={6} lg={6}>
             <Field name='bagliUrunler' isClearable isMulti placeholder={'Ürün Seçiniz...'}
@@ -65,15 +67,15 @@ function UrunGirdiBilgileri({values}){
         </Satir>
       )}
       <Satir/>
-      <Satir style={{ backgroundColor: Colors.LIGHT_GRAY4 }}>
-        <Col sm={3} md={3} lg={3}><FormGroup
-          label={'Anket Verisi Kullanıyor mu?'}/></Col>
-        <Col sm={3} md={3} lg={3}>
-          <Field name='anketDurum' isClearable value={values.anketDurum} options={durumlar}
-                 component={SelectField}/>
+      <CheckedSatir>
+        <Col sm={6} md={6} lg={6}>
+          <FormGroup inline>
+            <Switch name="anketDurum" label='Anket Verisi Kullanıyor mu?' alignIndicator='right'
+                    checked={values.anketDurum} onChange={handleChange}/>
+          </FormGroup>
         </Col>
-      </Satir>
-      {values.anketDurum && values.anketDurum.value &&  (
+      </CheckedSatir>
+      {values.anketDurum === true && (
         <div>
           <Satir>
             <Col sm={6} md={6} lg={6}>
@@ -93,15 +95,15 @@ function UrunGirdiBilgileri({values}){
         </div>
       )}
       <Satir/>
-      <Satir style={{ backgroundColor: Colors.LIGHT_GRAY4 }}>
-        <Col sm={3} md={3} lg={3}><FormGroup
-          label={'İdari Kayit Verisi Kullanıyor mu?'}/></Col>
-        <Col sm={3} md={3} lg={3}>
-          <Field name='kayitDurum' isClearable value={values.kayitDurum} options={durumlar}
-                 component={SelectField}/>
+      <CheckedSatir>
+        <Col sm={6} md={6} lg={6}>
+          <FormGroup inline>
+            <Switch name="kayitDurum" label='İdari Kayit Verisi Kullanıyor mu?' alignIndicator='right'
+                    checked={values.kayitDurum} onChange={handleChange}/>
+          </FormGroup>
         </Col>
-      </Satir>
-      {values.kayitDurum && values.kayitDurum.value && (
+      </CheckedSatir>
+      {values.kayitDurum === true &&  (
         <div>
           <Satir>
             <Col sm={6} md={6} lg={6}>
@@ -123,4 +125,3 @@ function UrunGirdiBilgileri({values}){
     </Container>
   )
 }
-export default React.memo(UrunGirdiBilgileri)

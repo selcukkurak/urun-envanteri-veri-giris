@@ -3,9 +3,8 @@ import { useRecoilValue } from 'recoil'
 import { tekilBultenler } from '../../store/selectors'
 import { Col, Container, Row } from 'react-grid-system'
 import styled from 'styled-components'
-import { Button, Colors, FormGroup, HTMLTable, InputGroup } from '@blueprintjs/core'
+import { Button, Colors, FormGroup, HTMLTable, InputGroup, Switch } from '@blueprintjs/core'
 import { Field } from 'formik'
-import { durumlar } from '../../hook/ortak'
 import SelectField from '../SelectField'
 import { localSort } from '../../util/sort'
 import { referanslarState } from '../../store'
@@ -13,7 +12,10 @@ import { referanslarState } from '../../store'
 const Satir = styled(Row)`
   padding: 16px 8px;
 `
-
+const CheckedSatir = styled(Row)`
+  background-color:${Colors.LIGHT_GRAY4};
+  padding: 16px 8px;
+`
 
 function UrunCiktiBilgileri ({ bultenDurum, formBultenler, paylasimDurum, paylasimlar, handleChange, setFieldValue }) {
   const bultenler = useRecoilValue(tekilBultenler)
@@ -43,15 +45,15 @@ function UrunCiktiBilgileri ({ bultenDurum, formBultenler, paylasimDurum, paylas
   }
   return (
     <Container>
-      <Satir style={{ backgroundColor: Colors.LIGHT_GRAY4 }}>
-        <Col sm={3} md={3} lg={3}><FormGroup
-          label={'Haber Bülteni Var mı?'}/></Col>
-        <Col sm={3} md={3} lg={3}>
-          <Field name='bultenDurum' isClearable value={bultenDurum || null} options={durumlar}
-                 component={SelectField}/>
+      <CheckedSatir>
+        <Col sm={6} md={6} lg={6}>
+          <FormGroup inline>
+            <Switch name="bultenDurum" label="Haber Bülteni Var mı?" alignIndicator='right'
+                    checked={bultenDurum} onChange={handleChange}/>
+          </FormGroup>
         </Col>
-      </Satir>
-      {bultenDurum && bultenDurum.value && (
+      </CheckedSatir>
+      {bultenDurum && (
         <Satir>
           <Col sm={6} md={6} lg={6}>
             <Field name='bagliUrunler' isClearable placeholder={'Bülten Seçiniz...'}
@@ -62,15 +64,15 @@ function UrunCiktiBilgileri ({ bultenDurum, formBultenler, paylasimDurum, paylas
         </Satir>
       )}
       <Satir/>
-      <Satir style={{ backgroundColor: Colors.LIGHT_GRAY4 }}>
-        <Col sm={3} md={3} lg={3}><FormGroup
-          label={'Kurum Dışına Gönderiliyor mu?'}/></Col>
-        <Col sm={3} md={3} lg={3}>
-          <Field name='paylasimDurum' isClearable value={paylasimDurum || null} options={durumlar}
-                 component={SelectField}/>
+      <CheckedSatir>
+        <Col sm={6} md={6} lg={6}>
+          <FormGroup inline>
+            <Switch name="paylasimDurum" label="Kurum Dışına Gönderiliyor mu?" alignIndicator='right'
+                    checked={paylasimDurum} onChange={handleChange}/>
+          </FormGroup>
         </Col>
-      </Satir>
-      {paylasimDurum && paylasimDurum.value &&
+      </CheckedSatir>
+      {paylasimDurum &&
       (
         <Satir>
           <Col sm={12} md={12} lg={12}>
