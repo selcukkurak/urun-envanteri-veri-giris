@@ -46,7 +46,7 @@ export const SayiGosterge = styled.div`
   }
 `
 export const IcerikAlani = styled.div`
-  margin: 32px 32px;
+  margin: 32px;
   display: flex;
 `
 export const DetayBaslik = styled.div`

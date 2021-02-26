@@ -127,7 +127,7 @@ export default function UrunListe ({ match }) {
               )
             )}
           </Col>
-          <Col>
+          <Col sm={5} md={5} lg={5}>
             {seciliUrun && (
               <div>
                 <ButonAlani>
@@ -222,7 +222,7 @@ export default function UrunListe ({ match }) {
                 {cikti && (
                   <div>
                     {urunBultenleri.length !== 0 && (
-                      <IcerikAlani>
+                      <IcerikAlani style={{marginLeft:0}}>
                         <DetayBaslik>Haber Bülteni:</DetayBaslik>
                         {urunBultenleri.map(bulten => (
                           <Icerik>
@@ -233,7 +233,7 @@ export default function UrunListe ({ match }) {
                       </IcerikAlani>
                     )}
                     {seciliUrun.paylasimlar.length !== 0 && (
-                      <IcerikAlani>
+                      <IcerikAlani style={{marginLeft:0}}>
                         <DetayBaslik>Paylaşımlar:</DetayBaslik>
                         <Icerik>
                           <HTMLTable>
