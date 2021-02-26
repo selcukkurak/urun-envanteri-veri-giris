@@ -46,7 +46,7 @@ function Liste ({dizi, url, handleSeciliItem}) {
         <tbody>
         {dizi.map((item, index) => (
           <tr key={item.id}>
-            <td onClick={() => handleSeciliItem(index)}>{item.adi}
+            <td style={{cursor:'default'}} onClick={() => handleSeciliItem(index)}>{item.adi}
               {item.taslak && (
                 <Etiket minimal intent="danger">Taslak</Etiket>
               )}
