@@ -58,24 +58,32 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
   const dosyaYukleme = (event, name, setFieldValue) => {
     setFieldValue(name, event.target.files[0])
   }
+  const seciliKayitItem = (nesne) => {
+    if (seciliIdariKayit && nesne) return {
+      label: nesne.adi,
+      value: nesne.id
+    }
+    else return null
+  }
+  console.log(seciliIdariKayit)
   const initialValues = {
     kodu: seciliIdariKayit ? seciliIdariKayit.id : '',
     adi: seciliIdariKayit ? seciliIdariKayit.adi : '',
-    veriDuzeyi: null,
+    veriDuzeyi: seciliKayitItem(seciliIdariKayit.veriDuzeyi) || null,
     sorumluBirim: null,
-    yasalHukum: '',
+    yasalHukum:seciliIdariKayit ? seciliIdariKayit.yasalHukum  :'',
     protokol: '',
-    eposta: '',
-    verininTutulduguYer: '',
-    kisitlar: '',
+    eposta:seciliIdariKayit ? seciliIdariKayit.epostaGruplari : '',
+    verininTutulduguYer: seciliKayitItem(seciliIdariKayit.verininTutulduguYer) || null,
+    kisitlar:seciliIdariKayit ? seciliIdariKayit.kisitlar : '',
     kaynakKurum: null,
     kaynakBirim: null,
-    transferVerisininFormati: '',
-    transferSikligi: '',
+    transferVerisininFormati: seciliKayitItem(seciliIdariKayit.transferVerisininFormati) || null,
+    transferSikligi: seciliKayitItem(seciliIdariKayit.periyot) || null,
     veriIcerigi: '',
     veriBirimDuzeyi: '',
-    cografiDuzeyi: null,
-    veriTalepBicimi: null,
+    cografiDuzeyi: seciliKayitItem(seciliIdariKayit.cografiDuzey) || null,
+    veriTalepBicimi: seciliKayitItem(seciliIdariKayit.veriTalepBicimi) || null,
   }
   const handleSubmit = (event) => {
     event.preventDefault()
