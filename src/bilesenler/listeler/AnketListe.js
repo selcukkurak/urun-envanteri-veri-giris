@@ -47,7 +47,7 @@ export default function AnketListe({match}){
     <WrapperListe>
       <Container>
         <Row>
-          <Col sm={5} md={5} lg={5}>
+          <Col sm={6} md={6} lg={6}>
             <FiltreButonAlani>
               <ButonDurumAlani/>
               <Link to={`${match.url}/yeni-anket`}>

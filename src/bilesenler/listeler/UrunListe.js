@@ -84,7 +84,7 @@ export default function UrunListe ({ match }) {
     <WrapperListe>
       <Container>
         <Row>
-          <Col sm={5} md={5} lg={5}>
+          <Col sm={6} md={6} lg={6}>
             <FiltreButonAlani>
               <ButonDurumAlani>
                 {taslakDurumlar.map((taslak, index) => (
@@ -149,11 +149,11 @@ export default function UrunListe ({ match }) {
                     </IcerikAlani>
                     <IcerikAlani>
                       <DetayBaslik>Üretim Sıklığı:</DetayBaslik>
-                      <Icerik>{seciliUrun.periyot.adi}</Icerik>
+                      <Icerik>{seciliUrun.periyot ? seciliUrun.periyot.adi : "-"}</Icerik>
                     </IcerikAlani>
                     <IcerikAlani>
                       <DetayBaslik>Coğrafi Düzeyi:</DetayBaslik>
-                      <Icerik>{seciliUrun.cografiDuzey.adi}</Icerik>
+                      <Icerik>{seciliUrun.cografiDuzey ? seciliUrun.cografiDuzey.adi : "-"}</Icerik>
                     </IcerikAlani>
                     <IcerikAlani>
                       <DetayBaslik>Sorumlu Grup Başkanlığı:</DetayBaslik>
@@ -161,15 +161,15 @@ export default function UrunListe ({ match }) {
                     </IcerikAlani>
                     <IcerikAlani>
                       <DetayBaslik>Ürünün Amacı:</DetayBaslik>
-                      <Icerik>{seciliUrun.amac && htmlParser(`${seciliUrun.amac}`)}</Icerik>
+                      <Icerik>{seciliUrun.amac ? htmlParser(`${seciliUrun.amac}`) :"-"}</Icerik>
                     </IcerikAlani>
                     <IcerikAlani>
                       <DetayBaslik>Ürünün Kapsamı:</DetayBaslik>
-                      <Icerik>{seciliUrun.kapsam && htmlParser(`${seciliUrun.kapsam}`)}</Icerik>
+                      <Icerik>{seciliUrun.kapsam ? htmlParser(`${seciliUrun.kapsam}`) : "-"}</Icerik>
                     </IcerikAlani>
                     <IcerikAlani>
                       <DetayBaslik>Ürünün Sağlayacağı Fayda:</DetayBaslik>
-                      <Icerik>{seciliUrun.fayda && htmlParser(`${seciliUrun.fayda}`)}</Icerik>
+                      <Icerik>{seciliUrun.fayda ? htmlParser(`${seciliUrun.fayda}`) : "-"}</Icerik>
                     </IcerikAlani>
                   </div>
                 )}
