@@ -1,6 +1,6 @@
 import React from "react";
 import {Container, Row, Col} from 'react-grid-system'
-import { Classes, Divider, Dialog, Button } from '@blueprintjs/core'
+import { Classes, Divider, Drawer } from '@blueprintjs/core'
 import styled from 'styled-components'
 
 const Icerik = styled.div`
@@ -32,14 +32,15 @@ export default function AnketDetayDialog({anket, open, handleClickCloseModal}){
   if(!anket) return null
     return(
     <div>
-        <Dialog
+        <Drawer
             isOpen={open}
+            size={500}
             icon="info-sign"
             onClose={handleClickCloseModal}
             title={anket.adi}
         >
             <Icerik>
-              <div className={Classes.DIALOG_BODY}>
+              <div className={Classes.DRAWER_BODY}>
                 <Container>
                   <Row>
                     <SutunBaslik sm={3}>Periyodu:</SutunBaslik>
@@ -81,12 +82,7 @@ export default function AnketDetayDialog({anket, open, handleClickCloseModal}){
                 </Container>
               </div>
             </Icerik>
-          <div className={Classes.DIALOG_FOOTER}>
-            <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-              <Button intent={'danger'} text={"Kapat"} onClick={handleClickCloseModal}/>
-            </div>
-          </div>
-        </Dialog>
+        </Drawer>
     </div>
     )
 }
