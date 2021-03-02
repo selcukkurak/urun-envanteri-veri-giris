@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Card, HTMLTable, Tag, Tooltip } from '@blueprintjs/core'
+import { Button, Card, Colors, HTMLTable, Tag, Tooltip } from '@blueprintjs/core'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
@@ -27,13 +27,21 @@ const Etiket = styled(Tag)`
   margin-left: 32px;
   font-size: 14px;
 `
+const AktifSatir = styled.tr`
+  cursor: default;
+  &.active {
+    background-color: ${props => 
+      props.secili !== props.index ? "white" : Colors.LIGHT_GRAY4
+    } 
+  }
+`
 
-
-function Liste ({dizi, url, handleSeciliItem}) {
+function Liste ({dizi, url, handleSeciliItem, secili}) {
   moment.locale('tr')
   const tarih = (tarihItem) => {
     return moment(tarihItem)
   }
+  console.log("secili", secili)
   return (
     <KartListe>
       <Table>
@@ -45,8 +53,8 @@ function Liste ({dizi, url, handleSeciliItem}) {
         </thead>
         <tbody>
         {dizi.map((item, index) => (
-          <tr key={item.id}>
-            <td style={{cursor:'default'}} onClick={() => handleSeciliItem(index)}>{item.adi}
+          <AktifSatir index={index} secili={secili} className="active" key={item.id}>
+            <td onClick={() => handleSeciliItem(index)}>{item.adi}
               {item.taslak && (
                 <Etiket minimal intent="danger">Taslak</Etiket>
               )}
@@ -61,7 +69,7 @@ function Liste ({dizi, url, handleSeciliItem}) {
                 <Button minimal icon={'trash'} intent={'danger'}/>
               </Tooltip>
             </td>
-          </tr>
+          </AktifSatir>
         ))}
         </tbody>
       </Table>

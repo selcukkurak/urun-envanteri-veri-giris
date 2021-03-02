@@ -43,6 +43,8 @@ const taslakDurumlar = [
   { adi: 'Taslak', durum: 1 },
   { adi: 'Onaylanmış', durum: 2 }
 ]
+
+
 export default function UrunListe ({ match }) {
   const [secili, setSecili] = useState(taslakDurumlar[0])
 
@@ -62,8 +64,14 @@ export default function UrunListe ({ match }) {
 
   const taslakUrunler = tumUrunler.filter(urun => urun.taslak)
   const [seciliUrunId, setSeciliUrunId] = useState(0)
-  const findIndex = tumUrunler.length !== 0 && tumUrunler.find((item, index) => index === seciliUrunId)
-  const seciliUrun = useUrunDetay(findIndex.id)
+  const findIndex = () => {
+    if(secili.durum === 0 && tumUrunler.length !== 0 ) return tumUrunler.find((item, index) => index === seciliUrunId)
+    else if(secili.durum === 1 && taslakUrunler.length !== 0) return taslakUrunler.find((item, index) => index === seciliUrunId)
+    else return urunler.find((item, index) => index === seciliUrunId)
+  }
+
+  console.log("findIndex",findIndex())
+  const seciliUrun = useUrunDetay((findIndex() && findIndex().id))
   const urunBultenleri = seciliUrun && seciliUrun.bultenler
     .map(b => bultenler.find(bulten => bulten.id === b.bultenId))
     .filter(bulten => !!bulten)
@@ -79,7 +87,10 @@ export default function UrunListe ({ match }) {
   }
   const handleSeciliTaslak = (event, secenek) => {
     setSecili(secenek)
+    setSeciliUrunId(0)
   }
+
+  console.log('seciliUrun', seciliUrun)
   return (
     <WrapperListe>
       <Container>
@@ -109,6 +120,7 @@ export default function UrunListe ({ match }) {
               <Liste
                 dizi={tumUrunler}
                 url={match.url}
+                secili={seciliUrunId}
                 handleSeciliItem={handleSeciliItem}
               />
             ) : (
@@ -116,12 +128,14 @@ export default function UrunListe ({ match }) {
                 <Liste
                   dizi={taslakUrunler}
                   url={match.url}
+                  secili={seciliUrunId}
                   handleSeciliItem={handleSeciliItem}
                 />
               ) : (
                 <Liste
                   dizi={urunler}
                   url={match.url}
+                  secili={seciliUrunId}
                   handleSeciliItem={handleSeciliItem}
                 />
               )
@@ -189,13 +203,13 @@ export default function UrunListe ({ match }) {
                         </Icerik>
                       </IcerikAlani>
                     )}
-                    {seciliUrun.bagliUrunler && (
+                    {seciliUrun.urunler && (
                       <IcerikAlani>
                         <DetayBaslik>Bağlı Ürünler:</DetayBaslik>
                         <Icerik>
                           <Kart>
                             <Menu>
-                              {seciliUrun.bagliUrunler.map(urun => (
+                              {seciliUrun.urunler.map(urun => (
                                 <div key={urun.id}>{urun.adi}</div>
                               ))}
                             </Menu>
@@ -222,8 +236,8 @@ export default function UrunListe ({ match }) {
                 {cikti && (
                   <div>
                     {urunBultenleri.length !== 0 && (
-                      <IcerikAlani style={{marginLeft:0}}>
-                        <DetayBaslik>Haber Bülteni:</DetayBaslik>
+                      <IcerikAlani>
+                        <DetayBaslik style={{flex:"0 1 26%"}}>Haber Bülteni:</DetayBaslik>
                         {urunBultenleri.map(bulten => (
                           <Icerik>
                             <a href={`https://data.tuik.gov.tr/Bulten/Index?p=${bulten.sonYayin.id}`} target='_blank'
@@ -233,7 +247,7 @@ export default function UrunListe ({ match }) {
                       </IcerikAlani>
                     )}
                     {seciliUrun.paylasimlar.length !== 0 && (
-                      <IcerikAlani style={{marginLeft:0}}>
+                      <IcerikAlani>
                         <DetayBaslik>Paylaşımlar:</DetayBaslik>
                         <Icerik>
                           <HTMLTable>

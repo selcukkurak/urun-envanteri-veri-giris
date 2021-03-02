@@ -59,6 +59,7 @@ export default function IdariKayitListe({match}){
             <Liste
               dizi={idariKayitlar}
               url={match.url}
+              secili={seciliKayitId}
               handleSeciliItem={handleSeciliItem}
             />
           </Col>
@@ -81,7 +82,7 @@ export default function IdariKayitListe({match}){
                     <Icerik>{seciliKayit.kaynakBirim}</Icerik>
                   </IcerikAlani>
                   <IcerikAlani>
-                    <DetayBaslik>Yasal Hükümler:</DetayBaslik>
+                    <DetayBaslik style={{flex:"0 1 22%"}}>Yasal Hükümler:</DetayBaslik>
                     <Icerik>{seciliKayit.yasalHukum}</Icerik>
                   </IcerikAlani>
                   <IcerikAlani>
@@ -109,7 +110,7 @@ export default function IdariKayitListe({match}){
                     <Icerik>{seciliKayit.sema}</Icerik>
                   </IcerikAlani>
                   <IcerikAlani>
-                    <DetayBaslik>İletişim E-posta Grubu:</DetayBaslik>
+                    <DetayBaslik style={{flex:"0 1 22%"}}>İletişim E-posta Grubu:</DetayBaslik>
                     <Icerik>{seciliKayit.epostaGruplari}</Icerik>
                   </IcerikAlani>
               </div>

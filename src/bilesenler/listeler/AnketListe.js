@@ -64,6 +64,7 @@ export default function AnketListe({match}){
             <Liste
               dizi={anketler}
               url={match.url}
+              secili={seciliAnketId}
               handleSeciliItem={handleSeciliItem}
             />
           </Col>
