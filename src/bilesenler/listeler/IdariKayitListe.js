@@ -6,6 +6,7 @@ import { localSort } from '../util/sort'
 import { AnaRenkler } from '@tuik/renkler'
 import { Col, Container, Row } from 'react-grid-system'
 import {
+  AramaAlani,
   BaslikMetin,
   ButonDurumAlani, DetayAlani, DetayBaslik,
   FiltreButonAlani, Icerik, IcerikAlani,
@@ -18,6 +19,7 @@ import { Link } from 'react-router-dom'
 import { Button } from '@blueprintjs/core'
 import styled from 'styled-components'
 import { siraliKurumlar } from '../store/selectors'
+import Arama from './Arama'
 
 const Baslik = styled.div`
   text-align: center;
@@ -28,8 +30,11 @@ const Baslik = styled.div`
 `
 
 export default function IdariKayitListe ({ match }) {
+  const [aranan, setAranan] = useState("")
   const idariKayitlar = localSort(useRecoilValue(idariKayitlarState), 'adi')
+    .filter(kayit => kayit.adi.toLowerCase().includes(aranan.toLowerCase()))
   const [seciliKayitId, setSeciliKayitId] = useState(0)
+
   const seciliKayit = idariKayitlar.find((kayit, index) => index === seciliKayitId)
   const kurumlar = useRecoilValue(siraliKurumlar)
   const kurum = seciliKayit && kurumlar.find(k => k.kodu === seciliKayit.kaynakKurumId)
@@ -48,6 +53,9 @@ export default function IdariKayitListe ({ match }) {
                 <Button intent={'success'} text={'Yeni İdari Kayıt Ekle'}/>
               </Link>
             </FiltreButonAlani>
+            <AramaAlani>
+              <Arama aranan={aranan} setAranan={setAranan} placeholder={"İdari Kayıtlar İçinde Arayın...."}/>
+            </AramaAlani>
             <ListeBaslik>
               <SolaYasli>İdari Kayıtlar</SolaYasli>
               <SagaYasli>

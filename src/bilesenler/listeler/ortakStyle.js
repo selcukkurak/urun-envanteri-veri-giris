@@ -45,6 +45,9 @@ export const SayiGosterge = styled.div`
     margin-right: 0;
   }
 `
+export const AramaAlani = styled.div`
+  margin-top:16px;
+`
 export const DetayAlani = styled.div`
   margin-left: 10%;
 `

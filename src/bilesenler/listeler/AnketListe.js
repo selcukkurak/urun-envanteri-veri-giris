@@ -7,6 +7,7 @@ import { Button } from '@blueprintjs/core'
 import { Col, Container, Row } from 'react-grid-system'
 import { Link } from 'react-router-dom'
 import {
+  AramaAlani,
   BaslikMetin,
   ButonDurumAlani, DetayBaslik,
   FiltreButonAlani, Icerik,
@@ -18,16 +19,19 @@ import {
 } from './ortakStyle'
 import styled from 'styled-components'
 import { AnaRenkler } from '@tuik/renkler'
+import Arama from './Arama'
 
 const Baslik = styled.div`
   text-align: center;
   color: ${AnaRenkler.kirmizi};
   font-size: 1.4em;
   font-weight: bold;
-  margin-top: 40px;
+  margin-top: 20px;
 `
 export default function AnketListe ({ match }) {
+  const [aranan, setAranan] = useState("")
   const anketler = localSort(useRecoilValue(anketlerState), 'adi')
+    .filter(anket => anket.adi.toLowerCase().includes(aranan.toLowerCase()))
   const [seciliAnketId, setSeciliAnketId] = useState(0)
   const handleSeciliItem = (key) => {
     setSeciliAnketId(key)
@@ -41,7 +45,6 @@ export default function AnketListe ({ match }) {
     ? seciliAnket.harzemliDurumu === 1 ? 'Evet' : 'Hayır'
     : 'Belirtilmemiş'
 
-  console.log(anketler, seciliAnket)
   return (
     <WrapperListe>
       <Container>
@@ -53,6 +56,9 @@ export default function AnketListe ({ match }) {
                 <Button intent={'success'} text={'Yeni Anket Ekle'}/>
               </Link>
             </FiltreButonAlani>
+            <AramaAlani>
+              <Arama aranan={aranan} setAranan={setAranan} placeholder={"Anketler İçinde Arayın...."}/>
+            </AramaAlani>
             <ListeBaslik>
               <SolaYasli>Anketler</SolaYasli>
               <SagaYasli>
