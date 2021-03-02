@@ -5,8 +5,10 @@ import styled from 'styled-components'
 import { Button, FormGroup, InputGroup, TextArea } from '@blueprintjs/core'
 import SelectField from '../SelectField'
 import ReactQuill from 'react-quill'
+import useSecenekler from '../useSecenekler'
 import { useRecoilValue } from 'recoil'
-import { birimlerState, referanslarState } from '../../store'
+import { birimlerState } from '../../store'
+import { siraliKurumlar } from '../../store/selectors'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -14,47 +16,32 @@ const Wrapper = styled.div`
 const Satir = styled(Row)`
   padding: 8px 8px;
 `
-
+const FonksiyonelButonAlani = styled(Row)`
+  bottom: 5%;
+  right: 0;
+  width: 100%;
+  position: fixed;
+`
 export default function IdariKayitForm ({ history, seciliIdariKayit }) {
   const hiddenYasalHukumInput = React.useRef(null)
   const hiddenProtokolInput = React.useRef(null)
   const handleClick = (hiddenFile) => {
     hiddenFile.current.click()
   }
-  const veriDuzeyleri = useRecoilValue(referanslarState).VERI_DUZEYI
-  const veriDuzeyiOption = veriDuzeyleri && veriDuzeyleri.map(duzey => ({ label: duzey.adi, value: duzey.id }))
-  const verininTutulduguYerler = useRecoilValue(referanslarState).VERININ_TUTULDUGU_YER
-  const veriTutulanYerOption = verininTutulduguYerler && verininTutulduguYerler.map(duzey => ({
-    label: duzey.adi,
-    value: duzey.id
-  }))
-  const transferFormatlari = useRecoilValue(referanslarState).VERI_KAYNAK_BICIMI
-  const transferFormatiOption = transferFormatlari && transferFormatlari.map(duzey => ({
-    label: duzey.adi,
-    value: duzey.id
-  }))
-  const veriTalepBicimleri = useRecoilValue(referanslarState).VERI_TALEP_BICIMI
-  const veriTalepBicimiOption = veriTalepBicimleri && veriTalepBicimleri.map(duzey => ({
-    label: duzey.adi,
-    value: duzey.id
-  }))
-  const kurumlar = useRecoilValue(referanslarState).KAYNAK_KURUM
-  const kurumlarOption = kurumlar && kurumlar.map(duzey => ({
-    label: duzey.adi,
-    value: duzey.id
-  }))
-  const periyotlar = useRecoilValue(referanslarState).PERIYOT
-  const periyotOption = periyotlar && periyotlar.map(duzey => ({ label: duzey.adi, value: duzey.id }))
-  const cografiDuzeyler = useRecoilValue(referanslarState).COGRAFI_DUZEY
-  const cografiDuzeyOption = cografiDuzeyler && cografiDuzeyler.map(duzey => ({
-    label: duzey.adi,
-    value: duzey.id
-  }))
+  const {
+    kurumlarOption,
+    veriDuzeyiOption,
+    transferFormatiOption,
+    birimOption,
+    periyotOptions,
+    cografiDuzeyOptions,
+    veriBirimDuzeyiOption,
+    veriTutulanYerOption,
+    veriTalepBicimiOption
+  } = useSecenekler();
+
   const birimler = useRecoilValue(birimlerState)
-  const birimOption = birimler.length !== 0 && birimler.map(birim => ({ label: birim.adi, value: birim.ustBirimId }))
-  const reactQuillHandleChange = (name, icerik, setFieldValue) => {
-    setFieldValue(name, icerik)
-  }
+  const kurumlar = useRecoilValue(siraliKurumlar)
   const dosyaYukleme = (event, name, setFieldValue) => {
     setFieldValue(name, event.target.files[0])
   }
@@ -65,29 +52,49 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
     }
     else return null
   }
-  console.log(seciliIdariKayit)
+  const seciliGrupBaskanligi = () => {
+    if (seciliIdariKayit && seciliIdariKayit.birimId !== null && birimler.length !== 0) {
+      const seciliBirim = birimler.find(birim => birim.id === seciliIdariKayit.birimId)
+      return { label: seciliBirim.adi, value: seciliBirim.id }
+    } else return null
+  }
+  const seciliKaynakKurum = () => {
+    if(seciliIdariKayit && seciliIdariKayit.kaynakKurumId && kurumlar.length !== 0){
+      const seciliKurum = kurumlar.find(kurum => kurum.kodu === seciliIdariKayit.kaynakKurumId)
+      if(seciliKurum) {
+        return {label: seciliKurum.adi, value:seciliKurum.id}
+      }
+      else return null
+    }else return null
+  }
+  console.log(seciliKaynakKurum())
   const initialValues = {
     kodu: seciliIdariKayit ? seciliIdariKayit.id : '',
     adi: seciliIdariKayit ? seciliIdariKayit.adi : '',
-    veriDuzeyi: seciliKayitItem(seciliIdariKayit.veriDuzeyi) || null,
-    sorumluBirim: null,
-    yasalHukum:seciliIdariKayit ? seciliIdariKayit.yasalHukum  :'',
+    veriDuzeyi:seciliIdariKayit ? seciliKayitItem(seciliIdariKayit.veriDuzeyi) : null,
+    sorumluBirim:seciliIdariKayit ? seciliGrupBaskanligi() : null ,
+    yasalHukum:seciliIdariKayit ? seciliIdariKayit.yasal_hukum  :'',
     protokol: '',
     eposta:seciliIdariKayit ? seciliIdariKayit.epostaGruplari : '',
-    verininTutulduguYer: seciliKayitItem(seciliIdariKayit.verininTutulduguYer) || null,
+    verininTutulduguYer:seciliIdariKayit ? seciliKayitItem(seciliIdariKayit.verininTutulduguYer) : null,
     kisitlar:seciliIdariKayit ? seciliIdariKayit.kisitlar : '',
-    kaynakKurum: null,
+    kaynakKurum:seciliIdariKayit ? seciliKaynakKurum() : null,
     kaynakBirim: null,
-    transferVerisininFormati: seciliKayitItem(seciliIdariKayit.transferVerisininFormati) || null,
-    transferSikligi: seciliKayitItem(seciliIdariKayit.periyot) || null,
-    veriIcerigi: '',
-    veriBirimDuzeyi: '',
-    cografiDuzeyi: seciliKayitItem(seciliIdariKayit.cografiDuzey) || null,
-    veriTalepBicimi: seciliKayitItem(seciliIdariKayit.veriTalepBicimi) || null,
+    transferVerisininFormati:seciliIdariKayit ?  seciliKayitItem(seciliIdariKayit.transferVerisininFormati) : null,
+    transferSikligi: seciliIdariKayit ?  seciliKayitItem(seciliIdariKayit.periyot) : null,
+    veriIcerik:seciliIdariKayit ? seciliIdariKayit.icerik : '',
+    veriBirimDuzeyi:seciliIdariKayit ? seciliKayitItem(seciliIdariKayit.birimDuzeyi) : '',
+    cografiDuzeyi: seciliIdariKayit ? seciliKayitItem(seciliIdariKayit.cografiDuzey) : null,
+    veriTalepBicimi:seciliIdariKayit ? seciliKayitItem(seciliIdariKayit.veriTalepBicimi) : null,
   }
   const handleSubmit = (event) => {
     event.preventDefault()
   }
+
+  function reactQuillHandleChange (name, icerik, setFieldValue) {
+    setFieldValue(name, icerik)
+  }
+
   return (
     <Wrapper>
       <Formik
@@ -120,7 +127,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
               <Satir>
                 <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label="Kaynak Kurum:">
-                    <Field name='kaynakKurum' isClearable value={values.kaynakKurum || null}
+                    <Field name='kaynakKurum' isClearable value={values.kaynakKurum}
                            options={kurumlarOption}
                            component={SelectField}/>
                   </FormGroup>
@@ -163,7 +170,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                 <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label="Transfer Sıklığı:">
                     <Field name='transferSikligi' isClearable value={values.transferSikligi || null}
-                           options={periyotOption}
+                           options={periyotOptions}
                            component={SelectField}/>
                   </FormGroup>
                 </Col>
@@ -171,7 +178,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
               <Satir>
                 <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label='Yasal Hüküm:'>
-                    <ReactQuill name='yasalHukum' value={values.yasalHukum}
+                    <ReactQuill name='yasalHukum' value={values.yasalHukum || ""}
                                 onChange={(icerik) => reactQuillHandleChange('yasalHukum', icerik, setFieldValue)}/>
                     <Button style={{ float: 'right' }} intent={'primary'} text="Yasal Hükümleri Yükle"
                             rightIcon={'export'} onClick={() => handleClick(hiddenYasalHukumInput)}/>
@@ -183,8 +190,8 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                 <Col/>
                 <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label='Veri İçeriği:'>
-                    <ReactQuill name='veriIcerigi' value={values.veriIcerigi}
-                                onChange={(icerik) => reactQuillHandleChange('veriIcerigi', icerik, setFieldValue)}/>
+                    <ReactQuill name='veriIcerik' value={values.veriIcerik || ""}
+                                onChange={(icerik) => reactQuillHandleChange('veriIcerik', icerik, setFieldValue)}/>
                   </FormGroup>
                 </Col>
               </Satir>
@@ -213,6 +220,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                 <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label="Verinin Birim Düzeyi:">
                     <Field name='veriBirimDuzeyi' isClearable value={values.veriBirimDuzeyi || null}
+                           options={veriBirimDuzeyiOption}
                            component={SelectField}/>
                   </FormGroup>
                 </Col>
@@ -229,7 +237,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                 <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label="Coğrafi Duzeyi:">
                     <Field name='cografiDuzeyi' isClearable value={values.cografiDuzeyi || null}
-                           options={cografiDuzeyOption}
+                           options={cografiDuzeyOptions}
                            component={SelectField}/>
                   </FormGroup>
                 </Col>
@@ -249,7 +257,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                   </FormGroup>
                 </Col>
               </Satir>
-              <Satir>
+              <FonksiyonelButonAlani>
                 <Col sm={8} md={8} lg={8}/>
                 <Col>
                   <Button fill intent='danger' text={'Geri Dön'} onClick={history.goBack}/>
@@ -257,7 +265,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                 <Col>
                   <Button fill intent='success' text={'Kaydet'}/>
                 </Col>
-              </Satir>
+              </FonksiyonelButonAlani>
             </Container>
           </Form>
         )}
