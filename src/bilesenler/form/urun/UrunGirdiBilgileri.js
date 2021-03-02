@@ -8,6 +8,8 @@ import handleModal from '../../hook/handleModal'
 import FormAnketListe from './FormAnketListe'
 import FormIdariKayitListe from './FormIdariKayitListe'
 import useSecenekler from '../useSecenekler'
+import { useRecoilValue } from 'recoil'
+import { anketlerState, idariKayitlarState } from '../../store'
 
 const Satir = styled(Row)`
   padding: 16px 8px;
@@ -23,6 +25,8 @@ export default function UrunGirdiBilgileri ({ values, handleChange }) {
   const [seciliAnket, setSeciliAnket] = useState(null)
 
   const [open, handleClickOpenModal, handleClickCloseModal] = handleModal()
+  const anketler = useRecoilValue(anketlerState)
+  const idariKayitlar = useRecoilValue(idariKayitlarState)
   const {
     urunOption,
     anketOption,
