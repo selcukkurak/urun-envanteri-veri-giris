@@ -38,6 +38,10 @@ const Kart = styled(Card)`
   padding: 0;
   width: 100%;
 `
+
+const KartDetay = styled.div`
+  padding-top: 4px;
+`
 const taslakDurumlar = [
   { adi: 'Hepsi', durum: 0 },
   { adi: 'Taslak', durum: 1 },
@@ -70,7 +74,6 @@ export default function UrunListe ({ match }) {
     else return urunler.find((item, index) => index === seciliUrunId)
   }
 
-  console.log("findIndex",findIndex())
   const seciliUrun = useUrunDetay((findIndex() && findIndex().id))
   const urunBultenleri = seciliUrun && seciliUrun.bultenler
     .map(b => bultenler.find(bulten => bulten.id === b.bultenId))
@@ -196,7 +199,7 @@ export default function UrunListe ({ match }) {
                           <Kart>
                             <Menu>
                               {seciliUrun.anketler.map(anket => (
-                                <div key={anket.id}>{anket.adi}</div>
+                                <KartDetay key={anket.id}>- {anket.adi}</KartDetay>
                               ))}
                             </Menu>
                           </Kart>
@@ -210,7 +213,7 @@ export default function UrunListe ({ match }) {
                           <Kart>
                             <Menu>
                               {seciliUrun.urunler.map(urun => (
-                                <div key={urun.id}>{urun.adi}</div>
+                                <KartDetay key={urun.id}>- {urun.adi}</KartDetay>
                               ))}
                             </Menu>
                           </Kart>
@@ -224,7 +227,7 @@ export default function UrunListe ({ match }) {
                           <Kart>
                             <Menu>
                               {seciliUrun.idariKayitlar.map(kayit => (
-                                <div key={kayit.id}>{kayit.adi}</div>
+                                <KartDetay key={kayit.id}>- {kayit.adi}</KartDetay>
                               ))}
                             </Menu>
                           </Kart>
