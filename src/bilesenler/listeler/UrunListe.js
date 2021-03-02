@@ -203,7 +203,7 @@ export default function UrunListe ({ match }) {
                         </Icerik>
                       </IcerikAlani>
                     )}
-                    {seciliUrun.urunler && (
+                    {seciliUrun.urunler.length !== 0 && (
                       <IcerikAlani>
                         <DetayBaslik>Bağlı Ürünler:</DetayBaslik>
                         <Icerik>
