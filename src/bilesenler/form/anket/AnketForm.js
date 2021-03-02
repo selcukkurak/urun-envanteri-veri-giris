@@ -20,27 +20,21 @@ export default function AnketForm ({ seciliAnket, history }) {
     veriBirimDuzeyiOption
   } = useSecenekler();
 
-  const seciliAnketPeriyot = () => {
-    if (seciliAnket && seciliAnket.periyot) return {
-      label: seciliAnket.periyot.adi,
-      value: seciliAnket.periyot.id
+  const seciliAnketItem = (nesne) => {
+    if (seciliAnket && nesne) return {
+      label: nesne.adi,
+      value: nesne.id
     }
     else return null
   }
-  const seciliAnketCografiDuzey = () => {
-    if (seciliAnket && seciliAnket.cografiDuzey) return {
-      label: seciliAnket.cografiDuzey.adi,
-      value: seciliAnket.cografiDuzey.id
-    }
-    else return null
-  }
+
   const initialValues = {
     kodu: seciliAnket ? seciliAnket.id : '',
     adi: seciliAnket ? seciliAnket.adi : '',
-    periyot: seciliAnketPeriyot() || null,
-    birimDuzeyi: null,
+    periyot: seciliAnketItem(seciliAnket.periyot) || null,
+    birimDuzeyi: seciliAnketItem(seciliAnket.birimDuzeyi) || null,
     orneklemSayisi: seciliAnket ? seciliAnket.orneklemSayisi : '',
-    cografiDuzeyi: seciliAnketCografiDuzey() || null,
+    cografiDuzeyi: seciliAnketItem(seciliAnket.cografiDuzey) || null,
     sema: seciliAnket ? seciliAnket.sema : '',
     ustDurum: seciliAnket ? seciliAnket.ustDurum !== 0 : false,
     harzemliDurum: seciliAnket ? seciliAnket.harzemliDurum !== 0 : false,
