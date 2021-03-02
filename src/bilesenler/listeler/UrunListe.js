@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import Liste from './Liste'
 import {
   BaslikMetin,
-  ButonDurumAlani, DetayBaslik,
+  ButonDurumAlani, DetayAlani, DetayBaslik,
   FiltreButonAlani, Icerik, IcerikAlani,
   ListeBaslik,
   SagaYasli, SayiGosterge,
@@ -155,7 +155,7 @@ export default function UrunListe ({ match }) {
                   </ButonGrup>
                 </ButonAlani>
                 {genel && (
-                  <div>
+                  <DetayAlani>
                     <IcerikAlani>
                       <DetayBaslik>İstatistiki Ürün Adı:</DetayBaslik>
                       <Icerik>{seciliUrun.adi}</Icerik>
@@ -188,13 +188,13 @@ export default function UrunListe ({ match }) {
                       <DetayBaslik>Ürünün Sağlayacağı Fayda:</DetayBaslik>
                       <Icerik>{seciliUrun.fayda ? htmlParser(`${seciliUrun.fayda}`) : "-"}</Icerik>
                     </IcerikAlani>
-                  </div>
+                  </DetayAlani>
                 )}
                 {girdi && (
-                  <div>
+                  <DetayAlani>
                     {seciliUrun.anketler.length !== 0 && (
                       <IcerikAlani>
-                        <DetayBaslik>Anketler:</DetayBaslik>
+                        <DetayBaslik style={{flex:"1 1 30%"}}>Anketler:</DetayBaslik>
                         <Icerik>
                           <Kart>
                             <Menu>
@@ -208,7 +208,7 @@ export default function UrunListe ({ match }) {
                     )}
                     {seciliUrun.urunler.length !== 0 && (
                       <IcerikAlani>
-                        <DetayBaslik>Bağlı Ürünler:</DetayBaslik>
+                        <DetayBaslik style={{flex:"1 1 30%"}}>Bağlı Ürünler:</DetayBaslik>
                         <Icerik>
                           <Kart>
                             <Menu>
@@ -222,7 +222,7 @@ export default function UrunListe ({ match }) {
                     )}
                     {seciliUrun.idariKayitlar.length !== 0 && (
                       <IcerikAlani>
-                        <DetayBaslik>İdari Kayıtlar:</DetayBaslik>
+                        <DetayBaslik style={{flex:"1 1 30%"}}>İdari Kayıtlar:</DetayBaslik>
                         <Icerik>
                           <Kart>
                             <Menu>
@@ -234,47 +234,51 @@ export default function UrunListe ({ match }) {
                         </Icerik>
                       </IcerikAlani>
                     )}
-                  </div>
+                  </DetayAlani>
                 )}
                 {cikti && (
-                  <div>
+                  <DetayAlani>
                     {urunBultenleri.length !== 0 && (
                       <IcerikAlani>
-                        <DetayBaslik style={{flex:"0 1 26%"}}>Haber Bülteni:</DetayBaslik>
-                        {urunBultenleri.map(bulten => (
-                          <Icerik>
-                            <a href={`https://data.tuik.gov.tr/Bulten/Index?p=${bulten.sonYayin.id}`} target='_blank'
-                               rel="noreferrer">{bulten.adi}</a>
-                          </Icerik>
-                        ))}
+                        <DetayBaslik style={{flex:"1 1 30%"}}>Haber Bülteni:</DetayBaslik>
+                        <Kart>
+                          {urunBultenleri.map(bulten => (
+                            <Icerik style={{padding:"8px"}}>
+                              <a href={`https://data.tuik.gov.tr/Bulten/Index?p=${bulten.sonYayin.id}`} target='_blank'
+                                 rel="noreferrer">{bulten.adi}</a>
+                            </Icerik>
+                          ))}
+                        </Kart>
                       </IcerikAlani>
                     )}
                     {seciliUrun.paylasimlar.length !== 0 && (
                       <IcerikAlani>
-                        <DetayBaslik>Paylaşımlar:</DetayBaslik>
-                        <Icerik>
-                          <HTMLTable>
-                            <thead>
-                            <tr>
-                              <td>Paylaşılan Kuruluş</td>
-                              <td>Kullanılan Araç</td>
-                              <td>Gönderi Sıklığı</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {kuruluslar.map(kurulus => (
-                              <tr key={kurulus.id}>
-                                <td>{kurulus.adi}</td>
-                                <td><Tag minimal>{joinArac}</Tag></td>
-                                <td><Tag minimal>{joinPeriyot}</Tag></td>
+                        <DetayBaslik style={{flex:"1 1 30%"}}>Paylaşımlar:</DetayBaslik>
+                        <Kart>
+                          <Icerik>
+                            <HTMLTable style={{width:"100%"}}>
+                              <thead>
+                              <tr>
+                                <td>Paylaşılan Kuruluş</td>
+                                <td>Kullanılan Araç</td>
+                                <td>Gönderi Sıklığı</td>
                               </tr>
-                            ))}
-                            </tbody>
-                          </HTMLTable>
-                        </Icerik>
+                              </thead>
+                              <tbody>
+                              {kuruluslar.map(kurulus => (
+                                <tr key={kurulus.id}>
+                                  <td>{kurulus.adi}</td>
+                                  <td><Tag minimal>{joinArac}</Tag></td>
+                                  <td><Tag minimal>{joinPeriyot}</Tag></td>
+                                </tr>
+                              ))}
+                              </tbody>
+                            </HTMLTable>
+                          </Icerik>
+                        </Kart>
                       </IcerikAlani>
                     )}
-                  </div>
+                  </DetayAlani>
                 )}
               </div>
             )}

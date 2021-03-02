@@ -3,11 +3,11 @@ import { useRecoilValue } from 'recoil'
 import { idariKayitlarState } from '../store'
 import Liste from './Liste'
 import { localSort } from '../util/sort'
-import {AnaRenkler} from '@tuik/renkler'
+import { AnaRenkler } from '@tuik/renkler'
 import { Col, Container, Row } from 'react-grid-system'
 import {
   BaslikMetin,
-  ButonDurumAlani, DetayBaslik,
+  ButonDurumAlani, DetayAlani, DetayBaslik,
   FiltreButonAlani, Icerik, IcerikAlani,
   ListeBaslik,
   SagaYasli,
@@ -19,26 +19,25 @@ import { Button } from '@blueprintjs/core'
 import styled from 'styled-components'
 import { siraliKurumlar } from '../store/selectors'
 
-
 const Baslik = styled.div`
   text-align: center;
-  color:${AnaRenkler.kirmizi};
+  color: ${AnaRenkler.kirmizi};
   font-size: 1.4em;
   font-weight: bold;
-  margin-top: 40px;
+  margin-top: 20px;
 `
 
-export default function IdariKayitListe({match}){
+export default function IdariKayitListe ({ match }) {
   const idariKayitlar = localSort(useRecoilValue(idariKayitlarState), 'adi')
   const [seciliKayitId, setSeciliKayitId] = useState(0)
-  const seciliKayit = idariKayitlar.find((kayit,index) => index === seciliKayitId)
+  const seciliKayit = idariKayitlar.find((kayit, index) => index === seciliKayitId)
   const kurumlar = useRecoilValue(siraliKurumlar)
   const kurum = seciliKayit && kurumlar.find(k => k.kodu === seciliKayit.kaynakKurumId)
 
   const handleSeciliItem = (key) => {
     setSeciliKayitId(key)
   }
-  return(
+  return (
     <WrapperListe>
       <Container>
         <Row>
@@ -46,7 +45,7 @@ export default function IdariKayitListe({match}){
             <FiltreButonAlani>
               <ButonDurumAlani/>
               <Link to={`${match.url}/yeni-idariKayit`}>
-                <Button intent={'success'} text={"Yeni İdari Kayıt Ekle"}/>
+                <Button intent={'success'} text={'Yeni İdari Kayıt Ekle'}/>
               </Link>
             </FiltreButonAlani>
             <ListeBaslik>
@@ -67,6 +66,7 @@ export default function IdariKayitListe({match}){
             {seciliKayit && (
               <div>
                 <Baslik>Detaylar</Baslik>
+                <DetayAlani>
                   <IcerikAlani>
                     <DetayBaslik>İdari Kayıt Adı:</DetayBaslik>
                     <Icerik>{seciliKayit.adi}</Icerik>
@@ -74,7 +74,7 @@ export default function IdariKayitListe({match}){
                     <Icerik>{seciliKayit.id}</Icerik>
                   </IcerikAlani>
                   <IcerikAlani>
-                    <DetayBaslik style={{flex:'0 1 21.5%'}}>Kaynak Kurum:</DetayBaslik>
+                    <DetayBaslik style={{ flex: '0 1 21.5%' }}>Kaynak Kurum:</DetayBaslik>
                     <Icerik>{kurum && kurum.adi}</Icerik>
                   </IcerikAlani>
                   <IcerikAlani>
@@ -82,7 +82,7 @@ export default function IdariKayitListe({match}){
                     <Icerik>{seciliKayit.kaynakBirim}</Icerik>
                   </IcerikAlani>
                   <IcerikAlani>
-                    <DetayBaslik style={{flex:"0 1 22%"}}>Yasal Hükümler:</DetayBaslik>
+                    <DetayBaslik style={{ flex: '0 1 22%' }}>Yasal Hükümler:</DetayBaslik>
                     <Icerik>{seciliKayit.yasalHukum}</Icerik>
                   </IcerikAlani>
                   <IcerikAlani>
@@ -110,11 +110,11 @@ export default function IdariKayitListe({match}){
                     <Icerik>{seciliKayit.sema}</Icerik>
                   </IcerikAlani>
                   <IcerikAlani>
-                    <DetayBaslik style={{flex:"0 1 22%"}}>İletişim E-posta Grubu:</DetayBaslik>
+                    <DetayBaslik style={{ flex: '0 1 22%' }}>İletişim E-posta Grubu:</DetayBaslik>
                     <Icerik>{seciliKayit.epostaGruplari}</Icerik>
                   </IcerikAlani>
+                </DetayAlani>
               </div>
-
             )}
           </Col>
         </Row>
