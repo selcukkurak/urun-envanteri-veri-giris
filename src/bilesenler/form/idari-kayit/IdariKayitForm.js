@@ -67,7 +67,6 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
       else return null
     }else return null
   }
-  console.log(seciliKaynakKurum())
   const initialValues = {
     kodu: seciliIdariKayit ? seciliIdariKayit.id : '',
     adi: seciliIdariKayit ? seciliIdariKayit.adi : '',
@@ -75,6 +74,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
     sorumluBirim:seciliIdariKayit ? seciliGrupBaskanligi() : null ,
     yasalHukum:seciliIdariKayit ? seciliIdariKayit.yasal_hukum  :'',
     protokol: '',
+    sema:seciliIdariKayit ? seciliIdariKayit.sema : "",
     eposta:seciliIdariKayit ? seciliIdariKayit.epostaGruplari : '',
     verininTutulduguYer:seciliIdariKayit ? seciliKayitItem(seciliIdariKayit.verininTutulduguYer) : null,
     kisitlar:seciliIdariKayit ? seciliIdariKayit.kisitlar : '',
@@ -108,7 +108,6 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
           setFieldValue,
         }) => (
           <Form onSubmit={handleSubmit}>
-            {console.log(values)}
             <Container fluid>
               <Satir>
                 <Col sm={5.5} md={5.5} lg={5.5}>
@@ -209,6 +208,11 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                   </FormGroup>
                 </Col>
                 <Col/>
+                <Col sm={5.5} md={5.5} lg={5.5}>
+                  <FormGroup label="Şema:">
+                    <InputGroup name="sema" value={values.sema || ""} onChange={handleChange}/>
+                  </FormGroup>
+                </Col>
               </Satir>
               <Satir>
                 <Col sm={5.5} md={5.5} lg={5.5}>
