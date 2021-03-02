@@ -3,9 +3,8 @@ import { Field, Form, Formik } from 'formik'
 import { Container, Row, Col } from 'react-grid-system'
 import { Button, FormGroup, InputGroup, Switch } from '@blueprintjs/core'
 import styled from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { referanslarState } from '../../store'
 import SelectField from '../SelectField'
+import useSecenekler from '../useSecenekler'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -14,17 +13,12 @@ const Satir = styled(Row)`
   padding: 4px 8px;
 `
 export default function AnketForm ({ seciliAnket, history }) {
-  const periyotlar = useRecoilValue(referanslarState).PERIYOT
-  const periyotOption = periyotlar && periyotlar.length !== 0 && periyotlar.map(periyot => ({
-    label: periyot.adi,
-    value: periyot.id
-  }))
 
-  const cografiDuzeyler = useRecoilValue(referanslarState).COGRAFI_DUZEY
-  const cografiDuzeyOption = cografiDuzeyler && cografiDuzeyler.length !== 0 && cografiDuzeyler.map(duzey => ({
-    label: duzey.adi,
-    value: duzey.id
-  }))
+  const {
+    periyotOptions,
+    cografiDuzeyOptions,
+    veriBirimDuzeyiOption
+  } = useSecenekler();
 
   const seciliAnketPeriyot = () => {
     if (seciliAnket && seciliAnket.periyot) return {
@@ -91,14 +85,15 @@ export default function AnketForm ({ seciliAnket, history }) {
               <Satir>
                 <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label={'Periyodu:'}>
-                    <Field name='periyot' isClearable value={values.periyot || null} options={periyotOption}
+                    <Field name='periyot' isClearable value={values.periyot || null} options={periyotOptions}
                            component={SelectField}/>
                   </FormGroup>
                 </Col>
                 <Col/>
                 <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label={'Verinin Birim Düzeyi:'}>
-                    <Field name='birimDuzeyim' isClearable value={values.birimDuzeyi || null}
+                    <Field name='birimDuzeyi' isClearable value={values.birimDuzeyi || null}
+                           options={veriBirimDuzeyiOption}
                            component={SelectField}/>
                   </FormGroup>
                 </Col>
@@ -113,7 +108,7 @@ export default function AnketForm ({ seciliAnket, history }) {
                 <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label={'Coğrafi Düzeyi:'}>
                     <Field name='cografiDuzeyi' isClearable value={values.cografiDuzeyi || null}
-                           options={cografiDuzeyOption}
+                           options={cografiDuzeyOptions}
                            component={SelectField}/>
                   </FormGroup>
                 </Col>
