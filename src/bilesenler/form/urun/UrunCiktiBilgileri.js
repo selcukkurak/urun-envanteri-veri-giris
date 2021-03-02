@@ -1,46 +1,42 @@
 import React from 'react'
-import { useRecoilValue } from 'recoil'
-import { tekilBultenler } from '../../store/selectors'
 import { Col, Container, Row } from 'react-grid-system'
 import styled from 'styled-components'
 import { Button, Colors, FormGroup, HTMLTable, InputGroup, Switch } from '@blueprintjs/core'
 import { Field } from 'formik'
 import SelectField from '../SelectField'
-import { localSort } from '../../util/sort'
-import { referanslarState } from '../../store'
+import useSecenekler from '../useSecenekler'
 
 const Satir = styled(Row)`
   padding: 16px 8px;
 `
 const CheckedSatir = styled(Row)`
-  background-color:${Colors.LIGHT_GRAY4};
+  background-color: ${Colors.LIGHT_GRAY4};
   padding: 16px 8px;
 `
 
 function UrunCiktiBilgileri ({ bultenDurum, formBultenler, paylasimDurum, paylasimlar, handleChange, setFieldValue }) {
-  const bultenler = useRecoilValue(tekilBultenler)
-  const bultenOption = bultenler.map(bulten => ({ label: bulten.adi, value: bulten.id }))
 
-  const kuruluslar = localSort(useRecoilValue(referanslarState).KURULUS, 'adi')
-  const kurulusOption = kuruluslar.map(kurulus => ({ label: kurulus.adi, value: kurulus.id }))
+  const {
+    periyotOptions,
+    bultenOption,
+    kurulusOption,
+    aracOption
+  } = useSecenekler()
 
-  const araclar = useRecoilValue(referanslarState).ARAC
-  const aracOption = araclar.map(arac => ({ label: arac.adi, value: arac.id }))
-
-  const periyotlar = useRecoilValue(referanslarState).PERIYOT
-  const periyotOption = periyotlar.map(periyot => ({ label: periyot.adi, value: periyot.id }))
+  console.log(periyotOptions)
 
   const handleAddNewRow = () => {
     const yeniPaylasim = {
-      adi: "",
+      id: paylasimlar.length + 1,
+      adi: '',
       kurulus: null,
-      arac:null,
+      arac: null,
       gonderilmePeriyodu: null
     }
     setFieldValue('paylasimlar', [...paylasimlar, yeniPaylasim])
   }
   const handleRemoveRow = (key) => {
-    const yeniPaylasimlar = paylasimlar.filter((item, index) => index !==key)
+    const yeniPaylasimlar = paylasimlar.filter((item, index) => index !== key)
     setFieldValue('paylasimlar', yeniPaylasimlar)
   }
   return (
@@ -56,9 +52,10 @@ function UrunCiktiBilgileri ({ bultenDurum, formBultenler, paylasimDurum, paylas
       {bultenDurum && (
         <Satir>
           <Col sm={6} md={6} lg={6}>
-            <Field name='bagliUrunler' isClearable placeholder={'Bülten Seçiniz...'}
-                   value={formBultenler}
+            <Field name='bultenler' isClearable placeholder={'Bülten Seçiniz...'}
+                   isMulti
                    options={bultenOption}
+                   value={formBultenler || null}
                    component={SelectField}/>
           </Col>
         </Satir>
@@ -80,7 +77,7 @@ function UrunCiktiBilgileri ({ bultenDurum, formBultenler, paylasimDurum, paylas
               <thead>
               <tr>
                 <th><Button icon={'plus'} onClick={() => handleAddNewRow()}/></th>
-                <th style={{width:"80px"}}>Sıra No</th>
+                <th style={{ width: '80px' }}>Sıra No</th>
                 <th>Paylaşım Adı</th>
                 <th>Çıktıların Paylaşıldığı Kurum & Kuruluşlar</th>
                 <th>Gönderilme Aracı</th>
@@ -89,16 +86,17 @@ function UrunCiktiBilgileri ({ bultenDurum, formBultenler, paylasimDurum, paylas
               </thead>
               <tbody>
               {paylasimlar.map((value, index) => (
-                <tr key={index} style={{alignItems:"center"}}>
-                  <td style={{width:"80px"}}><Button icon={'minus'} onClick={() => handleRemoveRow(index)} /></td>
-                  <td style={{fontWeight:"600", textAlign:"center"}}>{index+1}</td>
-                  <td><InputGroup large name={`${value}.adi`} value={value.adi || ''} onChange={handleChange}/></td>
-                  <td><Field name={`${value}.kurulus`} isClearable values={value.kurulus || null} options={kurulusOption}
-                             component={SelectField}/></td>
-                  <td><Field name={`${value}.arac`} isClearable values={value.arac || null} options={aracOption}
-                             component={SelectField}/></td>
-                  <td><Field name={`${value}.periyot`} isClearable values={value.periyot || null}
-                             options={periyotOption}
+                <tr key={index}>
+                  <td><Button icon={'minus'} onClick={() => handleRemoveRow(index)}/></td>
+                  <td style={{ fontWeight: '600', textAlign: 'center' }}>{index + 1}</td>
+                  <td><InputGroup large name={`paylasimlar[${index}].adi`} value={value.adi || ''}
+                                  onChange={handleChange}/></td>
+                  <td><Field name={`paylasimlar[${index}].kurulus`} isClearable value={value.kurulus || null}
+                             options={kurulusOption} component={SelectField}/></td>
+                  <td><Field name={`paylasimlar[${index}].arac`} isClearable value={value.arac || null}
+                             options={aracOption} component={SelectField}/></td>
+                  <td><Field name={`paylasimlar[${index}].gonderilmePeriyodu`} isClearable value={value.gonderilmePeriyodu || null}
+                             options={periyotOptions}
                              component={SelectField}/></td>
                 </tr>
               ))}

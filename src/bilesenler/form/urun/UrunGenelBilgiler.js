@@ -4,9 +4,8 @@ import { FormGroup, InputGroup } from '@blueprintjs/core'
 import { Field } from 'formik'
 import SelectField from '../SelectField'
 import styled from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { birimlerState, referanslarState } from '../../store'
 import ReactQuill from 'react-quill'
+import useSecenekler from '../useSecenekler'
 
 const Satir = styled(Row)`
   padding: 8px 8px;
@@ -18,17 +17,11 @@ const QuillStyled = styled(ReactQuill)`
 
 export default function UrunGenelBilgiler ({ values, handleChange, setFieldValue }) {
 
-  const periyotlar = useRecoilValue(referanslarState).PERIYOT
-  const periyotOptions = periyotlar && periyotlar.length !== 0 && periyotlar.map(periyot => ({
-    label: periyot.adi,
-    value: periyot.id
-  }))
-
-  const cografiDuzeyler = useRecoilValue(referanslarState).COGRAFI_DUZEY
-  const cografiDuzeyOptions = cografiDuzeyler && cografiDuzeyler.map(duzey => ({ label: duzey.adi, value: duzey.id }))
-
-  const birimler = useRecoilValue(birimlerState)
-  const birimOption = birimler.length !== 0 && birimler.map(birim => ({ label: birim.adi, value: birim.ustBirimId }))
+  const {
+    birimOption,
+    periyotOptions,
+    cografiDuzeyOptions
+  } = useSecenekler();
 
   const reactQuillHandleChange = (name, icerik) => {
     setFieldValue(name, icerik)

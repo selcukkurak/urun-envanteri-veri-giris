@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useRecoilValue } from 'recoil'
-import { birimlerState } from '../../store'
+import { birimlerState, bultenlerState } from '../../store'
 import { Button, ButtonGroup, Divider } from '@blueprintjs/core'
 import useSayfaIciGecis from '../../hook/useSayfaIciGecis'
 import { Container, Row, Col } from 'react-grid-system'
@@ -18,9 +18,6 @@ const ButonAlani = styled.div`
   width: 70vw;
   display: flex;
 `
-const Satir = styled(Row)`
-  margin-top: 16px;
-`
 const ButonGrup = styled(ButtonGroup)`
   flex: 1;
   max-width: 35vw;
@@ -29,9 +26,17 @@ const ButonGrup = styled(ButtonGroup)`
 const IcerikTemizleButon = styled(Button)`
   margin-left: 35vw;
 `
+
+const FonksiyonelButonAlani = styled(Row)`
+  bottom: 5%;
+  right: 0;
+  width: 100%;
+  position: fixed;
+`
 export default function UrunForm ({ seciliUrun, history }) {
 
   const birimler = useRecoilValue(birimlerState)
+  const bultenler = useRecoilValue(bultenlerState)
   const [
     genel,
     cikti,
@@ -45,6 +50,16 @@ export default function UrunForm ({ seciliUrun, history }) {
     if (seciliUrun && dizi && dizi.length !== 0) {
       return dizi.map(item => ({ label: item.adi, value: item.id }))
     } else return []
+  }
+
+  const seciliUrunHaberBulteni = () => {
+    if (seciliUrun) {
+      return seciliUrun.bultenler
+        .map(b => bultenler.find(bulten => bulten.id === b.bultenId))
+        .filter(bulten => !!bulten)
+        .map(bulten => ({ label: bulten.adi, value: bulten.id }))
+    }
+    else return []
   }
 
   const seciliUrunCografiDuzey = () => {
@@ -77,21 +92,29 @@ export default function UrunForm ({ seciliUrun, history }) {
     amac: seciliUrun ? seciliUrun.amac : '',
     kapsam: seciliUrun ? seciliUrun.kapsam : '',
     fayda: seciliUrun ? seciliUrun.fayda : '',
-    urunDurum: seciliUrun ? (!!seciliUrun.bagliUrunler) : false,
+    urunDurum: seciliUrun ? seciliUrun.urunler !== 0 : false,
     anketDurum: seciliUrun ? seciliUrun.anketler.length !== 0 : false,
     kayitDurum: seciliUrun ? seciliUrun.idariKayitlar.length !== 0 : false,
     bultenDurum: seciliUrun ? seciliUrun.bultenler.length !== 0 : false,
     paylasimDurum: seciliUrun ? seciliUrun.paylasimlar.length !== 0 : false,
-    bagliUrunler: seciliUrun ? seciliUrunItems(seciliUrun.bagliUrunler) : [],
+    bagliUrunler: seciliUrun ? seciliUrunItems(seciliUrun.urunler) : [],
     anketler: seciliUrun ? seciliUrunItems(seciliUrun.anketler) : [],
     idariKayitlar: seciliUrun ? seciliUrunItems(seciliUrun.idariKayitlar) : [],
-    bultenler: null,
-    paylasimlar: [{
-      adi: '',
-      kurulus: null,
-      arac: null,
-      periyot: null
-    }],
+    bultenler: seciliUrunHaberBulteni() || [],
+    paylasimlar:
+      seciliUrun ? seciliUrun.paylasimlar.map(item => ({
+        id:item.id,
+        adi: item.adi,
+        kurulus: { label: item.kurulus.adi, value: item.kurulus.id },
+        arac: { label: item.arac.adi, value: item.arac.id },
+        gonderilmePeriyodu: { label: item.periyot.adi, value: item.periyot.id },
+      })) : [{
+        id:0,
+        adi: '',
+        kurulus: null,
+        arac: null,
+        gonderilmePeriyodu: null
+      }],
     birim: seciliGrupBaskanligi() || null
   }
   const handleSubmit = (event) => {
@@ -113,6 +136,7 @@ export default function UrunForm ({ seciliUrun, history }) {
         setFieldValue
       }) => (
         <Wrapper>
+          {console.log(values)}
           <Form onSubmit={handleSubmit}>
             <ButonAlani>
               <ButonGrup fill>
@@ -151,7 +175,7 @@ export default function UrunForm ({ seciliUrun, history }) {
                 setFieldValue={setFieldValue}
               />
             )}
-            <Satir>
+            <FonksiyonelButonAlani>
               <Col sm={8} md={8} lg={8}/>
               <Col>
                 <Button fill intent='danger' text={'Geri Dön'} onClick={history.goBack}/>
@@ -159,7 +183,7 @@ export default function UrunForm ({ seciliUrun, history }) {
               <Col>
                 <Button fill intent='success' text={'Kaydet'}/>
               </Col>
-            </Satir>
+            </FonksiyonelButonAlani>
           </Form>
         </Wrapper>
       )}

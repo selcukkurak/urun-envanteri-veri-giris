@@ -1,15 +1,13 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Colors, FormGroup, Switch } from '@blueprintjs/core'
 import { Col, Container, Row } from 'react-grid-system'
 import { Field } from 'formik'
 import SelectField from '../SelectField'
 import styled from 'styled-components'
-import { localSort } from '../../util/sort'
-import { useRecoilValue } from 'recoil'
-import { anketlerState, idariKayitlarState, urunlerState } from '../../store'
 import handleModal from '../../hook/handleModal'
 import FormAnketListe from './FormAnketListe'
 import FormIdariKayitListe from './FormIdariKayitListe'
+import useSecenekler from '../useSecenekler'
 
 const Satir = styled(Row)`
   padding: 16px 8px;
@@ -21,26 +19,25 @@ const CheckedSatir = styled(Row)`
 `
 
 export default function UrunGirdiBilgileri ({ values, handleChange }) {
-  const [seciliIdariKayit, setSeciliIdariKayit] = React.useState(null)
-  const [seciliAnket, setSeciliAnket] = React.useState(null)
+  const [seciliIdariKayit, setSeciliIdariKayit] = useState(null)
+  const [seciliAnket, setSeciliAnket] = useState(null)
 
   const [open, handleClickOpenModal, handleClickCloseModal] = handleModal()
+  const {
+    urunOption,
+    anketOption,
+    kayitOption
+  } = useSecenekler()
 
-  const urunler = localSort(useRecoilValue(urunlerState), 'adi')
-  const urunOption = urunler.map(urun => ({ label: urun.adi, value: urun.id }))
-
-  const anketler = localSort(useRecoilValue(anketlerState), 'adi')
-  const anketOption = anketler.map(anket => ({ label: anket.adi, value: anket.id }))
-
-  const idariKayitlar = localSort(useRecoilValue(idariKayitlarState), 'adi')
-  const kayitOption = idariKayitlar.map(kayit => ({ label: kayit.adi, value: kayit.id }))
 
   const handleAnketItem = (item) => {
     setSeciliAnket(item)
+    setSeciliIdariKayit(null)
     handleClickOpenModal()
   }
   const handleKayitItem = (item) => {
     setSeciliIdariKayit(item)
+    setSeciliAnket(null)
     handleClickOpenModal()
   }
   const seciliAnketItem = seciliAnket && anketler.find(anket => anket.id === seciliAnket.value)
