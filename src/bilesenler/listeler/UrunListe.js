@@ -3,10 +3,11 @@ import { localSort } from '../util/sort'
 import { useRecoilValue } from 'recoil'
 import { birimlerState, tumUrunlerState, urunlerState } from '../store'
 import { Container, Row, Col } from 'react-grid-system'
-import { Button, ButtonGroup, Card, HTMLTable, Menu, Tag } from '@blueprintjs/core'
+import { Button, ButtonGroup, Card, HTMLTable, Menu, Tag} from '@blueprintjs/core'
 import { Link } from 'react-router-dom'
 import Liste from './Liste'
 import {
+  AramaAlani,
   BaslikMetin,
   ButonDurumAlani, DetayAlani, DetayBaslik,
   FiltreButonAlani, Icerik, IcerikAlani,
@@ -21,9 +22,10 @@ import useSayfaIciGecis from '../hook/useSayfaIciGecis'
 import { keyBy, uniqBy } from 'lodash'
 import htmlParser from '../util/htmlParser'
 import { tekilBultenler } from '../store/selectors'
+import Arama from './Arama'
 
 const ButonAlani = styled.div`
-  width: 25vw;
+  width: 20vw;
   position: relative;
   margin: auto;
   display: flex;
@@ -51,7 +53,7 @@ const taslakDurumlar = [
 
 export default function UrunListe ({ match }) {
   const [secili, setSecili] = useState(taslakDurumlar[0])
-
+  const [aranan, setAranan] = useState("")
   const [
     genel,
     cikti,
@@ -62,11 +64,15 @@ export default function UrunListe ({ match }) {
   ] = useSayfaIciGecis()
 
   const urunler = localSort(useRecoilValue(urunlerState), 'adi')
+    .filter(urun => urun.adi.toLowerCase().includes(aranan.toLowerCase()))
   const tumUrunler = localSort(useRecoilValue(tumUrunlerState), 'adi')
+    .filter(urun => urun.adi.toLowerCase().includes(aranan.toLowerCase()))
+  const taslakUrunler = tumUrunler.filter(urun => urun.taslak)
+    .filter(urun => urun.adi.toLowerCase().includes(aranan.toLowerCase()))
+
   const birimler = keyBy(useRecoilValue(birimlerState), 'id')
   const bultenler = useRecoilValue(tekilBultenler)
 
-  const taslakUrunler = tumUrunler.filter(urun => urun.taslak)
   const [seciliUrunId, setSeciliUrunId] = useState(0)
   const findIndex = () => {
     if(secili.durum === 0 && tumUrunler.length !== 0 ) return tumUrunler.find((item, index) => index === seciliUrunId)
@@ -74,7 +80,13 @@ export default function UrunListe ({ match }) {
     else return urunler.find((item, index) => index === seciliUrunId)
   }
 
-  const seciliUrun = useUrunDetay((findIndex() && findIndex().id))
+  const {
+    data,
+    isLoading,
+    error
+  } = useUrunDetay((findIndex() && findIndex().id))
+  const seciliUrun = data
+
   const urunBultenleri = seciliUrun && seciliUrun.bultenler
     .map(b => bultenler.find(bulten => bulten.id === b.bultenId))
     .filter(bulten => !!bulten)
@@ -93,7 +105,7 @@ export default function UrunListe ({ match }) {
     setSeciliUrunId(0)
   }
 
-  console.log('seciliUrun', seciliUrun)
+
   return (
     <WrapperListe>
       <Container>
@@ -112,6 +124,9 @@ export default function UrunListe ({ match }) {
                 <Button intent={'success'} text={'Yeni Ürün Ekle'}/>
               </Link>
             </FiltreButonAlani>
+            <AramaAlani>
+              <Arama aranan={aranan} setAranan={setAranan} placeholder={"Ürünler İçinde Arayın...."}/>
+            </AramaAlani>
             <ListeBaslik>
               <SolaYasli>İstatistiki Ürünler</SolaYasli>
               <SagaYasli>
@@ -145,6 +160,8 @@ export default function UrunListe ({ match }) {
             )}
           </Col>
           <Col sm={5} md={5} lg={5}>
+            {isLoading && "Loading..."}
+            {error && error.message}
             {seciliUrun && (
               <div>
                 <ButonAlani>
@@ -256,7 +273,7 @@ export default function UrunListe ({ match }) {
                         <DetayBaslik style={{flex:"1 1 30%"}}>Paylaşımlar:</DetayBaslik>
                         <Kart>
                           <Icerik>
-                            <HTMLTable style={{width:"100%"}}>
+                            <HTMLTable>
                               <thead>
                               <tr>
                                 <td>Paylaşılan Kuruluş</td>

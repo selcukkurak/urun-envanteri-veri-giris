@@ -33,7 +33,7 @@ const FonksiyonelButonAlani = styled(Row)`
   width: 100%;
   position: fixed;
 `
-export default function UrunForm ({ seciliUrun, history }) {
+export default function UrunForm ({ seciliUrun, history, error, isLoading }) {
 
   const birimler = useRecoilValue(birimlerState)
   const bultenler = useRecoilValue(bultenlerState)
@@ -121,8 +121,9 @@ export default function UrunForm ({ seciliUrun, history }) {
     event.preventDefault()
   }
   console.debug('initial', initialValues)
+  if(isLoading) return "Loading..."
+  if(error) return error.message
   return (
-
     <Formik
       initialValues={initialValues}
       enableReinitialize

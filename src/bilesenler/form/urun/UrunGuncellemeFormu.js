@@ -5,15 +5,21 @@ import UrunForm from './UrunForm'
 
 
 export default function UrunGuncellemeFormu({match, history}){
-  const seciliUrun = useUrunDetay(Number(match.params.id))
-  console.debug('GuncelleForm', seciliUrun)
+  const {
+    isLoading,
+    error,
+    data,
+    } = useUrunDetay(Number(match.params.id))
 
-  if(!seciliUrun) return null
+
+  if(!data) return null
 
   return(
     <UrunForm
       history={history}
-      seciliUrun={seciliUrun}
+      isLoading={isLoading}
+      error={error}
+      seciliUrun={data}
     />
   )
 
