@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import {
   AramaAlani,
   BaslikMetin,
-  ButonDurumAlani, DetayBaslik,
+  ButonDurumAlani, DetayAlani, DetayBaslik,
   FiltreButonAlani, Icerik,
   IcerikAlani,
   ListeBaslik,
@@ -29,7 +29,7 @@ const Baslik = styled.div`
   margin-top: 20px;
 `
 export default function AnketListe ({ match }) {
-  const [aranan, setAranan] = useState("")
+  const [aranan, setAranan] = useState('')
   const anketler = localSort(useRecoilValue(anketlerState), 'adi')
     .filter(anket => anket.adi.toLowerCase().includes(aranan.toLowerCase()))
   const [seciliAnketId, setSeciliAnketId] = useState(0)
@@ -57,7 +57,7 @@ export default function AnketListe ({ match }) {
               </Link>
             </FiltreButonAlani>
             <AramaAlani>
-              <Arama aranan={aranan} setAranan={setAranan} placeholder={"Anketler İçinde Arayın...."}/>
+              <Arama aranan={aranan} setAranan={setAranan} placeholder={'Anketler İçinde Arayın....'}/>
             </AramaAlani>
             <ListeBaslik>
               <SolaYasli>Anketler</SolaYasli>
@@ -77,7 +77,13 @@ export default function AnketListe ({ match }) {
             {seciliAnket && (
               <div>
                 <Baslik>Detaylar</Baslik>
-                <div style={{ marginLeft: '10%' }}>
+                <DetayAlani>
+                  <IcerikAlani>
+                    <DetayBaslik>Adı:</DetayBaslik>
+                    <Icerik>{seciliAnket.adi ? seciliAnket.adi : '-'}</Icerik>
+                    <DetayBaslik>Kodu:</DetayBaslik>
+                    <Icerik>{seciliAnket.id ? seciliAnket.id : '-'}</Icerik>
+                  </IcerikAlani>
                   <IcerikAlani>
                     <DetayBaslik>Periyodu:</DetayBaslik>
                     <Icerik>{seciliAnket.periyot ? seciliAnket.periyot.adi : '-'}</Icerik>
@@ -100,8 +106,7 @@ export default function AnketListe ({ match }) {
                     <DetayBaslik style={{ flex: '0 1 21%' }}>Harzemli Durumu:</DetayBaslik>
                     <Icerik>{harzemliDurumu}</Icerik>
                   </IcerikAlani>
-                </div>
-
+                </DetayAlani>
               </div>
             )}
           </Col>
