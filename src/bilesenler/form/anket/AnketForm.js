@@ -31,17 +31,17 @@ export default function AnketForm ({ seciliAnket, history }) {
   const initialValues = {
     kodu: seciliAnket ? seciliAnket.id : '',
     adi: seciliAnket ? seciliAnket.adi : '',
-    periyot: seciliAnketItem(seciliAnket.periyot) || null,
-    birimDuzeyi: seciliAnketItem(seciliAnket.birimDuzeyi) || null,
+    periyot:seciliAnket ? seciliAnketItem(seciliAnket.periyot) : null,
+    birimDuzeyi:seciliAnket ?  seciliAnketItem(seciliAnket.birimDuzeyi) : null,
     orneklemSayisi: seciliAnket ? seciliAnket.orneklemSayisi : '',
-    cografiDuzeyi: seciliAnketItem(seciliAnket.cografiDuzey) || null,
+    cografiDuzeyi:seciliAnket ? seciliAnketItem(seciliAnket.cografiDuzey) : null,
     sema: seciliAnket ? seciliAnket.sema : '',
     ustDurum: seciliAnket ? seciliAnket.ustDurum !== 0 : false,
     harzemliDurum: seciliAnket ? seciliAnket.harzemliDurum !== 0 : false,
-    kontrolorSayisiBolge: '',
-    anketorSayisiBolge: '',
-    kontrolorSayisiMerkez: '',
-    anketorSayisiMerkez: '',
+    kontrolorSayisiBolge: seciliAnket ? seciliAnket.kontrolorSayisiBolge : '',
+    anketorSayisiBolge: seciliAnket ? seciliAnket.anketorSayisiBolge : '',
+    kontrolorSayisiMerkez: seciliAnket ? seciliAnket.kontrolorSayisiMerkez : '',
+    anketorSayisiMerkez: seciliAnket ? seciliAnket.anketorSayisiMerkez : '',
     cevaplayiciBirim: null,
     duzeltmeDurum: seciliAnket ? seciliAnket.duzeltmeDurum : false
   }
@@ -95,7 +95,7 @@ export default function AnketForm ({ seciliAnket, history }) {
               <Satir>
                 <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label={'Örneklem Boyutu:'}>
-                    <InputGroup name="orneklemSayisi" value={values.orneklemSayisi} onChange={handleChange}/>
+                    <InputGroup type="number" name="orneklemSayisi" value={values.orneklemSayisi} onChange={handleChange}/>
                   </FormGroup>
                 </Col>
                 <Col/>
