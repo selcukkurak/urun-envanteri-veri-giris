@@ -12,6 +12,12 @@ const Wrapper = styled.div`
 const Satir = styled(Row)`
   padding: 4px 8px;
 `
+const FonksiyonelButonAlani = styled(Row)`
+  bottom: 5%;
+  right: 0;
+  width: 100%;
+  position: fixed;
+`
 export default function AnketForm ({ seciliAnket, history }) {
 
   const {
@@ -32,7 +38,7 @@ export default function AnketForm ({ seciliAnket, history }) {
     kodu: seciliAnket ? seciliAnket.id : '',
     adi: seciliAnket ? seciliAnket.adi : '',
     periyot:seciliAnket ? seciliAnketItem(seciliAnket.periyot) : null,
-    birimDuzeyi:seciliAnket ?  seciliAnketItem(seciliAnket.birimDuzeyi) : null,
+    birimDuzeyi:seciliAnket ?  seciliAnketItem(seciliAnket.birimDuzey) : null,
     orneklemSayisi: seciliAnket ? seciliAnket.orneklemSayisi : '',
     cografiDuzeyi:seciliAnket ? seciliAnketItem(seciliAnket.cografiDuzey) : null,
     sema: seciliAnket ? seciliAnket.sema : '',
@@ -163,7 +169,7 @@ export default function AnketForm ({ seciliAnket, history }) {
                 </Col>
               </Satir>
               <Satir/>
-              <Satir>
+              <FonksiyonelButonAlani>
                 <Col sm={8} md={8} lg={8}/>
                 <Col>
                   <Button fill intent='danger' text={'Geri Dön'} onClick={history.goBack}/>
@@ -171,7 +177,7 @@ export default function AnketForm ({ seciliAnket, history }) {
                 <Col>
                   <Button fill intent='success' text={'Kaydet'}/>
                 </Col>
-              </Satir>
+              </FonksiyonelButonAlani>
             </Container>
           </Form>
         )}
