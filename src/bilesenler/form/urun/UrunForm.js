@@ -37,14 +37,14 @@ export default function UrunForm ({ seciliUrun, history, error, isLoading }) {
 
   const birimler = useRecoilValue(birimlerState)
   const bultenler = useRecoilValue(bultenlerState)
-  const [
+  const {
     genel,
     cikti,
     girdi,
     genelSayfaClick,
     ciktiSayfaClick,
     girdiSayfaClick,
-  ] = useSayfaIciGecis()
+  } = useSayfaIciGecis()
 
   const seciliUrunItems = (dizi) => {
     if (seciliUrun && dizi && dizi.length !== 0) {

@@ -23,7 +23,6 @@ function UrunCiktiBilgileri ({ bultenDurum, formBultenler, paylasimDurum, paylas
     aracOption
   } = useSecenekler()
 
-  console.log(periyotOptions)
 
   const handleAddNewRow = () => {
     const yeniPaylasim = {
