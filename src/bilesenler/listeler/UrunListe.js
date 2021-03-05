@@ -54,14 +54,14 @@ const taslakDurumlar = [
 export default function UrunListe ({ match }) {
   const [secili, setSecili] = useState(taslakDurumlar[0])
   const [aranan, setAranan] = useState("")
-  const [
+  const {
     genel,
     cikti,
     girdi,
     genelSayfaClick,
     ciktiSayfaClick,
     girdiSayfaClick,
-  ] = useSayfaIciGecis()
+  } = useSayfaIciGecis()
 
   const urunler = localSort(useRecoilValue(urunlerState), 'adi')
     .filter(urun => urun.adi.toLowerCase().includes(aranan.toLowerCase()))
