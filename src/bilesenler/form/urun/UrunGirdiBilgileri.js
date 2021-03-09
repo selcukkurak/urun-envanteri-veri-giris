@@ -33,6 +33,7 @@ export default function UrunGirdiBilgileri ({ values, handleChange }) {
     kayitOption
   } = useSecenekler()
 
+  console.log("urunOption", urunOption)
 
   const handleAnketItem = (item) => {
     setSeciliAnket(item)

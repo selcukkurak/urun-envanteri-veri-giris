@@ -20,12 +20,15 @@ const Satir = styled(Row)`
 `
 const ButonAlani = styled.div`
   margin: 4px 24px;
-  width: 70vw;
   display: flex;
 `
 const ButonGrup = styled(ButtonGroup)`
   max-width: 35vw;
   width: 35vw;
+  flex: 1;
+`
+const IcerikTemizleButon = styled(Button)`
+  margin-left: 50%;
 `
 const FonksiyonelButonAlani = styled(Row)`
   bottom: 5%;
@@ -139,6 +142,8 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
           handleChange,
           handleSubmit,
           setFieldValue,
+          resetForm,
+          dirty
         }) => (
           <Form onSubmit={handleSubmit}>
             <ButonAlani>
@@ -148,6 +153,9 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                 <Button fill intent={'danger'} minimal={!idariTablo} text={'İdari Kayıt Tablo Bilgileri'}
                         onClick={tabloIdariSayfaClick}/>
               </ButonGrup>
+              {dirty && (
+                <IcerikTemizleButon minimal intent={'danger'} text={'İçeriği Temizle'} rightIcon="cross" onClick={resetForm}/>
+              )}
             </ButonAlani>
             {idariGenel && (
               <Container fluid>

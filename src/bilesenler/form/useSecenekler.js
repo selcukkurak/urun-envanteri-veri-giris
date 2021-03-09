@@ -56,6 +56,8 @@ export default function useSecenekler(){
   const urunler = localSort(useRecoilValue(urunlerState), 'adi')
   const urunOption = urunler && urunler.map(urun => ({ label: urun.adi, value: urun.id }))
 
+  console.log("urunler", useRecoilValue(urunlerState))
+
   const anketler = localSort(useRecoilValue(anketlerState), 'adi')
   const anketOption = anketler && anketler.map(anket => ({ label: anket.adi, value: anket.id }))
 

@@ -106,7 +106,7 @@ export default function IdariKayitTabloForm ({ tablolar, setFieldValue, handleCh
                     <td><InputGroup large name={`tablolar[${index}].viewAdi`} value={value.viewAdi || ''}
                                     onChange={handleChange}/></td>
                     <td>
-                      <Button text="Aç" intent="warning" onClick={() => seciliTabloClick(value)}/>
+                      <Button text="Aç" intent="danger" onClick={() => seciliTabloClick(value)}/>
                     </td>
                   </tr>
                 ))}

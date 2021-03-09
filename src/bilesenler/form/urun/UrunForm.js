@@ -15,7 +15,6 @@ const Wrapper = styled.div`
 `
 const ButonAlani = styled.div`
   margin: 4px 64px;
-  width: 70vw;
   display: flex;
 `
 const ButonGrup = styled(ButtonGroup)`
@@ -24,7 +23,7 @@ const ButonGrup = styled(ButtonGroup)`
   width: 35vw;
 `
 const IcerikTemizleButon = styled(Button)`
-  margin-left: 35vw;
+  margin-left: 50%;
 `
 
 const FonksiyonelButonAlani = styled(Row)`
@@ -33,7 +32,7 @@ const FonksiyonelButonAlani = styled(Row)`
   width: 100%;
   position: fixed;
 `
-export default function UrunForm ({ seciliUrun, history, error, isLoading }) {
+export default function UrunForm ({ seciliUrun, history }) {
 
   const birimler = useRecoilValue(birimlerState)
   const bultenler = useRecoilValue(bultenlerState)
@@ -88,7 +87,7 @@ export default function UrunForm ({ seciliUrun, history, error, isLoading }) {
     kodu: seciliUrun ? seciliUrun.kodu : '',
     periyot: seciliUrunPeriyot() || null,
     cografiDuzey: seciliUrunCografiDuzey() || null,
-    zamanlilik: '',
+    zamanlilik: seciliUrun ? seciliUrun.zamanlilik : '',
     amac: seciliUrun ? seciliUrun.amac : '',
     kapsam: seciliUrun ? seciliUrun.kapsam : '',
     fayda: seciliUrun ? seciliUrun.fayda : '',
@@ -121,8 +120,6 @@ export default function UrunForm ({ seciliUrun, history, error, isLoading }) {
     event.preventDefault()
   }
   console.debug('initial', initialValues)
-  if(isLoading) return "Loading..."
-  if(error) return error.message
   return (
     <Formik
       initialValues={initialValues}
@@ -134,10 +131,10 @@ export default function UrunForm ({ seciliUrun, history, error, isLoading }) {
         resetForm,
         handleChange,
         handleSubmit,
-        setFieldValue
+        setFieldValue,
+        dirty
       }) => (
         <Wrapper>
-          {console.log(values)}
           <Form onSubmit={handleSubmit}>
             <ButonAlani>
               <ButonGrup fill>
@@ -145,7 +142,9 @@ export default function UrunForm ({ seciliUrun, history, error, isLoading }) {
                 <Button intent={'danger'} minimal={!girdi} text={'Girdi Bilgileri'} onClick={girdiSayfaClick}/>
                 <Button intent={'danger'} minimal={!cikti} text={'Çıktı Bilgileri'} onClick={ciktiSayfaClick}/>
               </ButonGrup>
-              <IcerikTemizleButon minimal intent={'primary'} text={'İçeriği Temizle'} onClick={resetForm}/>
+              {dirty && (
+                <IcerikTemizleButon minimal intent={'danger'} text={'İçeriği Temizle'} rightIcon="cross" onClick={resetForm}/>
+              )}
             </ButonAlani>
             <Container fluid>
               <Row>

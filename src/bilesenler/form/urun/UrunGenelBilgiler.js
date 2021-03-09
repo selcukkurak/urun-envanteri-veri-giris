@@ -13,6 +13,7 @@ const Satir = styled(Row)`
 const QuillStyled = styled(ReactQuill)`
   background-color: white;
   height: 8vh;
+  
 `
 
 export default function UrunGenelBilgiler ({ values, handleChange, setFieldValue }) {
@@ -68,16 +69,14 @@ export default function UrunGenelBilgiler ({ values, handleChange, setFieldValue
         </Col>
       </Satir>
       <Satir style={{ height: '150px' }}>
-        <Col>
+        <Col sm={5.5} md={5.5} lg={5.5}>
           <FormGroup label={'Ürünün Amacı:'}>
             <QuillStyled name={'amac'} value={values.amac || ''}
                          onChange={(icerik) => reactQuillHandleChange('amac', icerik)}/>
           </FormGroup>
         </Col>
-      </Satir>
-      <Satir/>
-      <Satir style={{ height: '150px' }}>
-        <Col>
+        <Col/>
+        <Col sm={5.5} md={5.5} lg={5.5}>
           <FormGroup label={'Ürünün Kapsamı:'}>
             <QuillStyled name={'kapsam'} value={values.kapsam || ''}
                          onChange={(icerik) => reactQuillHandleChange('kapsam', icerik)}/>
@@ -85,8 +84,9 @@ export default function UrunGenelBilgiler ({ values, handleChange, setFieldValue
         </Col>
       </Satir>
       <Satir/>
+      <Satir/>
       <Satir style={{ height: '150px' }}>
-        <Col sm={12} md={12} lg={12}>
+        <Col sm={5.5} md={5.5} lg={5.5}>
           <FormGroup label={'Ürünün Sağlayacağı Fayda:'}>
             <QuillStyled name={'fayda'} value={values.fayda || ''}
                          onChange={(icerik) => reactQuillHandleChange('fayda', icerik)}/>
