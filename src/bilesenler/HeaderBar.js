@@ -6,7 +6,6 @@ import { useKeycloak } from '@react-keycloak/web'
 
 export default function HeaderBar() {
   const { keycloak, initialized } = useKeycloak()
-  console.log("keycloak", keycloak, initialized)
   return (
     <Navbar fixedToTop style={{ backgroundColor: ArayuzRenkleri.ustMenu }} className={Classes.DARK}>
       <Navbar.Group align={Alignment.LEFT}>
