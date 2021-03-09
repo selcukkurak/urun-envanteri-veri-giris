@@ -5,9 +5,6 @@ import { Button, FormGroup, InputGroup, Switch } from '@blueprintjs/core'
 import styled from 'styled-components'
 import SelectField from '../SelectField'
 import useSecenekler from '../useSecenekler'
-import { useRecoilValue } from 'recoil'
-import { referanslarState } from '../../store'
-import Axios from 'axios'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -24,10 +21,10 @@ const FonksiyonelButonAlani = styled(Row)`
 
 
 export default function AnketForm ({ seciliAnket, history }) {
-
-  const periyotlar = useRecoilValue(referanslarState).PERIYOT
-  const cografiDuzeyler = useRecoilValue(referanslarState).COGRAFI_DUZEY
-  const veriBirimDuzeyleri = useRecoilValue(referanslarState).ISTATISTIKI_BIRIM_DUZEY
+  // const setAnketler = useSetRecoilState(anketlerState)
+  // const periyotlar = useRecoilValue(referanslarState).PERIYOT
+  // const cografiDuzeyler = useRecoilValue(referanslarState).COGRAFI_DUZEY
+  // const veriBirimDuzeyleri = useRecoilValue(referanslarState).ISTATISTIKI_BIRIM_DUZEY
   const {
     periyotOptions,
     cografiDuzeyOptions,
@@ -59,28 +56,30 @@ export default function AnketForm ({ seciliAnket, history }) {
     cevaplayiciBirim: null,
     duzeltmeDurum: seciliAnket ? seciliAnket.duzeltmeDurum : false
   }
-  const anketEkleIstek = (values) => {
-    const yeniAnket = {
-      id:values.kodu,
-      adi:values.adi,
-      periyot:periyotlar.find(periyot => periyot.id === values.periyot.value),
-      cografiDuzey:cografiDuzeyler.find(duzey => duzey.id === values.cografiDuzeyi.value),
-      birimDuzey:veriBirimDuzeyleri.find(duzey => duzey.id === values.birimDuzeyi.value),
-      orneklemSayisi:values.orneklemSayisi,
-      sema:values.sema,
-      harzemliDurum: values.harzemliDurum ? 1 : 0,
-      ustDurum: values.ustDurum ? 1 : 0,
-      anketorSayisiMerkez: values.anketorSayisiMerkez,
-      anketorSayisiBolge: values.anketorSayisiBolge,
-      kontrolorSayisiMerkez: values.kontrolorSayisiMerkez,
-      kontrolorSayisiBolge: values.kontrolorSayisiBolge
-    }
-
-    return Axios.post("api/anketler/ekle", { yeniAnket })
-  }
-  const handleAnketSubmit = (event, values) => {
+  // const anketEkleIstek = (values) => {
+  //   const yeniAnket = {
+  //     id:values.kodu,
+  //     adi:values.adi,
+  //     taslak:false,
+  //     periyot:periyotlar.find(periyot => periyot.id === values.periyot.value),
+  //     cografiDuzey:cografiDuzeyler.find(duzey => duzey.id === values.cografiDuzeyi.value),
+  //     birimDuzey:veriBirimDuzeyleri.find(duzey => duzey.id === values.birimDuzeyi.value),
+  //     orneklemSayisi:values.orneklemSayisi,
+  //     sema:values.sema,
+  //     harzemliDurum: values.harzemliDurum ? 1 : 0,
+  //     ustDurum: values.ustDurum ? 1 : 0,
+  //     anketorSayisiMerkez: values.anketorSayisiMerkez,
+  //     anketorSayisiBolge: values.anketorSayisiBolge,
+  //     kontrolorSayisiMerkez: values.kontrolorSayisiMerkez,
+  //     kontrolorSayisiBolge: values.kontrolorSayisiBolge
+  //   }
+  //
+  //   return Axios.post("api/anketler/ekle", { yeniAnket })
+  // }
+  const handleAnketSubmit = (event) => {
     event.preventDefault();
-    anketEkleIstek(values).then(() => {history.goBack()})
+    // anketEkleIstek(values).then(res => setAnketler(res.data))
+    history.goBack()
   }
   return (
     <Wrapper>
@@ -212,7 +211,7 @@ export default function AnketForm ({ seciliAnket, history }) {
                   <Button fill intent='danger' text={'Geri Dön'} onClick={history.goBack}/>
                 </Col>
                 <Col>
-                  <Button fill intent='success' text={'Kaydet'} onClick={(event) => handleAnketSubmit(event,values)}/>
+                  <Button fill intent='success' text={'Kaydet'} onClick={(event) => handleAnketSubmit(event)}/>
                 </Col>
               </FonksiyonelButonAlani>
             </Container>
