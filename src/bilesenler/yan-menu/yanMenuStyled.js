@@ -8,7 +8,7 @@ export const MenuStyled = styled(Menu)`
 export const MenuItemStyled = styled(MenuItem)`
   align-items: center;
   padding: 8px 16px 0;
-  background-color: ${ArayuzRenkleri.yanMenu};
+  background-color: ${props => props.aktif ? AnaRenkler.acikKirmizi : ArayuzRenkleri.yanMenu};
   height: 56px;
   width: 209px;
   color: white;
@@ -16,7 +16,7 @@ export const MenuItemStyled = styled(MenuItem)`
   font-size:1.1em;
   border-radius: 2px;
   &:hover {
-    background-color: ${AnaRenkler.acikKirmizi};
+    background-color: ${AnaRenkler.kirmizi};
     text-decoration: none;
     color: white;
   }

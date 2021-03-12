@@ -1,4 +1,4 @@
-import React, {memo} from 'react'
+import React, { memo, useState } from 'react'
 import { linkler } from './linkler'
 import { Link } from 'react-router-dom'
 import { MenuItemStyled, MenuStyled } from './yanMenuStyled'
@@ -9,12 +9,16 @@ const Wrapper = styled.div`
 `
 
 function YanMenuItem () {
+  const [seciliMenu, setSeciliMenu] = useState(null)
+  const seciliMenuClick = (item) => {
+    setSeciliMenu(item)
+  }
   return(
     <Wrapper>
       <MenuStyled>
         {linkler.map((item, index) => (
             <Link key={index} to={item.link}>
-              <MenuItemStyled  text={item.baslik}/>
+              <MenuItemStyled aktif={seciliMenu && seciliMenu.link === item.link} text={item.baslik} onClick={() => seciliMenuClick(item)}/>
             </Link>
         ))}
       </MenuStyled>
