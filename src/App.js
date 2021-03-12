@@ -7,36 +7,31 @@ import IdariKayitLoader from './bilesenler/loader/IdariKayitLoader'
 import BirimLoader from './bilesenler/loader/BirimLoader'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-import { Colors } from '@blueprintjs/core'
 import HeaderBar from './bilesenler/HeaderBar'
 import YanMenuItem from './bilesenler/yan-menu/YanMenu'
-import { ArayuzRenkleri } from '@tuik/renkler'
 import { IdariKayitSayfa, AnketSayfa, UrunSayfa, BultenSayfa } from './bilesenler/sayfalar'
 import GlobalStyle from './bilesenler/globalStiller'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import keycloak from './keycloak'
+import { useState } from 'react'
 
 const Wrapper = styled.div`
   padding: 0;
 `
-const YanMenu = styled.div`
-  width: 210px;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  position: fixed;
-  overflow-y: auto;
-  background-color: ${ArayuzRenkleri.yanMenu};
-  border-right: 1px solid ${Colors.LIGHT_GRAY3};
-`
+
 const OrtaBolme = styled.div`
-  margin-left: 210px;
+  margin-left: ${props => props.acik ? "210px" : 0};
   height: 100vh;
 `
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
+
 function App () {
+  const [acik, setAcik] = useState(true)
+  const handleYanMenuAcik = () => {
+    setAcik(!acik)
+  }
   return (
     <ReactKeycloakProvider
       authClient={keycloak}
@@ -51,12 +46,10 @@ function App () {
           <BirimLoader/>
           <QueryClientProvider client={queryClient}>
             <Wrapper>
-              <HeaderBar/>
+              <HeaderBar acik={acik} handleYanMenuClick={handleYanMenuAcik}/>
               <GlobalStyle/>
-              <YanMenu>
-                <YanMenuItem/>
-              </YanMenu>
-              <OrtaBolme>
+              <YanMenuItem acik={acik} handleYanMenuClick={handleYanMenuAcik}/>
+              <OrtaBolme acik={acik}>
                 <Switch>
                   <Redirect exact from={'/'} to={'/urunler'}/>
                   <Route path={'/urunler'} component={UrunSayfa}/>
