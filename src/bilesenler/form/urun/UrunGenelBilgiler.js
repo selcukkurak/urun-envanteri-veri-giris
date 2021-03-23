@@ -28,7 +28,7 @@ export default function UrunGenelBilgiler ({ values, handleChange, setFieldValue
     setFieldValue(name, icerik)
   }
   return (
-    <Container>
+    <Container fluid>
       <Satir>
         <Col sm={5.5} md={5.5} lg={5.5}>
           <FormGroup label={'İstatistiki Ürün Adı:'}>

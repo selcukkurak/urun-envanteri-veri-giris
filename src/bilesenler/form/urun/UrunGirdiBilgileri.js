@@ -49,7 +49,7 @@ export default function UrunGirdiBilgileri ({ values, handleChange }) {
   const seciliIdariKayitItem = seciliIdariKayit && idariKayitlar.find(kayit => kayit.id === seciliIdariKayit.value)
 
   return (
-    <Container>
+    <Container fluid>
       <CheckedSatir>
         <Col sm={6} md={6} lg={6}>
           <FormGroup inline>
