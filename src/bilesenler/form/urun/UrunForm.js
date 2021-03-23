@@ -9,6 +9,7 @@ import { Form, Formik } from 'formik'
 import UrunGenelBilgiler from './UrunGenelBilgiler'
 import UrunGirdiBilgileri from './UrunGirdiBilgileri'
 import UrunCiktiBilgileri from './UrunCiktiBilgileri'
+import UrunMetaveriForm from './UrunMetaveriForm'
 
 const Wrapper = styled.div`
   padding: 64px 16px;
@@ -40,6 +41,8 @@ export default function UrunForm ({ seciliUrun, history }) {
     genel,
     cikti,
     girdi,
+    metaveriSayfa,
+    metaveriSayfaClick,
     genelSayfaClick,
     ciktiSayfaClick,
     girdiSayfaClick,
@@ -114,7 +117,8 @@ export default function UrunForm ({ seciliUrun, history }) {
         arac: null,
         gonderilmePeriyodu: null
       }],
-    birim: seciliGrupBaskanligi() || null
+    birim: seciliGrupBaskanligi() || null,
+    metaveriler: []
   }
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -139,6 +143,7 @@ export default function UrunForm ({ seciliUrun, history }) {
             <ButonAlani>
               <ButonGrup fill>
                 <Button intent={'danger'} minimal={!genel} text={'Genel Bilgiler'} onClick={genelSayfaClick}/>
+                <Button intent={'danger'} minimal={!metaveriSayfa} text={'Metaveri Bilgileri'} onClick={metaveriSayfaClick}/>
                 <Button intent={'danger'} minimal={!girdi} text={'Girdi Bilgileri'} onClick={girdiSayfaClick}/>
                 <Button intent={'danger'} minimal={!cikti} text={'Çıktı Bilgileri'} onClick={ciktiSayfaClick}/>
               </ButonGrup>
@@ -155,6 +160,13 @@ export default function UrunForm ({ seciliUrun, history }) {
               <UrunGenelBilgiler
                 values={values}
                 seciliUrun={seciliUrun}
+                handleChange={handleChange}
+                setFieldValue={setFieldValue}
+              />
+            )}
+            {metaveriSayfa && (
+              <UrunMetaveriForm
+                metaveriler={values.metaveriler}
                 handleChange={handleChange}
                 setFieldValue={setFieldValue}
               />
