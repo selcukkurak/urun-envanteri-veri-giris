@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",
+    "@tuik/ed-react-bilesenleri": "^0.2.7",
     "@tuik/renkler": "^0.1.3",
     "@tuik/util": "^0.3.2",
     "axios": "^0.21.1",
