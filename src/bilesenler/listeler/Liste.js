@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Card, Colors, HTMLTable, Tag, Tooltip } from '@blueprintjs/core'
+import { Button, Card, Colors, HTMLTable, Tag } from '@blueprintjs/core'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
@@ -24,6 +24,7 @@ const TableHeader = styled.th`
   background-color: white;
   top: 0;
   box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.4);
+
   &:last-child {
     width: 50px;
     min-width: 50px;
@@ -52,25 +53,26 @@ function Liste ({ dizi, url, handleSeciliItem, secili }) {
     <KartListe>
       <Table>
         <thead>
-        <TableHeader>Adı</TableHeader>
-        <TableHeader>Eylemler</TableHeader>
+        <tr>
+          <TableHeader>Adı</TableHeader>
+          <TableHeader>Güncelleyen</TableHeader>
+          <TableHeader>Güncelleme Tarihi</TableHeader>
+          <TableHeader>Eylemler</TableHeader>
+        </tr>
         </thead>
         <tbody>
         {dizi.map((item, index) => (
           <AktifSatir index={index} secili={secili} className="active" key={item.id}>
             <td onClick={() => handleSeciliItem(index)}>
-              <Tooltip disabled={!item.ekleyen} content={(
-                <div>
-                  <td>{item.ekleyen}</td>
-                  <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format('DD.MM.YYYY')}</td>
-                </div>
-              )}>
+              <Link to={`${url}/detay/${item.id}`}>
                 {item.adi}
                 {item.taslak && (
                   <Etiket minimal intent="danger">Taslak</Etiket>
                 )}
-              </Tooltip>
+              </Link>
             </td>
+            <td>{item.guncelleyen}</td>
+            <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format('DD.MM.YYYY')}</td>
             <td style={{ display: 'flex' }}>
               <Link to={`${url}/guncelle/${item.id}`}>
                 <Button style={{ flex: 1 }} minimal icon={'edit'} intent={'primary'}/>
