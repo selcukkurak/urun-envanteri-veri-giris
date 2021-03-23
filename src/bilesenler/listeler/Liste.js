@@ -19,9 +19,15 @@ const Table = styled(HTMLTable)`
 `
 const TableHeader = styled.th`
   position: sticky;
+  width: 500px;
+  min-width: 200px;
   background-color: white;
   top: 0;
   box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.4);
+  &:last-child {
+    width: 50px;
+    min-width: 50px;
+  }
 `
 const Etiket = styled(Tag)`
   margin-left: 32px;
@@ -29,45 +35,47 @@ const Etiket = styled(Tag)`
 `
 const AktifSatir = styled.tr`
   cursor: default;
+
   &.active {
-    background-color: ${props => 
-      props.secili !== props.index ? "white" : Colors.LIGHT_GRAY4
-    } 
+    background-color: ${props =>
+            props.secili !== props.index ? 'white' : Colors.LIGHT_GRAY4
+    }
   }
 `
 
-function Liste ({dizi, url, handleSeciliItem, secili}) {
+function Liste ({ dizi, url, handleSeciliItem, secili }) {
   moment.locale('tr')
   const tarih = (tarihItem) => {
     return moment(tarihItem)
   }
-  console.log("secili", secili)
   return (
     <KartListe>
       <Table>
         <thead>
         <TableHeader>Adı</TableHeader>
-        <TableHeader>Ekleyen Kişi</TableHeader>
-        <TableHeader>İşlem Tarihi</TableHeader>
         <TableHeader>Eylemler</TableHeader>
         </thead>
         <tbody>
         {dizi.map((item, index) => (
           <AktifSatir index={index} secili={secili} className="active" key={item.id}>
-            <td onClick={() => handleSeciliItem(index)}>{item.adi}
-              {item.taslak && (
-                <Etiket minimal intent="danger">Taslak</Etiket>
-              )}
+            <td onClick={() => handleSeciliItem(index)}>
+              <Tooltip disabled={!item.ekleyen} content={(
+                <div>
+                  <td>{item.ekleyen}</td>
+                  <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format('DD.MM.YYYY')}</td>
+                </div>
+              )}>
+                {item.adi}
+                {item.taslak && (
+                  <Etiket minimal intent="danger">Taslak</Etiket>
+                )}
+              </Tooltip>
             </td>
-            <td>{item.ekleyen}</td>
-            <td>{item.guncellemeTarihi && tarih(item.guncellemeTarihi).format('DD.MM.YYYY')}</td>
             <td style={{ display: 'flex' }}>
               <Link to={`${url}/guncelle/${item.id}`}>
                 <Button style={{ flex: 1 }} minimal icon={'edit'} intent={'primary'}/>
               </Link>
-              <Tooltip content={'Üretiliyor Durumunu Değiştir'}>
-                <Button minimal icon={'trash'} intent={'danger'}/>
-              </Tooltip>
+              <Button minimal icon={'trash'} intent={'danger'}/>
             </td>
           </AktifSatir>
         ))}

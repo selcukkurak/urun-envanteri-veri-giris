@@ -3,7 +3,7 @@ import { AnaRenkler } from '@tuik/renkler'
 import { Colors } from '@blueprintjs/core'
 
 export const WrapperListe = styled.div`
-  padding: 70px 16px 0;
+  padding: 70px 12px;
 `
 export const FiltreButonAlani = styled.div`
   display: flex;
@@ -49,11 +49,20 @@ export const AramaAlani = styled.div`
   margin-top:16px;
 `
 export const DetayAlani = styled.div`
-  margin-left: 10%;
+  padding-top: 32px;
+  
 `
 export const IcerikAlani = styled.div`
-  margin: 32px;
+  padding: 16px 4px;
   display: flex;
+
+  &:first-child {
+    padding:8px 4px;
+  }
+  
+  &:last-child {
+    padding-bottom: 0;
+  }
 `
 export const DetayBaslik = styled.div`
   font-size: 1em;

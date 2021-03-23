@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil'
 import { anketlerState } from '../store'
 import Liste from './Liste'
 import { localSort } from '../util/sort'
-import { Button } from '@blueprintjs/core'
+import { Button, Card, Divider } from '@blueprintjs/core'
 import { Col, Container, Row } from 'react-grid-system'
 import { Link } from 'react-router-dom'
 import {
@@ -18,15 +18,13 @@ import {
   WrapperListe
 } from './ortakStyle'
 import styled from 'styled-components'
-import { AnaRenkler } from '@tuik/renkler'
 import Arama from './Arama'
 
 const Baslik = styled.div`
   text-align: center;
-  color: ${AnaRenkler.kirmizi};
-  font-size: 1.4em;
+  color: rgb(90, 111, 123);
   font-weight: bold;
-  margin-top: 20px;
+  font-size: 1.4em;
 `
 export default function AnketListe ({ match }) {
   const [aranan, setAranan] = useState('')
@@ -47,9 +45,9 @@ export default function AnketListe ({ match }) {
 
   return (
     <WrapperListe>
-      <Container>
+      <Container fluid>
         <Row>
-          <Col sm={6} md={6} lg={6}>
+          <Col sm={12} md={12} lg={6}>
             <FiltreButonAlani>
               <ButonDurumAlani/>
               <Link to={`${match.url}/yeni-anket`}>
@@ -75,15 +73,10 @@ export default function AnketListe ({ match }) {
           </Col>
           <Col>
             {seciliAnket && (
-              <div>
-                <Baslik>Detaylar</Baslik>
-                <DetayAlani>
-                  <IcerikAlani>
-                    <DetayBaslik>Adı:</DetayBaslik>
-                    <Icerik>{seciliAnket.adi ? seciliAnket.adi : '-'}</Icerik>
-                    <DetayBaslik>Kodu:</DetayBaslik>
-                    <Icerik>{seciliAnket.id ? seciliAnket.id : '-'}</Icerik>
-                  </IcerikAlani>
+              <DetayAlani>
+                <Card>
+                  <Baslik>{seciliAnket.adi}</Baslik>
+                  <Divider/>
                   <IcerikAlani>
                     <DetayBaslik>Periyodu:</DetayBaslik>
                     <Icerik>{seciliAnket.periyot ? seciliAnket.periyot.adi : '-'}</Icerik>
@@ -99,15 +92,17 @@ export default function AnketListe ({ match }) {
                   <IcerikAlani>
                     <DetayBaslik>Şeması:</DetayBaslik>
                     <Icerik>{seciliAnket.sema}</Icerik>
+                    <DetayBaslik>Anketör Sayısı BÖLGE:</DetayBaslik>
+                    <Icerik>{seciliAnket.anketorSayisiBolge ? seciliAnket.anketorSayisiBolge : '-'}</Icerik>
+                  </IcerikAlani>
+                  <IcerikAlani>
+                    <DetayBaslik>Harzemli Durumu:</DetayBaslik>
+                    <Icerik>{harzemliDurumu}</Icerik>
                     <DetayBaslik>Üst Durumu:</DetayBaslik>
                     <Icerik>{ustDurumu}</Icerik>
                   </IcerikAlani>
-                  <IcerikAlani>
-                    <DetayBaslik style={{ flex: '0 1 21%' }}>Harzemli Durumu:</DetayBaslik>
-                    <Icerik>{harzemliDurumu}</Icerik>
-                  </IcerikAlani>
-                </DetayAlani>
-              </div>
+                </Card>
+              </DetayAlani>
             )}
           </Col>
 
