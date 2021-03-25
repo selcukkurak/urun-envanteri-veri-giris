@@ -14,7 +14,7 @@ import GlobalStyle from './bilesenler/globalStiller'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import keycloak from './keycloak'
-import { useState } from 'react'
+import useYanMenu from './bilesenler/yan-menu/useYanMenu'
 
 const Wrapper = styled.div`
   padding: 0;
@@ -28,10 +28,11 @@ const OrtaBolme = styled.div`
 const queryClient = new QueryClient()
 
 function App () {
-  const [acik, setAcik] = useState(true)
-  const handleYanMenuAcik = () => {
-    setAcik(!acik)
-  }
+
+  const {
+    acik,
+    handleYanMenuClick
+  } = useYanMenu()
   return (
     <ReactKeycloakProvider
       authClient={keycloak}
@@ -46,9 +47,9 @@ function App () {
           <BirimLoader/>
           <QueryClientProvider client={queryClient}>
             <Wrapper>
-              <HeaderBar acik={acik} handleYanMenuClick={handleYanMenuAcik}/>
+              <HeaderBar acik={acik} handleYanMenuClick={handleYanMenuClick}/>
               <GlobalStyle/>
-              <YanMenuItem acik={acik} handleYanMenuClick={handleYanMenuAcik}/>
+              <YanMenuItem acik={acik} handleYanMenuClick={handleYanMenuClick}/>
               <OrtaBolme acik={acik}>
                 <Switch>
                   <Redirect exact from={'/'} to={'/urunler'}/>
