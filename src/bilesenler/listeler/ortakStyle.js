@@ -47,6 +47,8 @@ export const SayiGosterge = styled.div`
 `
 export const AramaAlani = styled.div`
   margin-top:16px;
+  width: 50vw;
+  
 `
 export const DetayAlani = styled.div`
   padding-top: 32px;
