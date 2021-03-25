@@ -1,5 +1,16 @@
 import React from 'react'
-import { Button, ButtonGroup, Card, HTMLTable, Menu, Spinner, Tag} from '@blueprintjs/core'
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  HTMLTable,
+  Menu,
+  MenuItem,
+  Popover,
+  Position,
+  Spinner,
+  Tag
+} from '@blueprintjs/core'
 import { DetayAlani, DetayBaslik, Icerik, IcerikAlani } from '../listeler/ortakStyle'
 import htmlParser from '../util/htmlParser'
 import { Container, Row, Col } from 'react-grid-system'
@@ -11,18 +22,18 @@ import { useRecoilValue } from 'recoil'
 import { tekilBultenler } from '../store/selectors'
 import { birimlerState } from '../store'
 import BreadCrumbs from '../BreadCrumbs'
+import { Link } from 'react-router-dom'
+
 const Wrapper = styled.div`
   margin: 70px 12px
 `
 const ButonAlani = styled.div`
   margin: 12px;
-  width: 550px;
   display: flex;
 `
 const ButonGrup = styled(ButtonGroup)`
   flex: 1;
-  max-width: 35vw;
-  width: 35vw;
+  max-width: 20vw;
 `
 
 const Kart = styled(Card)`
@@ -35,8 +46,7 @@ const KartDetay = styled.div`
   font-size: 1em;
 `
 
-
-export default function UrunDetay({match}){
+export default function UrunDetay ({ match }) {
   const bultenler = useRecoilValue(tekilBultenler)
   const birimler = useRecoilValue(birimlerState)
   const {
@@ -65,8 +75,7 @@ export default function UrunDetay({match}){
   const joinPeriyot = periyotlar && periyotlar.map(p => p.adi).join(', ')
   const joinArac = araclar && araclar.map(a => a.adi).join(', ')
 
-
-  return(
+  return (
     <Wrapper>
       <Container fluid>
         <Row>
@@ -82,8 +91,8 @@ export default function UrunDetay({match}){
         <Row>
           <Col sm={12} md={12} lg={8}>
             {isLoading && (
-              <div style={{ paddingTop:"300px"}}>
-                <Spinner size={50} />
+              <div style={{ paddingTop: '300px' }}>
+                <Spinner size={50}/>
               </div>
             )}
             {error && error.message}
@@ -95,10 +104,26 @@ export default function UrunDetay({match}){
                     <Button intent={'danger'} minimal={!girdi} text={'Girdi Bilgileri'} onClick={girdiSayfaClick}/>
                     <Button intent={'danger'} minimal={!cikti} text={'Çıktı Bilgileri'} onClick={ciktiSayfaClick}/>
                   </ButonGrup>
+                  <Popover content={
+                    <Menu>
+                      <MenuItem text={(
+                        <Link to="/urunler/yeni-urun">
+                          <Button minimal intent="success" text="Yeni Ürün Ekle" rightIcon={'plus'}/>
+                        </Link>
+                      )}/>
+                      <MenuItem text={(
+                        <Link to={`/urunler/guncelle/${seciliUrun.id}`}>
+                          <Button minimal intent="warning" text="Bilgileri Güncelle" rightIcon={'edit'}/>
+                        </Link>
+                      )}/>
+                    </Menu>
+                  } position={Position.RIGHT}>
+                    <Button icon="properties" text="Eylemler"/>
+                  </Popover>
                 </ButonAlani>
                 {genel && (
                   <DetayAlani>
-                    <Card style={{width:"100%", padding:0}}>
+                    <Card style={{ width: '100%', padding: 0 }}>
                       <IcerikAlani>
                         <DetayBaslik>İstatistiki Ürün Adı:</DetayBaslik>
                         <Icerik>{seciliUrun.adi}</Icerik>
@@ -109,11 +134,11 @@ export default function UrunDetay({match}){
                       </IcerikAlani>
                       <IcerikAlani>
                         <DetayBaslik>Üretim Sıklığı:</DetayBaslik>
-                        <Icerik>{seciliUrun.periyot ? seciliUrun.periyot.adi : "-"}</Icerik>
+                        <Icerik>{seciliUrun.periyot ? seciliUrun.periyot.adi : '-'}</Icerik>
                       </IcerikAlani>
                       <IcerikAlani>
                         <DetayBaslik>Coğrafi Düzeyi:</DetayBaslik>
-                        <Icerik>{seciliUrun.cografiDuzey ? seciliUrun.cografiDuzey.adi : "-"}</Icerik>
+                        <Icerik>{seciliUrun.cografiDuzey ? seciliUrun.cografiDuzey.adi : '-'}</Icerik>
                       </IcerikAlani>
                       <IcerikAlani>
                         <DetayBaslik>Sorumlu Grup Başkanlığı:</DetayBaslik>
@@ -121,15 +146,15 @@ export default function UrunDetay({match}){
                       </IcerikAlani>
                       <IcerikAlani>
                         <DetayBaslik>Ürünün Amacı:</DetayBaslik>
-                        <Icerik>{seciliUrun.amac ? htmlParser(`${seciliUrun.amac}`) :"-"}</Icerik>
+                        <Icerik>{seciliUrun.amac ? htmlParser(`${seciliUrun.amac}`) : '-'}</Icerik>
                       </IcerikAlani>
                       <IcerikAlani>
                         <DetayBaslik>Ürünün Kapsamı:</DetayBaslik>
-                        <Icerik>{seciliUrun.kapsam ? htmlParser(`${seciliUrun.kapsam}`) : "-"}</Icerik>
+                        <Icerik>{seciliUrun.kapsam ? htmlParser(`${seciliUrun.kapsam}`) : '-'}</Icerik>
                       </IcerikAlani>
                       <IcerikAlani>
                         <DetayBaslik>Ürünün Sağlayacağı Fayda:</DetayBaslik>
-                        <Icerik>{seciliUrun.fayda ? htmlParser(`${seciliUrun.fayda}`) : "-"}</Icerik>
+                        <Icerik>{seciliUrun.fayda ? htmlParser(`${seciliUrun.fayda}`) : '-'}</Icerik>
                       </IcerikAlani>
                     </Card>
                   </DetayAlani>
@@ -140,7 +165,7 @@ export default function UrunDetay({match}){
                       <IcerikAlani>
                         <Icerik>
                           <Kart>
-                            <DetayBaslik style={{flex:"1 1 30%"}}>Anketler</DetayBaslik>
+                            <DetayBaslik style={{ flex: '1 1 30%' }}>Anketler</DetayBaslik>
                             <Menu>
                               {seciliUrun.anketler.map(anket => (
                                 <KartDetay key={anket.id}>- {anket.adi}</KartDetay>
@@ -154,7 +179,7 @@ export default function UrunDetay({match}){
                       <IcerikAlani>
                         <Icerik>
                           <Kart>
-                            <DetayBaslik style={{flex:"1 1 30%"}}>Bağlı Ürünler:</DetayBaslik>
+                            <DetayBaslik style={{ flex: '1 1 30%' }}>Bağlı Ürünler:</DetayBaslik>
                             <Menu>
                               {seciliUrun.urunler.map(urun => (
                                 <KartDetay key={urun.id}>- {urun.adi}</KartDetay>
@@ -168,7 +193,7 @@ export default function UrunDetay({match}){
                       <IcerikAlani>
                         <Icerik>
                           <Kart>
-                            <DetayBaslik style={{flex:"1 1 30%"}}>İdari Kayıtlar</DetayBaslik>
+                            <DetayBaslik style={{ flex: '1 1 30%' }}>İdari Kayıtlar</DetayBaslik>
                             <Menu>
                               {seciliUrun.idariKayitlar.map(kayit => (
                                 <KartDetay key={kayit.id}>- {kayit.adi}</KartDetay>
@@ -185,9 +210,9 @@ export default function UrunDetay({match}){
                     {urunBultenleri.length !== 0 && (
                       <IcerikAlani>
                         <Kart>
-                          <DetayBaslik style={{flex:"1 1 30%"}}>Haber Bülteni:</DetayBaslik>
+                          <DetayBaslik style={{ flex: '1 1 30%' }}>Haber Bülteni:</DetayBaslik>
                           {urunBultenleri.map(bulten => (
-                            <Icerik style={{padding:"8px"}}>
+                            <Icerik style={{ padding: '8px' }}>
                               <a href={`https://data.tuik.gov.tr/Bulten/Index?p=${bulten.sonYayin.id}`} target='_blank'
                                  rel="noreferrer">{bulten.adi}</a>
                             </Icerik>
@@ -198,7 +223,7 @@ export default function UrunDetay({match}){
                     {seciliUrun.paylasimlar.length !== 0 && (
                       <IcerikAlani>
                         <Kart>
-                          <DetayBaslik style={{flex:"1 1 30%"}}>Paylaşımlar:</DetayBaslik>
+                          <DetayBaslik style={{ flex: '1 1 30%' }}>Paylaşımlar:</DetayBaslik>
                           <Icerik>
                             <HTMLTable>
                               <thead>
