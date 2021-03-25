@@ -3,6 +3,13 @@ import logo from './images/tuik-logo.svg';
 import { Alignment, Button, Classes, Icon, Navbar, Tooltip } from '@blueprintjs/core'
 import { ArayuzRenkleri } from '@tuik/renkler'
 import { useKeycloak } from '@react-keycloak/web'
+import styled from 'styled-components'
+
+const NavbarLoginDiv = styled(Navbar.Heading)`
+  flex:1;
+  margin:12px 32px;
+`
+
 
 export default function HeaderBar({acik, handleYanMenuClick}) {
   const { keycloak, initialized } = useKeycloak()
@@ -21,12 +28,15 @@ export default function HeaderBar({acik, handleYanMenuClick}) {
         )}
         <img src={logo} width="40px" alt="banner" />
         <Navbar.Divider/>
-        <Navbar.Heading>İstatistiki Ürün Envanteri Veri Giriş Uygulaması</Navbar.Heading>
+        <Navbar.Heading>
+          <strong style={{paddingRight:"16px"}}>İstatistiki Ürün Envanteri   </strong>
+          Veri Giriş Uygulaması
+        </Navbar.Heading>
       </Navbar.Group>
       <Navbar.Group align='right'>
         {keycloak.idTokenParsed && initialized ? (
           <div style={{display:'flex'}}>
-            <Navbar.Heading style={{flex:1, margin:'12px 32px'}}>{keycloak.idTokenParsed.name}</Navbar.Heading>
+            <NavbarLoginDiv>{keycloak.idTokenParsed.name}</NavbarLoginDiv>
             <Button minimal text="Çıkış Yap" onClick={keycloak.logout}/>
           </div>
         ): (
