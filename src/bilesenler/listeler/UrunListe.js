@@ -17,12 +17,9 @@ import {
   WrapperListe
 } from './ortakStyle'
 import Arama from './Arama'
+import { taslakDurumlar } from './ortak'
 
-const taslakDurumlar = [
-  { adi: 'Hepsi', durum: 0 },
-  { adi: 'Taslak', durum: 1 },
-  { adi: 'Onaylanmış', durum: 2 }
-]
+
 
 
 export default function UrunListe ({ match }) {
@@ -41,31 +38,23 @@ export default function UrunListe ({ match }) {
   const handleSeciliItem = (key) => {
     setSeciliUrunId(key)
   }
-  const handleSeciliTaslak = (event, secenek) => {
-    setSecili(secenek)
-    setSeciliUrunId(0)
-  }
+
 
   return (
     <WrapperListe>
       <Container fluid>
         <Row>
-          <Col sm={12} md={12} lg={12}>
+          <Col xs={12} sm={12} md={12} lg={12}>
             <FiltreButonAlani>
-              <ButonDurumAlani>
-                {taslakDurumlar.map((taslak, index) => (
-                  <Button key={index} intent={'primary'}
-                          minimal={secili.durum !== taslak.durum}
-                          text={taslak.adi}
-                          onClick={(event) => handleSeciliTaslak(event, taslak)}/>
-                ))}
-              </ButonDurumAlani>
+              <ButonDurumAlani/>
               <Link to={`${match.url}/yeni-urun`}>
                 <Button intent={'success'} text={'Yeni Ürün Ekle'}/>
               </Link>
             </FiltreButonAlani>
             <AramaAlani>
-              <Arama aranan={aranan} setAranan={setAranan} placeholder={"Ürünler İçinde Arayın...."}/>
+              <Arama setAranan={setAranan} placeholder={"Ürünler İçinde Arayın...."}
+                     secili={secili} setSecili={setSecili} setSeciliId={setSeciliUrunId}
+              />
             </AramaAlani>
             <ListeBaslik>
               <SolaYasli>İstatistiki Ürünler</SolaYasli>
