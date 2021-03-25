@@ -55,7 +55,7 @@ function Liste ({ dizi, url, handleSeciliItem, secili }) {
         <thead>
         <tr>
           <TableHeader>Adı</TableHeader>
-          <TableHeader>Güncelleyen</TableHeader>
+          <TableHeader>Güncelleyen Kişi</TableHeader>
           <TableHeader>Güncelleme Tarihi</TableHeader>
           <TableHeader>Eylemler</TableHeader>
         </tr>
