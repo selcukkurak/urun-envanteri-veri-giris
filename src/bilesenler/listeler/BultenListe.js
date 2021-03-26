@@ -20,14 +20,18 @@ import { tekilBultenler } from '../store/selectors'
 
 export default function BultenListe({match}) {
   const [aranan, setAranan] = useState("")
+  const [seciliBulten, setSeciliBulten] = useState(0)
   const bultenler = useRecoilValue(tekilBultenler)
     .filter(bulten => bulten.adi.toLowerCase().includes(aranan.toLowerCase()))
 
+  const handleSeciliItem  = (item) => {
+    setSeciliBulten(item)
+  }
   return(
     <WrapperListe>
-      <Container>
+      <Container fluid>
         <Row>
-          <Col sm={6} md={6} lg={6}>
+          <Col sm={12} md={12} lg={12}>
             <FiltreButonAlani>
               <ButonDurumAlani/>
               <Link to={`${match.url}/yeni-bulten`}>
@@ -35,7 +39,7 @@ export default function BultenListe({match}) {
               </Link>
             </FiltreButonAlani>
             <AramaAlani>
-              <Arama aranan={aranan} setAranan={setAranan} placeholder={"Bültenler İçinde Arayın...."}/>
+              <Arama setAranan={setAranan} placeholder={"Bültenler İçinde Arayın...."}/>
             </AramaAlani>
             <ListeBaslik>
               <SolaYasli>Haber Bültenleri</SolaYasli>
@@ -47,6 +51,8 @@ export default function BultenListe({match}) {
             <Liste
               dizi={bultenler}
               url={match.url}
+              handleSeciliItem={handleSeciliItem}
+              secili={seciliBulten}
             />
           </Col>
         </Row>
