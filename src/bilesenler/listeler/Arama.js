@@ -27,7 +27,7 @@ export default function Arama ({  setAranan, placeholder, secili, setSecili, set
       value={sorgu}
       onChange={(event) => onAramaChange(event)}
       leftIcon={'search'}
-      rightElement={(
+      rightElement={secili && (
         <div>
           <ButtonGroup style={{marginRight:"16px"}}>
             {taslakDurumlar.map((taslak, index) => (
