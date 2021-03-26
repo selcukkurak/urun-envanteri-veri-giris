@@ -31,8 +31,10 @@ const ButonAlani = styled.div`
   margin: 12px;
   display: flex;
 `
+const Alan = styled.div`
+  flex:1;
+`
 const ButonGrup = styled(ButtonGroup)`
-  flex: 1;
   max-width: 20vw;
 `
 
@@ -45,6 +47,7 @@ const KartDetay = styled.div`
   padding-top: 4px;
   font-size: 1em;
 `
+
 
 export default function UrunDetay ({ match }) {
   const bultenler = useRecoilValue(tekilBultenler)
@@ -83,13 +86,13 @@ export default function UrunDetay ({ match }) {
             <BreadCrumbs
               mevcutSayfaUrl={match.url}
               oncekiSayfaUrl="/urunler"
-              text1="Ürünler Listesi"
+              text1="Ürün Listesi"
               text2="Ürün Detayı"
             />
           </Col>
         </Row>
         <Row>
-          <Col sm={12} md={12} lg={8}>
+          <Col sm={12} md={12} lg={12}>
             {isLoading && (
               <div style={{ paddingTop: '300px' }}>
                 <Spinner size={50}/>
@@ -99,11 +102,13 @@ export default function UrunDetay ({ match }) {
             {seciliUrun && (
               <div>
                 <ButonAlani>
-                  <ButonGrup fill>
-                    <Button intent={'danger'} minimal={!genel} text={'Genel Bilgiler'} onClick={genelSayfaClick}/>
-                    <Button intent={'danger'} minimal={!girdi} text={'Girdi Bilgileri'} onClick={girdiSayfaClick}/>
-                    <Button intent={'danger'} minimal={!cikti} text={'Çıktı Bilgileri'} onClick={ciktiSayfaClick}/>
-                  </ButonGrup>
+                  <Alan>
+                    <ButonGrup fill>
+                      <Button intent={'danger'} minimal={!genel} text={'Genel Bilgiler'} onClick={genelSayfaClick}/>
+                      <Button intent={'danger'} minimal={!girdi} text={'Girdi Bilgileri'} onClick={girdiSayfaClick}/>
+                      <Button intent={'danger'} minimal={!cikti} text={'Çıktı Bilgileri'} onClick={ciktiSayfaClick}/>
+                    </ButonGrup>
+                  </Alan>
                   <Popover content={
                     <Menu>
                       <MenuItem text={(
@@ -118,7 +123,7 @@ export default function UrunDetay ({ match }) {
                       )}/>
                     </Menu>
                   } position={Position.RIGHT}>
-                    <Button icon="properties" text="Eylemler"/>
+                    <Button icon="properties" intent="warning" minimal text="Eylemler"/>
                   </Popover>
                 </ButonAlani>
                 {genel && (

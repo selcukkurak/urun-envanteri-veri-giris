@@ -9,6 +9,7 @@ import { useRecoilValue } from 'recoil'
 import { idariKayitlarState } from '../store'
 import { siraliKurumlar } from '../store/selectors'
 import { Link } from 'react-router-dom'
+import BreadCrumbs from '../BreadCrumbs'
 
 const Wrapper = styled.div`
   margin: 70px 12px
@@ -20,6 +21,9 @@ const DetayKart = styled(Card)`
 const ButonAlani = styled.div`
   margin: 8px 16px;
   display: flex;
+`
+const Alan = styled.div`
+  flex:1;
 `
 const ButonGrup = styled(ButtonGroup)`
   flex: 1;
@@ -40,15 +44,23 @@ export default function IdariKayitDetay ({ match }) {
   if (!seciliKayit) return null
   return (
     <Wrapper>
+      <BreadCrumbs
+        mevcutSayfaUrl={match.url}
+        oncekiSayfaUrl="/idari-kayitlar"
+        text1="İdari Kayıt Listesi"
+        text2="İdari Kayıt Detayı"
+      />
       <Container fluid>
         <Row>
           <Col xs={12} sm={12} md={12} lg={12}>
             <ButonAlani>
-              <ButonGrup fill>
-                <Button intent={'danger'} minimal={!idariGenel} text={'Genel Bilgiler'} onClick={genelIdariSayfaClick}/>
-                <Button intent={'danger'} minimal={!idariTablo} text={'Tablo ve Kolon Bilgileri'}
-                        onClick={tabloIdariSayfaClick}/>
-              </ButonGrup>
+              <Alan>
+                <ButonGrup fill>
+                  <Button intent={'danger'} minimal={!idariGenel} text={'Genel Bilgiler'} onClick={genelIdariSayfaClick}/>
+                  <Button intent={'danger'} minimal={!idariTablo} text={'Tablo ve Kolon Bilgileri'}
+                          onClick={tabloIdariSayfaClick}/>
+                </ButonGrup>
+              </Alan>
               <Popover content={
                 <Menu>
                   <MenuItem text={(
