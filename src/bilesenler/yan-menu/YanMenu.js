@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   padding: 90px 0 12px;
 `
 const YanMenu = styled.div`
-  width: ${props => props.acik ? '210px' : '0px'};
+  width: ${props => props.acik  ? '210px' : '0px' };
   height: 100vh;
   top: 0;
   left: 0;
@@ -19,16 +19,14 @@ const YanMenu = styled.div`
   background-color: ${ArayuzRenkleri.yanMenu};
   border-right: 1px solid ${Colors.LIGHT_GRAY3};
 `
-
 const YanMenuIcon = styled.div`
-        padding-top:60px;
+  padding-top:60px;
   left: 10%;
   position: absolute;
 `
 
 function YanMenuItem ({ acik, handleYanMenuClick }) {
   const [seciliMenu, setSeciliMenu] = useState(null)
-
   const seciliMenuClick = (item) => {
     setSeciliMenu(item)
   }
