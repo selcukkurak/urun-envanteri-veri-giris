@@ -6,6 +6,7 @@ import { Button, ButtonGroup, FormGroup, InputGroup } from '@blueprintjs/core'
 import useSayfaIciGecis from '../../hook/useSayfaIciGecis'
 import HaberBulteniTabloForm from './HaberBulteniTabloForm'
 import HaberBulteniIstatistikiTabloForm from './HaberBulteniIstatistikiTabloForm'
+import { PersistFormikValues } from 'formik-persist-values'
 
 const Wrapper = styled.div`
   padding: 70px 16px;
@@ -28,9 +29,7 @@ const ButonGrup = styled(ButtonGroup)`
   max-width: 35vw;
   width: 35vw;
 `
-const IcerikTemizleButon = styled(Button)`
-  margin-left: 50%;
-`
+
 
 
 export default function HaberBulteniForm({history, seciliBulten}){
@@ -67,10 +66,8 @@ export default function HaberBulteniForm({history, seciliBulten}){
     >
       {({
         values,
-        dirty,
         handleChange,
         submitForm,
-        resetForm,
         setFieldValue
       }) => (
         <Wrapper>
@@ -81,9 +78,6 @@ export default function HaberBulteniForm({history, seciliBulten}){
                 <Button intent={'danger'} minimal={!bultenTablo} text={'Tablo Bilgileri'} onClick={tabloBultenSayfaClick}/>
                 <Button intent={'danger'} minimal={!bultenIstatistikTablo} text={'İstatistiki Tablo Bilgileri'} onClick={istatistikBultenSayfaClick}/>
               </ButonGrup>
-              {dirty && (
-                <IcerikTemizleButon minimal intent={'danger'} text={'İçeriği Temizle'} rightIcon="cross" onClick={resetForm}/>
-              )}
             </ButonAlani>
             <Container fluid>
               {bultenGenel && (
@@ -138,6 +132,7 @@ export default function HaberBulteniForm({history, seciliBulten}){
                 </Col>
               </FonksiyonelButonAlani>
             </Container>
+            <PersistFormikValues name="bulten-form"/>
           </Form>
         </Wrapper>
       )}

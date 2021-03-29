@@ -10,6 +10,7 @@ import UrunGenelBilgiler from './UrunGenelBilgiler'
 import UrunGirdiBilgileri from './UrunGirdiBilgileri'
 import UrunCiktiBilgileri from './UrunCiktiBilgileri'
 import UrunMetaveriForm from './UrunMetaveriForm'
+import { PersistFormikValues } from 'formik-persist-values'
 
 const Wrapper = styled.div`
   padding: 64px 16px;
@@ -22,9 +23,6 @@ const ButonGrup = styled(ButtonGroup)`
   flex: 1;
   max-width: 35vw;
   width: 35vw;
-`
-const IcerikTemizleButon = styled(Button)`
-  margin-left: 50%;
 `
 
 const FonksiyonelButonAlani = styled(Row)`
@@ -132,11 +130,9 @@ export default function UrunForm ({ seciliUrun, history }) {
     >
       {({
         values,
-        resetForm,
         handleChange,
         handleSubmit,
         setFieldValue,
-        dirty
       }) => (
         <Wrapper>
           <Form onSubmit={handleSubmit}>
@@ -147,9 +143,6 @@ export default function UrunForm ({ seciliUrun, history }) {
                 <Button intent={'danger'} minimal={!girdi} text={'Girdi Bilgileri'} onClick={girdiSayfaClick}/>
                 <Button intent={'danger'} minimal={!cikti} text={'Çıktı Bilgileri'} onClick={ciktiSayfaClick}/>
               </ButonGrup>
-              {dirty && (
-                <IcerikTemizleButon minimal intent={'danger'} text={'İçeriği Temizle'} rightIcon="cross" onClick={resetForm}/>
-              )}
             </ButonAlani>
             <Container fluid>
               <Row>
@@ -196,6 +189,7 @@ export default function UrunForm ({ seciliUrun, history }) {
                 <Button fill intent='success' text={'Kaydet'}/>
               </Col>
             </FonksiyonelButonAlani>
+            <PersistFormikValues name="urun-form"/>
           </Form>
         </Wrapper>
       )}

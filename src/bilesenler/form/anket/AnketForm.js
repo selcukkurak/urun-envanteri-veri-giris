@@ -5,6 +5,7 @@ import { Button, FormGroup, InputGroup, Switch } from '@blueprintjs/core'
 import styled from 'styled-components'
 import SelectField from '../SelectField'
 import useSecenekler from '../useSecenekler'
+import { PersistFormikValues } from 'formik-persist-values'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -215,6 +216,7 @@ export default function AnketForm ({ seciliAnket, history }) {
                 </Col>
               </FonksiyonelButonAlani>
             </Container>
+            <PersistFormikValues name="anket-form"/>
           </Form>
         )}
       </Formik>
