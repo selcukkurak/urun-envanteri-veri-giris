@@ -11,6 +11,7 @@ const Wrapper = styled.div`
 `
 const YanMenu = styled.div`
   width: ${props => props.acik ? '210px' : '60px'};
+  overflow-x: hidden;
   height: 100vh;
   top: 0;
   left: 0;
