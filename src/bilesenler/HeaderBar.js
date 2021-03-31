@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './images/tuik-logo.svg';
-import { Alignment, Button, Classes, Icon, Navbar, Tooltip } from '@blueprintjs/core'
+import { Alignment, Button, Classes, Navbar } from '@blueprintjs/core'
 import { ArayuzRenkleri } from '@tuik/renkler'
 import { useKeycloak } from '@react-keycloak/web'
 import styled from 'styled-components'
@@ -11,21 +11,11 @@ const NavbarLoginDiv = styled(Navbar.Heading)`
 `
 
 
-export default function HeaderBar({acik, handleYanMenuClick}) {
+export default function HeaderBar() {
   const { keycloak, initialized } = useKeycloak()
   return (
     <Navbar fixedToTop style={{ backgroundColor: ArayuzRenkleri.ustMenu }} className={Classes.DARK}>
       <Navbar.Group align={Alignment.LEFT}>
-        {!acik && (
-            <Tooltip>
-              <Icon icon={'menu'} iconSize={30} onClick={handleYanMenuClick}/>
-              Menüyü Açmak İçin Tıklayınız
-
-            </Tooltip>
-        )}
-        {!acik && (
-          <Navbar.Divider/>
-        )}
         <img src={logo} width="40px" alt="banner" />
         <Navbar.Divider/>
         <Navbar.Heading>

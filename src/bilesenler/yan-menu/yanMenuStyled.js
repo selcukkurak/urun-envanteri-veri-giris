@@ -12,6 +12,7 @@ export const MenuItemStyled = styled(MenuItem)`
   height: 56px;
   width: 209px;
   color: white;
+  transition: width 100ms;
   border-bottom: 1px solid rgb(170, 23, 23);
   font-size:1.1em;
   border-radius: 2px;

@@ -20,6 +20,7 @@ export default function useYanMenu(){
   }, [boy]);
   return {
     acik,
+    setAcik,
     handleYanMenuClick
   }
 }

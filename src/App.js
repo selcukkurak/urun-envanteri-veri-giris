@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 `
 
 const OrtaBolme = styled.div`
-  margin-left: ${props => props.acik ? "210px" : 0};
+  margin-left: ${props => props.acik ? "210px" : "60px"};
   height: 100vh;
 `
 
@@ -31,6 +31,7 @@ function App () {
 
   const {
     acik,
+    setAcik,
     handleYanMenuClick
   } = useYanMenu()
   return (
@@ -49,7 +50,7 @@ function App () {
             <Wrapper>
               <HeaderBar acik={acik} handleYanMenuClick={handleYanMenuClick}/>
               <GlobalStyle/>
-              <YanMenuItem acik={acik} handleYanMenuClick={handleYanMenuClick}/>
+              <YanMenuItem setAcik={setAcik} acik={acik} handleYanMenuClick={handleYanMenuClick}/>
               <OrtaBolme acik={acik}>
                 <Switch>
                   <Redirect exact from={'/'} to={'/urunler'}/>
