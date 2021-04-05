@@ -3,7 +3,7 @@ import { Button, Classes, Dialog, FormGroup, InputGroup } from '@blueprintjs/cor
 import handleModal from '../../hook/handleModal'
 import { Container, Row, Col } from 'react-grid-system'
 
-export default function TabloFormDialog ({ handleChange, setFieldValue, tablolar }) {
+export default function TabloFormDialog ({ tablolar, setFieldValue, handleChange, seciliKayit}) {
   const [open, handleClickOpenModal, handleClickCloseModal] = handleModal()
   const [seciliTablo, setSeciliTablo] = useState(null)
 
@@ -13,7 +13,8 @@ export default function TabloFormDialog ({ handleChange, setFieldValue, tablolar
       adi: '',
       aciklama: '',
       viewAdi: '',
-      kolonBilgileri: []
+      idariKayitId:seciliKayit
+
     }
     setFieldValue('tablolar', [...tablolar, yenitablo])
     seciliItem(yenitablo)
