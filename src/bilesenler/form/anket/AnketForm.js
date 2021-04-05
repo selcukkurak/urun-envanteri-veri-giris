@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import SelectField from '../SelectField'
 import useSecenekler from '../useSecenekler'
 import { PersistFormikValues } from 'formik-persist-values'
+import { deleteLocalStorage } from '../ortak'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -209,14 +210,14 @@ export default function AnketForm ({ seciliAnket, history }) {
               <FonksiyonelButonAlani>
                 <Col sm={8} md={8} lg={8}/>
                 <Col>
-                  <Button fill intent='danger' text={'Geri Dön'} onClick={history.goBack}/>
+                  <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
                 </Col>
                 <Col>
                   <Button fill intent='success' text={'Kaydet'} onClick={(event) => handleAnketSubmit(event)}/>
                 </Col>
               </FonksiyonelButonAlani>
             </Container>
-            <PersistFormikValues name="anket-form"/>
+            <PersistFormikValues name="anket-form" persistInvalid hashInitials/>
           </Form>
         )}
       </Formik>

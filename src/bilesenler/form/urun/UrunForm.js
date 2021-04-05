@@ -11,6 +11,7 @@ import UrunGirdiBilgileri from './UrunGirdiBilgileri'
 import UrunCiktiBilgileri from './UrunCiktiBilgileri'
 import UrunMetaveriForm from './UrunMetaveriForm'
 import { PersistFormikValues } from 'formik-persist-values'
+import { deleteLocalStorage } from '../ortak'
 
 const Wrapper = styled.div`
   padding: 64px 16px;
@@ -183,13 +184,13 @@ export default function UrunForm ({ seciliUrun, history }) {
             <FonksiyonelButonAlani>
               <Col sm={8} md={8} lg={8}/>
               <Col>
-                <Button fill intent='danger' text={'Geri Dön'} onClick={history.goBack}/>
+                <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
               </Col>
               <Col>
                 <Button fill intent='success' text={'Kaydet'}/>
               </Col>
             </FonksiyonelButonAlani>
-            <PersistFormikValues name="urun-form"/>
+            <PersistFormikValues name="urun-form" persistInvalid hashInitials/>
           </Form>
         </Wrapper>
       )}

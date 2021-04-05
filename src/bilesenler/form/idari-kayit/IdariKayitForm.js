@@ -12,6 +12,7 @@ import { siraliKurumlar } from '../../store/selectors'
 import useSayfaIciGecis from '../../hook/useSayfaIciGecis'
 import TabloBilgileriForm from './TabloBilgileriForm'
 import { PersistFormikValues } from 'formik-persist-values'
+import { deleteLocalStorage } from '../ortak'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -97,7 +98,6 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
     veriBirimDuzeyi: seciliIdariKayit ? seciliKayitItem(seciliIdariKayit.birimDuzeyi) : '',
     cografiDuzeyi: seciliIdariKayit ? seciliKayitItem(seciliIdariKayit.cografiDuzey) : null,
     veriTalepBicimi: seciliIdariKayit ? seciliKayitItem(seciliIdariKayit.veriTalepBicimi) : null,
-    tablolar:seciliIdariKayit ? seciliIdariKayit.tablolar : []
   }
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -106,6 +106,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
   function reactQuillHandleChange (name, icerik, setFieldValue) {
     setFieldValue(name, icerik)
   }
+
 
   return (
     <Wrapper>
@@ -218,7 +219,6 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                       </FormGroup>
                     </Col>
                   </Satir>
-                  {console.log("tablolar" , values.tablolar)}
                   <Satir/>
                   <Satir>
                     <Col sm={5.5} md={5.5} lg={5.5}>
@@ -290,22 +290,20 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
               )}
               {idariTablo && (
                 <TabloBilgileriForm
-                  tablolar={values.tablolar}
-                  handleChange={handleChange}
-                  setFieldValue={setFieldValue}
+                  seciliKayit={values.kodu}
                 />
               )}
               <FonksiyonelButonAlani>
                 <Col sm={8} md={8} lg={8}/>
                 <Col>
-                  <Button fill intent='danger' text={'Geri Dön'} onClick={history.goBack}/>
+                  <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
                 </Col>
                 <Col>
                   <Button fill intent='success' text={'Kaydet'}/>
                 </Col>
               </FonksiyonelButonAlani>
             </Container>
-            <PersistFormikValues name="kayit-form" persistInvalid hashInitials hashSpecificity={1}/>
+            <PersistFormikValues name="kayit-form" persistInvalid hashInitials />
           </Form>
         )}
       </Formik>
