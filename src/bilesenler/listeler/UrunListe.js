@@ -39,7 +39,6 @@ export default function UrunListe ({ match }) {
     setSeciliUrunId(key)
   }
 
-
   return (
     <WrapperListe>
       <Container fluid>
