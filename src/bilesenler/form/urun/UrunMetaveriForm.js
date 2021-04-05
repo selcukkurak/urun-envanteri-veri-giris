@@ -68,4 +68,5 @@ export default function UrunMetaveriForm ({ handleChange, metaveriler, setFieldV
       ))}
     </Container>
   )
+
 }
