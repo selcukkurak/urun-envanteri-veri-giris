@@ -11,7 +11,7 @@ export default function useYanMenu(){
 
   }
   useEffect(() => {
-    if(boy < 672){
+    if(boy < 750){
       setAcik(false)
     }
     else setAcik(true)
