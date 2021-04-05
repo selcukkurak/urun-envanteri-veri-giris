@@ -1,13 +1,12 @@
 import React from 'react';
 import logo from './images/tuik-logo.svg';
-import { Alignment, Button, Classes, Navbar } from '@blueprintjs/core'
+import { Alignment, Button, Classes, Menu, Navbar, Popover, Position } from '@blueprintjs/core'
 import { ArayuzRenkleri } from '@tuik/renkler'
 import { useKeycloak } from '@react-keycloak/web'
 import styled from 'styled-components'
 
 const NavbarLoginDiv = styled(Navbar.Heading)`
-  flex:1;
-  margin:12px 32px;
+  margin:12px 12px;
 `
 
 
@@ -25,10 +24,15 @@ export default function HeaderBar() {
       </Navbar.Group>
       <Navbar.Group align='right'>
         {keycloak.idTokenParsed && initialized ? (
-          <div style={{display:'flex'}}>
-            <NavbarLoginDiv>{keycloak.idTokenParsed.name}</NavbarLoginDiv>
-            <Button minimal text="Çıkış Yap" onClick={keycloak.logout}/>
-          </div>
+          <NavbarLoginDiv>
+            <Popover content={
+              <Menu>
+                  <Button fill minimal text="Çıkış Yap" onClick={keycloak.logout}/>
+              </Menu>
+            } position={Position.BOTTOM}>
+              <Button icon="person" text={keycloak.idTokenParsed.name} />
+            </Popover>
+          </NavbarLoginDiv>
         ): (
           <Button minimal text="Giriş Yap" onClick={keycloak.login}/>
         )}
