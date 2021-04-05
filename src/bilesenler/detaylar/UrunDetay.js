@@ -92,7 +92,7 @@ export default function UrunDetay ({ match }) {
           </Col>
         </Row>
         <Row>
-          <Col sm={12} md={12} lg={12}>
+          <Col sm={12} md={12} lg={6}>
             {isLoading && (
               <div style={{ paddingTop: '300px' }}>
                 <Spinner size={50}/>
