@@ -28,7 +28,6 @@ export default function MetaveriIcerikFormDialog ({ metaveri, setFieldValue, met
   const seciliBaslikIdler = metaveri.metaveriBasliklar.map(icerik => icerik.baslik && icerik.baslik.value)
   const filtreliBasliklar = basliklar.filter(baslik => !seciliBaslikIdler.includes(baslik.value))
 
-  console.log(seciliBaslikIdler)
 
   const reactQuillHandleChange = (name, icerik) => {
     setFieldValue(name, icerik)
@@ -43,6 +42,8 @@ export default function MetaveriIcerikFormDialog ({ metaveri, setFieldValue, met
 
     handleClickOpenModal()
   }
+
+
   return (
     <div>
       <ButonStyled fill intent={'success'} text="İçerik Ekle" onClick={() => baslikAdd()}/>

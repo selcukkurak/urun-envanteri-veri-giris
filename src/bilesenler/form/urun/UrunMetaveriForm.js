@@ -1,17 +1,40 @@
-import React from 'react'
+import React  from 'react'
 import { Col, Container, Row } from 'react-grid-system'
-import { Button, Card, FormGroup, HTMLTable, InputGroup } from '@blueprintjs/core'
+import { Button, FormGroup, InputGroup } from '@blueprintjs/core'
 import styled from 'styled-components'
 import MetaveriIcerikFormDialog from './MetaveriIcerikFormDialog'
 import htmlParser from '../../util/htmlParser'
+import {
+  Accordion,
+  AccordionItem,
+  AccordionItemButton,
+  AccordionItemHeading,
+  AccordionItemPanel
+} from 'react-accessible-accordion'
 
 const Satir = styled(Row)`
   padding: 8px 8px;
 `
+const Baslik = styled.div`
+  font-size: 1.3em;
+  font-weight: bold;
+  
+  &:first-child {
+    padding-top: 16px;
+  }
+`
+const Yazi = styled.div`
+  margin-top: 16px;
+`
+const Icerik = styled.div`
+  margin-bottom: 16px;
 
+  &:last-child {
+    margin-bottom: 0;
+  }
+`
 
 export default function UrunMetaveriForm ({ handleChange, metaveriler, setFieldValue }) {
-
 
   const konuAdd = () => {
     const yeniKonu = {
@@ -22,7 +45,6 @@ export default function UrunMetaveriForm ({ handleChange, metaveriler, setFieldV
 
     setFieldValue('metaveriler', [...metaveriler, yeniKonu])
   }
-
   return (
     <Container fluid>
       <Satir>
@@ -38,30 +60,28 @@ export default function UrunMetaveriForm ({ handleChange, metaveriler, setFieldV
               <InputGroup name={`metaveriler[${index}].adi`} value={metaveri.adi || ''} onChange={handleChange}/>
             </FormGroup>
             {metaveri.metaveriBasliklar.length !== 0 && (
-              <Card style={{padding:0}}>
-                <HTMLTable striped style={{width:"100%"}}>
-                  <thead>
-                  <tr>
-                    <th>Başlık</th>
-                    <th>Açıklama</th>
-                  </tr>
-                  </thead>
-                  {metaveri.metaveriBasliklar.map(icerik => (
-                    <tbody key={icerik.id}>
-                      <tr>
-                        <td>{icerik.baslik && icerik.baslik.label}</td>
-                        <td>{htmlParser(`${icerik.aciklama}`)}</td>
-                      </tr>
-                    </tbody>
-                  ))}
-
-                </HTMLTable>
-
-              </Card>
-            ) }
+              <Accordion allowMultipleExpanded>
+                <AccordionItem key={index}>
+                  <AccordionItemHeading>
+                    <AccordionItemButton>
+                      {metaveri.adi}
+                    </AccordionItemButton>
+                  </AccordionItemHeading>
+                  <AccordionItemPanel>
+                    {metaveri.metaveriBasliklar.map((icerik, index) => (
+                      <Icerik key={index}>
+                        <Baslik>{icerik.baslik && icerik.baslik.label}</Baslik>
+                        <Yazi>{htmlParser(`${icerik.aciklama}`)}</Yazi>
+                      </Icerik>
+                    ))}
+                  </AccordionItemPanel>
+                </AccordionItem>
+              </Accordion>
+            )}
           </Col>
           <Col xs={1.5} sm={2} md={2} lg={2}>
-            <MetaveriIcerikFormDialog metaveriler={metaveriler} metaveri={metaveri} setFieldValue={setFieldValue} handleChange={handleChange}/>
+            <MetaveriIcerikFormDialog metaveriler={metaveriler} metaveri={metaveri} setFieldValue={setFieldValue}
+                                      handleChange={handleChange}/>
           </Col>
 
         </Satir>
