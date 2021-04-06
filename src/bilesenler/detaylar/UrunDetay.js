@@ -32,7 +32,7 @@ const ButonAlani = styled.div`
   display: flex;
 `
 const Alan = styled.div`
-  flex:1;
+  flex: 1;
 `
 const ButonGrup = styled(ButtonGroup)`
   max-width: 20vw;
@@ -47,7 +47,6 @@ const KartDetay = styled.div`
   padding-top: 4px;
   font-size: 1em;
 `
-
 
 export default function UrunDetay ({ match }) {
   const bultenler = useRecoilValue(tekilBultenler)
@@ -173,7 +172,9 @@ export default function UrunDetay ({ match }) {
                             <DetayBaslik style={{ flex: '1 1 30%' }}>Anketler</DetayBaslik>
                             <Menu>
                               {seciliUrun.anketler.map(anket => (
-                                <KartDetay key={anket.id}>- {anket.adi}</KartDetay>
+                                <Link to={`/anketler/detay/${anket.id}`}>
+                                  <KartDetay key={anket.id}>- {anket.adi}</KartDetay>
+                                </Link>
                               ))}
                             </Menu>
                           </Kart>
@@ -187,7 +188,9 @@ export default function UrunDetay ({ match }) {
                             <DetayBaslik style={{ flex: '1 1 30%' }}>Bağlı Ürünler:</DetayBaslik>
                             <Menu>
                               {seciliUrun.urunler.map(urun => (
-                                <KartDetay key={urun.id}>- {urun.adi}</KartDetay>
+                                <Link to={`/urunler/detay/${urun.id}`}>
+                                  <KartDetay key={urun.id}>- {urun.adi}</KartDetay>
+                                </Link>
                               ))}
                             </Menu>
                           </Kart>
@@ -201,7 +204,9 @@ export default function UrunDetay ({ match }) {
                             <DetayBaslik style={{ flex: '1 1 30%' }}>İdari Kayıtlar</DetayBaslik>
                             <Menu>
                               {seciliUrun.idariKayitlar.map(kayit => (
-                                <KartDetay key={kayit.id}>- {kayit.adi}</KartDetay>
+                                <Link to={`/idari-kayitlar/detay/${kayit.id}`}>
+                                  <KartDetay key={kayit.id}>- {kayit.adi}</KartDetay>
+                                </Link>
                               ))}
                             </Menu>
                           </Kart>

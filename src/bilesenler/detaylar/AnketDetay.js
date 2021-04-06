@@ -39,6 +39,7 @@ export default function AnketDetay ({ match }) {
       />
       <Container fluid>
         <Row>
+          <Col sm={12} md={12} lg={5}/>
           <Col>
             <Popover content={
               <Menu>
@@ -59,7 +60,7 @@ export default function AnketDetay ({ match }) {
           </Col>
         </Row>
         <Row>
-          <Col sm={12} md={12} lg={8}>
+          <Col sm={12} md={12} lg={6}>
             <DetayAlani>
               <Card>
                 <Baslik>{seciliAnket.adi}</Baslik>
