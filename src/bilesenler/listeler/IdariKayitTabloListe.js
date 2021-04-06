@@ -43,11 +43,15 @@ export default function IdariKayitTabloListe ({ seciliKayit }) {
   const {
     data
   } = useIdariKayitTabloBilgileri(seciliKayit)
-  const seciliTablo = data && data.find((tablo, index) => index === seciliTabloId )
+
 
   const seciliTabloClick = (key) => {
     setSeciliTabloId(key)
   }
+
+  const seciliTablo = data && data.find((tablo, index) => index === seciliTabloId )
+
+  if(data && data.length === 0) return null
   return (
     <div>
       <UstAlan>

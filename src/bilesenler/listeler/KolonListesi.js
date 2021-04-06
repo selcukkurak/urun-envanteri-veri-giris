@@ -9,8 +9,9 @@ const Kart = styled(Card)`
 `
 
 export default function KolonListesi ({ seciliTablo }) {
-  console.log("seciliTablo", seciliTablo.kolonBilgileri)
-  if (!seciliTablo || !seciliTablo.kolonBilgileri) return null
+
+  console.log(seciliTablo)
+  if (!seciliTablo) return null
   return (
     <Kart>
       <HTMLTable>
