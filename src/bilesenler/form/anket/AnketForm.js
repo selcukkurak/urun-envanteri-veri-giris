@@ -7,6 +7,10 @@ import SelectField from '../SelectField'
 import useSecenekler from '../useSecenekler'
 import { PersistFormikValues } from 'formik-persist-values'
 import { deleteLocalStorage } from '../ortak'
+import Footer from '../Footer'
+import Axios from 'axios'
+import { useSetRecoilState, useRecoilValue } from 'recoil'
+import { anketlerState, referanslarState } from '../../store'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -14,19 +18,14 @@ const Wrapper = styled.div`
 const Satir = styled(Row)`
   padding: 4px 8px;
 `
-const FonksiyonelButonAlani = styled(Row)`
-  bottom: 5%;
-  right: 0;
-  width: 100%;
-  position: fixed;
-`
+
 
 
 export default function AnketForm ({ seciliAnket, history }) {
-  // const setAnketler = useSetRecoilState(anketlerState)
-  // const periyotlar = useRecoilValue(referanslarState).PERIYOT
-  // const cografiDuzeyler = useRecoilValue(referanslarState).COGRAFI_DUZEY
-  // const veriBirimDuzeyleri = useRecoilValue(referanslarState).ISTATISTIKI_BIRIM_DUZEY
+  const setAnketler = useSetRecoilState(anketlerState)
+  const periyotlar = useRecoilValue(referanslarState).PERIYOT
+  const cografiDuzeyler = useRecoilValue(referanslarState).COGRAFI_DUZEY
+  const veriBirimDuzeyleri = useRecoilValue(referanslarState).ISTATISTIKI_BIRIM_DUZEY
   const {
     periyotOptions,
     cografiDuzeyOptions,
@@ -58,30 +57,30 @@ export default function AnketForm ({ seciliAnket, history }) {
     cevaplayiciBirim: null,
     duzeltmeDurum: seciliAnket ? seciliAnket.duzeltmeDurum : false
   }
-  // const anketEkleIstek = (values) => {
-  //   const yeniAnket = {
-  //     id:values.kodu,
-  //     adi:values.adi,
-  //     taslak:false,
-  //     periyot:periyotlar.find(periyot => periyot.id === values.periyot.value),
-  //     cografiDuzey:cografiDuzeyler.find(duzey => duzey.id === values.cografiDuzeyi.value),
-  //     birimDuzey:veriBirimDuzeyleri.find(duzey => duzey.id === values.birimDuzeyi.value),
-  //     orneklemSayisi:values.orneklemSayisi,
-  //     sema:values.sema,
-  //     harzemliDurum: values.harzemliDurum ? 1 : 0,
-  //     ustDurum: values.ustDurum ? 1 : 0,
-  //     anketorSayisiMerkez: values.anketorSayisiMerkez,
-  //     anketorSayisiBolge: values.anketorSayisiBolge,
-  //     kontrolorSayisiMerkez: values.kontrolorSayisiMerkez,
-  //     kontrolorSayisiBolge: values.kontrolorSayisiBolge
-  //   }
-  //
-  //   return Axios.post("api/anketler/ekle", { yeniAnket })
-  // }
-  const handleAnketSubmit = (event) => {
+  const anketEkleIstek = (values) => {
+    const yeniAnket = {
+      id:values.kodu,
+      adi:values.adi,
+      taslak:false,
+      periyot:periyotlar.find(periyot => periyot.id === values.periyot.value),
+      cografiDuzey:cografiDuzeyler.find(duzey => duzey.id === values.cografiDuzeyi.value),
+      birimDuzey:veriBirimDuzeyleri.find(duzey => duzey.id === values.birimDuzeyi.value),
+      orneklemSayisi:values.orneklemSayisi,
+      sema:values.sema,
+      harzemliDurum: values.harzemliDurum ? 1 : 0,
+      ustDurum: values.ustDurum ? 1 : 0,
+      anketorSayisiMerkez: values.anketorSayisiMerkez,
+      anketorSayisiBolge: values.anketorSayisiBolge,
+      kontrolorSayisiMerkez: values.kontrolorSayisiMerkez,
+      kontrolorSayisiBolge: values.kontrolorSayisiBolge
+    }
+
+    return Axios.post("api/anketler/ekle", { yeniAnket })
+  }
+  const handleAnketSubmit = (values,event) => {
     event.preventDefault();
-    // anketEkleIstek(values).then(res => setAnketler(res.data))
-    history.goBack()
+    anketEkleIstek(values).then(res => setAnketler(res.data))
+
   }
   return (
     <Wrapper>
@@ -207,15 +206,15 @@ export default function AnketForm ({ seciliAnket, history }) {
                 </Col>
               </Satir>
               <Satir/>
-              <FonksiyonelButonAlani>
+              <Footer>
                 <Col sm={8} md={8} lg={8}/>
                 <Col>
                   <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
                 </Col>
                 <Col>
-                  <Button fill intent='success' text={'Kaydet'} onClick={(event) => handleAnketSubmit(event)}/>
+                  <Button fill intent='success' text={'Kaydet'} onClick={(event) => handleAnketSubmit(values, event)}/>
                 </Col>
-              </FonksiyonelButonAlani>
+              </Footer>
             </Container>
             <PersistFormikValues name="anket-form" persistInvalid hashInitials/>
           </Form>

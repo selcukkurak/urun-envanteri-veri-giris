@@ -12,6 +12,7 @@ import UrunCiktiBilgileri from './UrunCiktiBilgileri'
 import UrunMetaveriForm from './UrunMetaveriForm'
 import { PersistFormikValues } from 'formik-persist-values'
 import { deleteLocalStorage } from '../ortak'
+import Footer from '../Footer'
 
 const Wrapper = styled.div`
   padding: 64px 16px;
@@ -26,12 +27,6 @@ const ButonGrup = styled(ButtonGroup)`
   width: 35vw;
 `
 
-const FonksiyonelButonAlani = styled(Row)`
-  bottom: 5%;
-  right: 0;
-  width: 100%;
-  position: fixed;
-`
 export default function UrunForm ({ seciliUrun, history }) {
 
   const birimler = useRecoilValue(birimlerState)
@@ -181,15 +176,15 @@ export default function UrunForm ({ seciliUrun, history }) {
                 setFieldValue={setFieldValue}
               />
             )}
-            <FonksiyonelButonAlani>
-              <Col sm={8} md={8} lg={8}/>
+            <Footer>
+              <Col sm={0} md={0} lg={8}/>
               <Col>
                 <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
               </Col>
               <Col>
                 <Button fill intent='success' text={'Kaydet'}/>
               </Col>
-            </FonksiyonelButonAlani>
+            </Footer>
             <PersistFormikValues name="urun-form" persistInvalid hashInitials/>
           </Form>
         </Wrapper>

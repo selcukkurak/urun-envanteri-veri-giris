@@ -13,6 +13,7 @@ import useSayfaIciGecis from '../../hook/useSayfaIciGecis'
 import TabloBilgileriForm from './TabloBilgileriForm'
 import { PersistFormikValues } from 'formik-persist-values'
 import { deleteLocalStorage } from '../ortak'
+import Footer from '../Footer'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -21,12 +22,6 @@ const Satir = styled(Row)`
   padding: 8px 8px;
 `
 
-const FonksiyonelButonAlani = styled(Row)`
-  bottom: 5%;
-  right: 0;
-  width: 100%;
-  position: fixed;
-`
 export default function IdariKayitForm ({ history, seciliIdariKayit }) {
   const hiddenYasalHukumInput = React.useRef(null)
   const hiddenProtokolInput = React.useRef(null)
@@ -293,7 +288,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                   seciliKayit={values.kodu}
                 />
               )}
-              <FonksiyonelButonAlani>
+              <Footer>
                 <Col sm={8} md={8} lg={8}/>
                 <Col>
                   <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
@@ -301,7 +296,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                 <Col>
                   <Button fill intent='success' text={'Kaydet'}/>
                 </Col>
-              </FonksiyonelButonAlani>
+              </Footer>
             </Container>
             <PersistFormikValues name="kayit-form" persistInvalid hashInitials />
           </Form>
