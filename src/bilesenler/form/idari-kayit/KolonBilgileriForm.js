@@ -28,7 +28,12 @@ const KartGovde = styled.div`
   height: ${props => props.boy > 3  ?  "300px" : "300px"};
   overflow-y: auto;
 `
-
+const TableHeader = styled.th`
+  position: sticky;
+  background-color: white;
+  top: 0;
+  box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.4);
+`
 const pkDurum = [
   {
     label: 'Primary Key', value: 0,
@@ -62,12 +67,12 @@ export default function KolonBilgileriForm ({ handleChange, setFieldValue, tablo
         <Table striped>
           <thead>
           <tr>
-            <th><Button icon={'plus'} onClick={() => handleNewKolon()}/></th>
-            <th>Kolon Adı</th>
-            <th>Kolon Açıklaması</th>
-            <th>View Kolon Adı</th>
-            <th>Pk mı FK mı?</th>
-            <th>İlişkili Tablo Kolon Adı</th>
+            <TableHeader><Button icon={'plus'} onClick={() => handleNewKolon()}/></TableHeader>
+            <TableHeader>Kolon Adı</TableHeader>
+            <TableHeader>Kolon Açıklaması</TableHeader>
+            <TableHeader>View Kolon Adı</TableHeader>
+            <TableHeader>Pk mı FK mı?</TableHeader>
+            <TableHeader>İlişkili Tablo Kolon Adı</TableHeader>
           </tr>
           </thead>
           <tbody>

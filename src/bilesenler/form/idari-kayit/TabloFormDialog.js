@@ -27,7 +27,7 @@ export default function TabloFormDialog ({ tablolar, setFieldValue, handleChange
 
   return (
     <div>
-      <Button style={{ marginBottom: '8px' }} minimal intent={'success'} text="Tablo Ekle" rightIcon={'plus'}
+      <Button style={{ marginBottom: '8px' }} intent={'success'} text="Tablo Ekle" rightIcon={'plus'}
               onClick={tabloAdd}/>
       <Dialog
         onClose={handleClickCloseModal}
