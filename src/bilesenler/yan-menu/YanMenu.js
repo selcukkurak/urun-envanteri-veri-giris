@@ -26,7 +26,10 @@ const YanMenuIcon = styled.div`
   left: 10%;
   position: absolute;
 `
-
+const MenuBaslik = styled.div`
+  font-size: 1em;
+  font-weight: 600;
+`
 function YanMenuItem ({ acik, handleYanMenuClick, setAcik }) {
   const [seciliMenu, setSeciliMenu] = useState(null)
   const seciliMenuClick = (item) => {
@@ -44,7 +47,7 @@ function YanMenuItem ({ acik, handleYanMenuClick, setAcik }) {
         <MenuStyled>
           {linkler.map((item, index) => (
             <Link key={index} to={item.link}>
-              <MenuItemStyled aktif={seciliMenu && seciliMenu.link === item.link} text={acik ? item.baslik : ""}
+              <MenuItemStyled aktif={seciliMenu && seciliMenu.link === item.link} text={acik ? (<MenuBaslik>{item.baslik}</MenuBaslik>) : ""}
                               icon={item.icon}
                               onClick={() => seciliMenuClick(item)}>
               </MenuItemStyled>
