@@ -98,7 +98,7 @@ export default function HaberBulteniForm ({ history, seciliBulten }) {
                   <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
                 </Col>
                 <Col>
-                  <Button fill intent='success' text={'Kaydet'}/>
+                  <Button fill intent='success' text={seciliBulten ? "Güncelle" : 'Kaydet'}/>
                 </Col>
               </Footer>
             </Container>

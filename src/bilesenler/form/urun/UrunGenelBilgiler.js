@@ -12,7 +12,7 @@ const Satir = styled(Row)`
 `
 const QuillStyled = styled(ReactQuill)`
   background-color: white;
-  height: 8vh;
+  height: 10vh;
   
 `
 

@@ -13,22 +13,22 @@ import UrunMetaveriForm from './UrunMetaveriForm'
 import { PersistFormikValues } from 'formik-persist-values'
 import { deleteLocalStorage } from '../ortak'
 import Footer from '../Footer'
+import UrunAPI from '../../servisler/UrunAPI'
+import useYanMenu from '../../yan-menu/useYanMenu'
 
 const Wrapper = styled.div`
   padding: 64px 16px;
 `
-const ButonAlani = styled.div`
-  margin: 4px 64px;
-  display: flex;
-`
+
 const ButonGrup = styled(ButtonGroup)`
-  flex: 1;
-  max-width: 35vw;
-  width: 35vw;
+  margin: 4px 16px;
+  display: grid;
+  grid-template-columns: ${props => props.boy <750  ? "auto auto auto auto" : "15% 15% 15% 15%"};
 `
 
 export default function UrunForm ({ seciliUrun, history }) {
-
+  const { boy } = useYanMenu()
+  // const setUrunler = useSetRecoilState(urunlerState)
   const birimler = useRecoilValue(birimlerState)
   const bultenler = useRecoilValue(bultenlerState)
   const {
@@ -54,8 +54,7 @@ export default function UrunForm ({ seciliUrun, history }) {
         .map(b => bultenler.find(bulten => bulten.id === b.bultenId))
         .filter(bulten => !!bulten)
         .map(bulten => ({ label: bulten.adi, value: bulten.id }))
-    }
-    else return []
+    } else return []
   }
 
   const seciliUrunCografiDuzey = () => {
@@ -99,13 +98,13 @@ export default function UrunForm ({ seciliUrun, history }) {
     bultenler: seciliUrunHaberBulteni() || [],
     paylasimlar:
       seciliUrun ? seciliUrun.paylasimlar.map(item => ({
-        id:item.id,
+        id: item.id,
         adi: item.adi,
         kurulus: { label: item.kurulus.adi, value: item.kurulus.id },
         arac: { label: item.arac.adi, value: item.arac.id },
         gonderilmePeriyodu: { label: item.periyot.adi, value: item.periyot.id },
       })) : [{
-        id:0,
+        id: 0,
         adi: '',
         kurulus: null,
         arac: null,
@@ -113,6 +112,33 @@ export default function UrunForm ({ seciliUrun, history }) {
       }],
     birim: seciliGrupBaskanligi() || null,
     metaveriler: []
+  }
+
+  const urunEkle = (values) => {
+    const yeniUrun = {
+      adi: values.adi,
+      kodu: values.kodu,
+      periyot: values.periyot,
+      cografiDuzey: values.cografiDuzey,
+      zamanlilik: values.zamanlilik,
+      amac: values.amac,
+      kapsam: values.kapsam,
+      fayda: values.fayda,
+      birim: values.birim && values.birim.value,
+    }
+
+    console.log('ürün', values)
+
+    const response = UrunAPI.urunEklemeIstek(yeniUrun)
+    console.log('response', response)
+
+    // if(response.data.success){
+    //   setUrunler(response.data)
+    //   history.goBack()
+    //   return (
+    //     basariMesajiYayinla("Ekleme İşlemi Başarılı!")
+    //   )
+    // }
   }
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -132,14 +158,13 @@ export default function UrunForm ({ seciliUrun, history }) {
       }) => (
         <Wrapper>
           <Form onSubmit={handleSubmit}>
-            <ButonAlani>
-              <ButonGrup fill>
-                <Button intent={'danger'} minimal={!genel} text={'Genel Bilgiler'} onClick={genelSayfaClick}/>
-                <Button intent={'danger'} minimal={!metaveriSayfa} text={'Metaveri Bilgileri'} onClick={metaveriSayfaClick}/>
-                <Button intent={'danger'} minimal={!girdi} text={'Girdi Bilgileri'} onClick={girdiSayfaClick}/>
-                <Button intent={'danger'} minimal={!cikti} text={'Çıktı Bilgileri'} onClick={ciktiSayfaClick}/>
-              </ButonGrup>
-            </ButonAlani>
+            <ButonGrup boy={boy}>
+              <Button intent={'danger'} minimal={!genel} text={'Genel Bilgiler'} onClick={genelSayfaClick}/>
+              <Button intent={'danger'} minimal={!metaveriSayfa} text={'Metaveri Bilgileri'}
+                      onClick={metaveriSayfaClick}/>
+              <Button intent={'danger'} minimal={!girdi} text={'Girdi Bilgileri'} onClick={girdiSayfaClick}/>
+              <Button intent={'danger'} minimal={!cikti} text={'Çıktı Bilgileri'} onClick={ciktiSayfaClick}/>
+            </ButonGrup>
             <Container fluid>
               <Row>
                 <Col><Divider/></Col>
@@ -177,12 +202,13 @@ export default function UrunForm ({ seciliUrun, history }) {
               />
             )}
             <Footer>
-              <Col sm={0} md={0} lg={8}/>
+              <Col sm={0} md={0} lg={7}/>
               <Col>
                 <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
               </Col>
               <Col>
-                <Button fill intent='success' text={'Kaydet'}/>
+                <Button fill intent='success' text={seciliUrun ? 'Güncelle' : 'Kaydet'}
+                        onClick={() => urunEkle(values)}/>
               </Col>
             </Footer>
             <PersistFormikValues name="urun-form" persistInvalid hashInitials/>

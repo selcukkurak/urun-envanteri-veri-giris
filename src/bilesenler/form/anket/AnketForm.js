@@ -11,6 +11,7 @@ import Footer from '../Footer'
 import Axios from 'axios'
 import { useSetRecoilState, useRecoilValue } from 'recoil'
 import { anketlerState, referanslarState } from '../../store'
+import { basariMesajiYayinla } from '../../bildirim/mesajlar'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -75,11 +76,11 @@ export default function AnketForm ({ seciliAnket, history }) {
       kontrolorSayisiBolge: values.kontrolorSayisiBolge
     }
 
-    return Axios.post("api/anketler/ekle", { yeniAnket })
+    Axios.post("api/anketler/ekle",  yeniAnket ).then(res => setAnketler(res.data))
+    basariMesajiYayinla("Ekleme İşlemi Başarılı")
   }
   const handleAnketSubmit = (values,event) => {
     event.preventDefault();
-    anketEkleIstek(values).then(res => setAnketler(res.data))
 
   }
   return (
@@ -93,19 +94,9 @@ export default function AnketForm ({ seciliAnket, history }) {
           values,
           handleChange,
           handleSubmit,
-          dirty,
-          resetForm
         }) => (
           <Form onSubmit={handleSubmit}>
             <Container fluid>
-              <Satir>
-                <Col sm={10} md={10} lg={10}/>
-                <Col>
-                  {dirty && (
-                    <Button fill minimal intent={'danger'} text={'İçeriği Temizle'} rightIcon="cross" onClick={resetForm}/>
-                  )}
-                </Col>
-              </Satir>
               <Satir>
                 <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label={'Anket Kodu:'} labelFor="kodu">
@@ -212,7 +203,7 @@ export default function AnketForm ({ seciliAnket, history }) {
                   <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
                 </Col>
                 <Col>
-                  <Button fill intent='success' text={'Kaydet'} onClick={(event) => handleAnketSubmit(values, event)}/>
+                  <Button fill intent='success' text={seciliAnket ? "Güncelle" : 'Kaydet'} onClick={() => anketEkleIstek(values)}/>
                 </Col>
               </Footer>
             </Container>

@@ -294,7 +294,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                   <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
                 </Col>
                 <Col>
-                  <Button fill intent='success' text={'Kaydet'}/>
+                  <Button fill intent='success' text={seciliIdariKayit ? "Güncelle" : 'Kaydet'}/>
                 </Col>
               </Footer>
             </Container>
