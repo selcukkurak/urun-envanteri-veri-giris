@@ -12,33 +12,34 @@ import YanMenuItem from './bilesenler/yan-menu/YanMenu'
 import { IdariKayitSayfa, AnketSayfa, UrunSayfa, BultenSayfa } from './bilesenler/sayfalar'
 import GlobalStyle from './bilesenler/globalStiller'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactKeycloakProvider } from '@react-keycloak/web'
 import keycloak from './keycloak'
 import useYanMenu from './bilesenler/yan-menu/useYanMenu'
+import { setupAxiosInterceptors, EDProvider } from '@tuik/ed-react-bilesenleri'
 
 const Wrapper = styled.div`
   padding: 0;
 `
 
 const OrtaBolme = styled.div`
-  margin-left: ${props => props.acik ? "210px" : "60px"};
+  margin-left: ${props => props.acik ? '210px' : '60px'};
   height: 100vh;
 `
 
 const queryClient = new QueryClient()
+setupAxiosInterceptors(keycloak)
 
 function App () {
-
   const {
     acik,
+    boy,
     setAcik,
     handleYanMenuClick
   } = useYanMenu()
   return (
-    <ReactKeycloakProvider
-      authClient={keycloak}
-    >
-      <Router>
+    <Router>
+      <EDProvider
+        keycloak={keycloak}
+      >
         <RecoilRoot>
           <UrunLoader/>
           <AnketLoader/>
@@ -51,22 +52,26 @@ function App () {
               <HeaderBar acik={acik} handleYanMenuClick={handleYanMenuClick}/>
               <GlobalStyle/>
               <YanMenuItem setAcik={setAcik} acik={acik} handleYanMenuClick={handleYanMenuClick}/>
-              <OrtaBolme acik={acik}>
-                <Switch>
-                  <Redirect exact from={'/'} to={'/urunler'}/>
-                  <Route path={'/urunler'} component={UrunSayfa}/>
+              {boy> 200 && (
+                <OrtaBolme acik={acik}>
+                  <Switch>
+                    <Redirect exact from={'/'} to={'/urunler'}/>
+                    <Route path={'/urunler'} component={UrunSayfa}/>
 
-                  <Route path={'/idari-kayitlar'} component={IdariKayitSayfa}/>
+                    <Route path={'/idari-kayitlar'} component={IdariKayitSayfa}/>
 
-                  <Route path={'/haber-bultenleri'} component={BultenSayfa}/>
-                  <Route path={'/anketler'} component={AnketSayfa}/>
-                </Switch>
-              </OrtaBolme>
+                    <Route path={'/haber-bultenleri'} component={BultenSayfa}/>
+                    <Route path={'/anketler'} component={AnketSayfa}/>
+                  </Switch>
+                </OrtaBolme>
+              )}
+
             </Wrapper>
           </QueryClientProvider>
         </RecoilRoot>
-      </Router>
-    </ReactKeycloakProvider>
+      </EDProvider>
+
+    </Router>
   )
 }
 
