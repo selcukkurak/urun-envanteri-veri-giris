@@ -6,8 +6,7 @@ import { localSort } from '../util/sort'
 import { Col, Container, Row } from 'react-grid-system'
 import {
   AramaAlani,
-  BaslikMetin,
-  ButonDurumAlani,
+  BaslikMetin, EklemeButton,
   FiltreButonAlani,
   ListeBaslik,
   SagaYasli,
@@ -15,7 +14,6 @@ import {
   SolaYasli, WrapperListe
 } from './ortakStyle'
 import { Link } from 'react-router-dom'
-import { Button } from '@blueprintjs/core'
 import Arama from './Arama'
 import { taslakDurumlar } from './ortak'
 
@@ -37,16 +35,16 @@ export default function IdariKayitListe ({ match }) {
         <Row>
           <Col sm={12} md={12} lg={12}>
             <FiltreButonAlani>
-              <ButonDurumAlani/>
+              <AramaAlani>
+                <Arama setAranan={setAranan} placeholder={'İdari Kayıtlar İçinde Arayın....'}
+                       secili={secili} setSecili={setSecili} setSeciliId={setSeciliKayitId}
+                />
+              </AramaAlani>
               <Link to={`${match.url}/yeni-idariKayit`}>
-                <Button intent={'success'} text={'Yeni İdari Kayıt Ekle'}/>
+                <EklemeButton intent={'success'} text={'Yeni İdari Kayıt Ekle'}/>
               </Link>
             </FiltreButonAlani>
-            <AramaAlani>
-              <Arama setAranan={setAranan} placeholder={'İdari Kayıtlar İçinde Arayın....'}
-                secili={secili} setSecili={setSecili} setSeciliId={setSeciliKayitId}
-              />
-            </AramaAlani>
+
             <ListeBaslik>
               <SolaYasli>İdari Kayıtlar</SolaYasli>
               <SagaYasli>

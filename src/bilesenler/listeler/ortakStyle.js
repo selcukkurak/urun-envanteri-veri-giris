@@ -1,15 +1,17 @@
 import styled from 'styled-components'
 import { AnaRenkler } from '@tuik/renkler'
-import { Colors } from '@blueprintjs/core'
+import { Button, Colors } from '@blueprintjs/core'
 
 export const WrapperListe = styled.div`
   padding: 70px 12px;
 `
 export const FiltreButonAlani = styled.div`
-  display: flex;
+  display: grid;
+  justify-content: space-between;
+  grid-template-columns: 50% 50%; 
 `
-export const ButonDurumAlani = styled.div`
-  flex: 1;
+export const EklemeButton = styled(Button)`
+  float:right;
 `
 export const ListeBaslik = styled.div`
   display: flex;
@@ -46,9 +48,7 @@ export const SayiGosterge = styled.div`
   }
 `
 export const AramaAlani = styled.div`
-  margin-top:16px;
-  width: 50vw;
-  
+  max-width: 50vw;
 `
 export const DetayAlani = styled.div`
   padding-top: 32px;
@@ -59,7 +59,8 @@ export const IcerikAlani = styled.div`
   display: flex;
 
   &:first-child {
-    padding:8px 4px;
+    padding:0;
+    margin: 0;
   }
   
   &:last-child {

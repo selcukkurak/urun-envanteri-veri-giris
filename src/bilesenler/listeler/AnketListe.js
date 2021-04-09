@@ -3,13 +3,11 @@ import { useRecoilValue } from 'recoil'
 import { anketlerState } from '../store'
 import Liste from './Liste'
 import { localSort } from '../util/sort'
-import { Button} from '@blueprintjs/core'
 import { Col, Container, Row } from 'react-grid-system'
 import { Link } from 'react-router-dom'
 import {
   AramaAlani,
-  BaslikMetin,
-  ButonDurumAlani,
+  BaslikMetin, EklemeButton,
   FiltreButonAlani,
   ListeBaslik,
   SagaYasli, SayiGosterge,
@@ -18,7 +16,6 @@ import {
 } from './ortakStyle'
 import Arama from './Arama'
 import { taslakDurumlar } from './ortak'
-
 
 export default function AnketListe ({ match }) {
   const [aranan, setAranan] = useState('')
@@ -41,16 +38,15 @@ export default function AnketListe ({ match }) {
         <Row>
           <Col sm={12} md={12} lg={12}>
             <FiltreButonAlani>
-              <ButonDurumAlani/>
+              <AramaAlani>
+                <Arama setAranan={setAranan} placeholder={'Anketler İçinde Arayın....'}
+                       secili={secili} setSecili={setSecili} setSeciliId={setSeciliAnketId}
+                />
+              </AramaAlani>
               <Link to={`${match.url}/yeni-anket`}>
-                <Button intent={'success'} text={'Yeni Anket Ekle'}/>
+                <EklemeButton intent={'success'} text={'Yeni Anket Ekle'}/>
               </Link>
             </FiltreButonAlani>
-            <AramaAlani>
-              <Arama setAranan={setAranan} placeholder={'Anketler İçinde Arayın....'}
-                secili={secili} setSecili={setSecili} setSeciliId={setSeciliAnketId}
-              />
-            </AramaAlani>
             <ListeBaslik>
               <SolaYasli>Anketler</SolaYasli>
               <SagaYasli>

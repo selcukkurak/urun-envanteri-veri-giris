@@ -3,13 +3,11 @@ import { localSort } from '../util/sort'
 import { useRecoilValue } from 'recoil'
 import {  tumUrunlerState, urunlerState } from '../store'
 import { Container, Row, Col } from 'react-grid-system'
-import { Button} from '@blueprintjs/core'
 import { Link } from 'react-router-dom'
 import Liste from './Liste'
 import {
   AramaAlani,
-  BaslikMetin,
-  ButonDurumAlani,
+  BaslikMetin, EklemeButton,
   FiltreButonAlani,
   ListeBaslik,
   SagaYasli, SayiGosterge,
@@ -18,11 +16,13 @@ import {
 } from './ortakStyle'
 import Arama from './Arama'
 import { taslakDurumlar } from './ortak'
+import useYanMenu from '../yan-menu/useYanMenu'
 
 
 
 
 export default function UrunListe ({ match }) {
+  const {boy} = useYanMenu()
   const [secili, setSecili] = useState(taslakDurumlar[0])
   const [aranan, setAranan] = useState("")
 
@@ -44,17 +44,17 @@ export default function UrunListe ({ match }) {
       <Container fluid>
         <Row>
           <Col xs={12} sm={12} md={12} lg={12}>
-            <FiltreButonAlani>
-              <ButonDurumAlani/>
+            <FiltreButonAlani boy={boy}>
+              <AramaAlani>
+                <Arama setAranan={setAranan} placeholder={"Ürünler İçinde Arayın...."}
+                       secili={secili} setSecili={setSecili} setSeciliId={setSeciliUrunId}
+                />
+              </AramaAlani>
               <Link to={`${match.url}/yeni-urun`}>
-                <Button intent={'success'} text={'Yeni Ürün Ekle'}/>
+                <EklemeButton intent={'success'} text={'Yeni Ürün Ekle'}/>
               </Link>
             </FiltreButonAlani>
-            <AramaAlani>
-              <Arama setAranan={setAranan} placeholder={"Ürünler İçinde Arayın...."}
-                     secili={secili} setSecili={setSecili} setSeciliId={setSeciliUrunId}
-              />
-            </AramaAlani>
+
             <ListeBaslik>
               <SolaYasli>İstatistiki Ürünler</SolaYasli>
               <SagaYasli>

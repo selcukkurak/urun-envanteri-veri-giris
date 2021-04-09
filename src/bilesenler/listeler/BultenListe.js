@@ -4,8 +4,7 @@ import Liste from './Liste'
 import { Col, Container, Row } from 'react-grid-system'
 import {
   AramaAlani,
-  BaslikMetin,
-  ButonDurumAlani,
+  BaslikMetin, EklemeButton,
   FiltreButonAlani,
   ListeBaslik,
   SagaYasli,
@@ -13,7 +12,6 @@ import {
   SolaYasli, WrapperListe
 } from './ortakStyle'
 import { Link } from 'react-router-dom'
-import { Button } from '@blueprintjs/core'
 import Arama from './Arama'
 import { tekilBultenler } from '../store/selectors'
 
@@ -33,14 +31,14 @@ export default function BultenListe({match}) {
         <Row>
           <Col sm={12} md={12} lg={12}>
             <FiltreButonAlani>
-              <ButonDurumAlani/>
+              <AramaAlani>
+                <Arama setAranan={setAranan} placeholder={"Bültenler İçinde Arayın...."}/>
+              </AramaAlani>
               <Link to={`${match.url}/yeni-bulten`}>
-                <Button intent={'success'} text={"Yeni Haber Bülteni Ekle"}/>
+                <EklemeButton intent={'success'} text={"Yeni Haber Bülteni Ekle"}/>
               </Link>
             </FiltreButonAlani>
-            <AramaAlani>
-              <Arama setAranan={setAranan} placeholder={"Bültenler İçinde Arayın...."}/>
-            </AramaAlani>
+
             <ListeBaslik>
               <SolaYasli>Haber Bültenleri</SolaYasli>
               <SagaYasli>

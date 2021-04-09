@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Card, Colors, HTMLTable, Tag } from '@blueprintjs/core'
+import { Button, Card, HTMLTable, Tag } from '@blueprintjs/core'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
@@ -25,6 +25,9 @@ const TableHeader = styled.th`
   top: 0;
   box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.4);
 
+  &:first-child {
+    width: 60%;
+  }
   &:last-child {
     width: 50px;
     min-width: 50px;
@@ -36,12 +39,6 @@ const Etiket = styled(Tag)`
 `
 const AktifSatir = styled.tr`
   cursor: default;
-
-  &.active {
-    background-color: ${props =>
-            props.secili !== props.index ? 'white' : Colors.LIGHT_GRAY4
-    }
-  }
 `
 
 function Liste ({ dizi, url, handleSeciliItem, secili }) {
@@ -63,7 +60,7 @@ function Liste ({ dizi, url, handleSeciliItem, secili }) {
         <tbody>
         {dizi.map((item, index) => (
           <AktifSatir index={index} secili={secili} className="active" key={item.id}>
-            <td onClick={() => handleSeciliItem(index)}>
+            <td style={{width:"60%"}} onClick={() => handleSeciliItem(index)}>
               <Link to={`${url}/detay/${item.id}`}>
                 {item.adi}
                 {item.taslak && (
