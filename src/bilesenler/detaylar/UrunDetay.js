@@ -1,20 +1,15 @@
 import React from 'react'
 import {
   Button,
-  ButtonGroup,
   Card,
   HTMLTable,
   Menu,
-  MenuItem,
-  Popover,
-  Position,
   Spinner,
   Tag
 } from '@blueprintjs/core'
 import { DetayAlani, DetayBaslik, Icerik, IcerikAlani } from '../listeler/ortakStyle'
 import htmlParser from '../util/htmlParser'
 import { Container, Row, Col } from 'react-grid-system'
-import useSayfaIciGecis from '../hook/useSayfaIciGecis'
 import styled from 'styled-components'
 import { uniqBy } from 'lodash'
 import useUrunDetay from '../hook/useUrunDetay'
@@ -23,6 +18,7 @@ import { tekilBultenler } from '../store/selectors'
 import { birimlerState } from '../store'
 import BreadCrumbs from '../BreadCrumbs'
 import { Link } from 'react-router-dom'
+import { AnaRenkler } from '@tuik/renkler'
 
 const Wrapper = styled.div`
   margin: 70px 12px
@@ -34,18 +30,26 @@ const ButonAlani = styled.div`
 const Alan = styled.div`
   flex: 1;
 `
-const ButonGrup = styled(ButtonGroup)`
-  max-width: 20vw;
-`
 
 const Kart = styled(Card)`
   padding: 0;
   width: 100%;
+  
+  &:last-child {
+    margin-top: 16px;
+  }
 `
 
 const KartDetay = styled.div`
   padding-top: 4px;
   font-size: 1em;
+`
+
+const Baslik = styled.div`
+  font-size: 1.3em;
+  font-weight: 600;
+  color: ${AnaRenkler.kirmizi};
+  padding-bottom: 8px;
 `
 
 export default function UrunDetay ({ match }) {
@@ -57,14 +61,6 @@ export default function UrunDetay ({ match }) {
     data,
   } = useUrunDetay(Number(match.params.id))
   const seciliUrun = data
-  const {
-    genel,
-    cikti,
-    girdi,
-    genelSayfaClick,
-    ciktiSayfaClick,
-    girdiSayfaClick,
-  } = useSayfaIciGecis()
 
   const urunBultenleri = seciliUrun && seciliUrun.bultenler
     .map(b => bultenler.find(bulten => bulten.id === b.bultenId))
@@ -90,8 +86,16 @@ export default function UrunDetay ({ match }) {
             />
           </Col>
         </Row>
+        <Col>
+          <ButonAlani>
+            <Alan/>
+            <Link to={`/urunler/guncelle/${seciliUrun.id}`}>
+              <Button minimal intent="warning" text="Bilgileri Güncelle" rightIcon={'edit'}/>
+            </Link>
+          </ButonAlani>
+        </Col>
         <Row>
-          <Col sm={12} md={12} lg={6}>
+          <Col sm={12} md={12} lg={4}>
             {isLoading && (
               <div style={{ paddingTop: '300px' }}>
                 <Spinner size={50}/>
@@ -99,167 +103,140 @@ export default function UrunDetay ({ match }) {
             )}
             {error && error.message}
             {seciliUrun && (
-              <div>
-                <ButonAlani>
-                  <Alan>
-                    <ButonGrup fill>
-                      <Button intent={'danger'} minimal={!genel} text={'Genel Bilgiler'} onClick={genelSayfaClick}/>
-                      <Button intent={'danger'} minimal={!girdi} text={'Girdi Bilgileri'} onClick={girdiSayfaClick}/>
-                      <Button intent={'danger'} minimal={!cikti} text={'Çıktı Bilgileri'} onClick={ciktiSayfaClick}/>
-                    </ButonGrup>
-                  </Alan>
-                  <Popover content={
-                    <Menu>
-                      <MenuItem text={(
-                        <Link to="/urunler/yeni-urun">
-                          <Button minimal intent="success" text="Yeni Ürün Ekle" rightIcon={'plus'}/>
-                        </Link>
-                      )}/>
-                      <MenuItem text={(
-                        <Link to={`/urunler/guncelle/${seciliUrun.id}`}>
-                          <Button minimal intent="warning" text="Bilgileri Güncelle" rightIcon={'edit'}/>
-                        </Link>
-                      )}/>
-                    </Menu>
-                  } position={Position.RIGHT}>
-                    <Button icon="properties" intent="warning" minimal text="Eylemler"/>
-                  </Popover>
-                </ButonAlani>
-                {genel && (
-                  <DetayAlani>
-                    <Card style={{ width: '100%', padding: 0 }}>
-                      <IcerikAlani>
-                        <DetayBaslik>İstatistiki Ürün Adı:</DetayBaslik>
-                        <Icerik>{seciliUrun.adi}</Icerik>
-                      </IcerikAlani>
-                      <IcerikAlani>
-                        <DetayBaslik>İstatistiki Ürün Kodu:</DetayBaslik>
-                        <Icerik>{seciliUrun.kodu}</Icerik>
-                      </IcerikAlani>
-                      <IcerikAlani>
-                        <DetayBaslik>Üretim Sıklığı:</DetayBaslik>
-                        <Icerik>{seciliUrun.periyot ? seciliUrun.periyot.adi : '-'}</Icerik>
-                      </IcerikAlani>
-                      <IcerikAlani>
-                        <DetayBaslik>Coğrafi Düzeyi:</DetayBaslik>
-                        <Icerik>{seciliUrun.cografiDuzey ? seciliUrun.cografiDuzey.adi : '-'}</Icerik>
-                      </IcerikAlani>
-                      <IcerikAlani>
-                        <DetayBaslik>Sorumlu Grup Başkanlığı:</DetayBaslik>
-                        <Icerik>{birim && birim.adi}</Icerik>
-                      </IcerikAlani>
-                      <IcerikAlani>
-                        <DetayBaslik>Ürünün Amacı:</DetayBaslik>
-                        <Icerik>{seciliUrun.amac ? htmlParser(`${seciliUrun.amac}`) : '-'}</Icerik>
-                      </IcerikAlani>
-                      <IcerikAlani>
-                        <DetayBaslik>Ürünün Kapsamı:</DetayBaslik>
-                        <Icerik>{seciliUrun.kapsam ? htmlParser(`${seciliUrun.kapsam}`) : '-'}</Icerik>
-                      </IcerikAlani>
-                      <IcerikAlani>
-                        <DetayBaslik>Ürünün Sağlayacağı Fayda:</DetayBaslik>
-                        <Icerik>{seciliUrun.fayda ? htmlParser(`${seciliUrun.fayda}`) : '-'}</Icerik>
-                      </IcerikAlani>
-                    </Card>
-                  </DetayAlani>
-                )}
-                {girdi && (
-                  <DetayAlani>
-                    {seciliUrun.anketler.length !== 0 && (
-                      <IcerikAlani>
-                        <Icerik>
-                          <Kart>
-                            <DetayBaslik style={{ flex: '1 1 30%' }}>Anketler</DetayBaslik>
-                            <Menu>
-                              {seciliUrun.anketler.map(anket => (
-                                <Link to={`/anketler/detay/${anket.id}`}>
-                                  <KartDetay key={anket.id}>- {anket.adi}</KartDetay>
-                                </Link>
-                              ))}
-                            </Menu>
-                          </Kart>
-                        </Icerik>
-                      </IcerikAlani>
-                    )}
-                    {seciliUrun.urunler.length !== 0 && (
-                      <IcerikAlani>
-                        <Icerik>
-                          <Kart>
-                            <DetayBaslik style={{ flex: '1 1 30%' }}>Bağlı Ürünler:</DetayBaslik>
-                            <Menu>
-                              {seciliUrun.urunler.map(urun => (
-                                <Link to={`/urunler/detay/${urun.id}`}>
-                                  <KartDetay key={urun.id}>- {urun.adi}</KartDetay>
-                                </Link>
-                              ))}
-                            </Menu>
-                          </Kart>
-                        </Icerik>
-                      </IcerikAlani>
-                    )}
-                    {seciliUrun.idariKayitlar.length !== 0 && (
-                      <IcerikAlani>
-                        <Icerik>
-                          <Kart>
-                            <DetayBaslik style={{ flex: '1 1 30%' }}>İdari Kayıtlar</DetayBaslik>
-                            <Menu>
-                              {seciliUrun.idariKayitlar.map(kayit => (
-                                <Link to={`/idari-kayitlar/detay/${kayit.id}`}>
-                                  <KartDetay key={kayit.id}>- {kayit.adi}</KartDetay>
-                                </Link>
-                              ))}
-                            </Menu>
-                          </Kart>
-                        </Icerik>
-                      </IcerikAlani>
-                    )}
-                  </DetayAlani>
-                )}
-                {cikti && (
-                  <DetayAlani>
-                    {urunBultenleri.length !== 0 && (
-                      <IcerikAlani>
-                        <Kart>
-                          <DetayBaslik style={{ flex: '1 1 30%' }}>Haber Bülteni:</DetayBaslik>
-                          {urunBultenleri.map(bulten => (
-                            <Icerik style={{ padding: '8px' }}>
-                              <a href={`https://data.tuik.gov.tr/Bulten/Index?p=${bulten.sonYayin.id}`} target='_blank'
-                                 rel="noreferrer">{bulten.adi}</a>
-                            </Icerik>
-                          ))}
-                        </Kart>
-                      </IcerikAlani>
-                    )}
-                    {seciliUrun.paylasimlar.length !== 0 && (
-                      <IcerikAlani>
-                        <Kart>
-                          <DetayBaslik style={{ flex: '1 1 30%' }}>Paylaşımlar:</DetayBaslik>
-                          <Icerik>
-                            <HTMLTable>
-                              <thead>
-                              <tr>
-                                <td>Paylaşılan Kuruluş</td>
-                                <td>Kullanılan Araç</td>
-                                <td>Gönderi Sıklığı</td>
-                              </tr>
-                              </thead>
-                              <tbody>
-                              {kuruluslar.map(kurulus => (
-                                <tr key={kurulus.id}>
-                                  <td>{kurulus.adi}</td>
-                                  <td><Tag minimal>{joinArac}</Tag></td>
-                                  <td><Tag minimal>{joinPeriyot}</Tag></td>
-                                </tr>
-                              ))}
-                              </tbody>
-                            </HTMLTable>
-                          </Icerik>
-                        </Kart>
-                      </IcerikAlani>
-                    )}
-                  </DetayAlani>
-                )}
+              <DetayAlani>
+                <Baslik>Genel Bilgiler</Baslik>
+                <Card style={{ width: '100%', padding: 0 }}>
+                  <IcerikAlani>
+                    <DetayBaslik>İstatistiki Ürün Adı:</DetayBaslik>
+                    <Icerik>{seciliUrun.adi}</Icerik>
+                  </IcerikAlani>
+                  <IcerikAlani>
+                    <DetayBaslik>İstatistiki Ürün Kodu:</DetayBaslik>
+                    <Icerik>{seciliUrun.kodu}</Icerik>
+                  </IcerikAlani>
+                  <IcerikAlani>
+                    <DetayBaslik>Üretim Sıklığı:</DetayBaslik>
+                    <Icerik>{seciliUrun.periyot ? seciliUrun.periyot.adi : '-'}</Icerik>
+                  </IcerikAlani>
+                  <IcerikAlani>
+                    <DetayBaslik>Coğrafi Düzeyi:</DetayBaslik>
+                    <Icerik>{seciliUrun.cografiDuzey ? seciliUrun.cografiDuzey.adi : '-'}</Icerik>
+                  </IcerikAlani>
+                  <IcerikAlani>
+                    <DetayBaslik>Sorumlu Grup Başkanlığı:</DetayBaslik>
+                    <Icerik>{birim && birim.adi}</Icerik>
+                  </IcerikAlani>
+                  <IcerikAlani>
+                    <DetayBaslik>Ürünün Amacı:</DetayBaslik>
+                    <Icerik>{seciliUrun.amac ? htmlParser(`${seciliUrun.amac}`) : '-'}</Icerik>
+                  </IcerikAlani>
+                  <IcerikAlani>
+                    <DetayBaslik>Ürünün Kapsamı:</DetayBaslik>
+                    <Icerik>{seciliUrun.kapsam ? htmlParser(`${seciliUrun.kapsam}`) : '-'}</Icerik>
+                  </IcerikAlani>
+                  <IcerikAlani>
+                    <DetayBaslik>Ürünün Sağlayacağı Fayda:</DetayBaslik>
+                    <Icerik>{seciliUrun.fayda ? htmlParser(`${seciliUrun.fayda}`) : '-'}</Icerik>
+                  </IcerikAlani>
+                </Card>
+              </DetayAlani>
+            )}
+          </Col>
+          <Col sm={12} md={12} lg={4}>
+            {isLoading && (
+              <div style={{ paddingTop: '300px' }}>
+                <Spinner size={50}/>
               </div>
+            )}
+            {error && error.message}
+            {seciliUrun && (
+              <DetayAlani>
+                <Baslik>Girdi Bilgileri</Baslik>
+                {seciliUrun.anketler.length !== 0 && (
+                  <Kart>
+                    <DetayBaslik style={{ flex: '1 1 30%' }}>Anketler</DetayBaslik>
+                    <Menu>
+                      {seciliUrun.anketler.map(anket => (
+                        <Link to={`/anketler/detay/${anket.id}`}>
+                          <KartDetay key={anket.id}>- {anket.adi}</KartDetay>
+                        </Link>
+                      ))}
+                    </Menu>
+                  </Kart>
+                )}
+                {seciliUrun.urunler.length !== 0 && (
+                  <Kart>
+                    <DetayBaslik style={{ flex: '1 1 30%' }}>Bağlı Ürünler:</DetayBaslik>
+                    <Menu>
+                      {seciliUrun.urunler.map(urun => (
+                        <Link to={`/urunler/detay/${urun.id}`}>
+                          <KartDetay key={urun.id}>- {urun.adi}</KartDetay>
+                        </Link>
+                      ))}
+                    </Menu>
+                  </Kart>
+                )}
+                {seciliUrun.idariKayitlar.length !== 0 && (
+                  <Kart>
+                    <DetayBaslik style={{ flex: '1 1 30%' }}>İdari Kayıtlar</DetayBaslik>
+                    <Menu>
+                      {seciliUrun.idariKayitlar.map(kayit => (
+                        <Link to={`/idari-kayitlar/detay/${kayit.id}`}>
+                          <KartDetay key={kayit.id}>- {kayit.adi}</KartDetay>
+                        </Link>
+                      ))}
+                    </Menu>
+                  </Kart>
+                )}
+              </DetayAlani>
+            )}
+          </Col>
+          <Col sm={12} md={12} lg={4}>
+            {isLoading && (
+              <div style={{ paddingTop: '300px' }}>
+                <Spinner size={50}/>
+              </div>
+            )}
+            {error && error.message}
+            {seciliUrun && (
+
+              <DetayAlani>
+                <Baslik>Çıktı bilgileri</Baslik>
+                {urunBultenleri.length !== 0 && (
+                    <Kart>
+                      <DetayBaslik style={{ flex: '1 1 30%' }}>Haber Bülteni:</DetayBaslik>
+                      {urunBultenleri.map(bulten => (
+                        <Icerik style={{ padding: '8px' }}>
+                          <a href={`https://data.tuik.gov.tr/Bulten/Index?p=${bulten.sonYayin.id}`} target='_blank'
+                             rel="noreferrer">{bulten.adi}</a>
+                        </Icerik>
+                      ))}
+                    </Kart>
+                )}
+                {seciliUrun.paylasimlar.length !== 0 && (
+                    <Kart>
+                      <DetayBaslik style={{ flex: '1 1 30%' }}>Paylaşımlar:</DetayBaslik>
+                        <HTMLTable>
+                          <thead>
+                          <tr>
+                            <td>Paylaşılan Kuruluş</td>
+                            <td>Kullanılan Araç</td>
+                            <td>Gönderi Sıklığı</td>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          {kuruluslar.map(kurulus => (
+                            <tr key={kurulus.id}>
+                              <td>{kurulus.adi}</td>
+                              <td><Tag minimal>{joinArac}</Tag></td>
+                              <td><Tag minimal>{joinPeriyot}</Tag></td>
+                            </tr>
+                          ))}
+                          </tbody>
+                        </HTMLTable>
+                    </Kart>
+                )}
+              </DetayAlani>
             )}
           </Col>
         </Row>
