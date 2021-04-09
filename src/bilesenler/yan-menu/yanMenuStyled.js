@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Menu, MenuItem } from '@blueprintjs/core'
+import { Colors, Menu, MenuItem } from '@blueprintjs/core'
 import {AnaRenkler, ArayuzRenkleri} from '@tuik/renkler'
 
 export const MenuStyled = styled(Menu)`
@@ -22,6 +22,31 @@ export const MenuItemStyled = styled(MenuItem)`
     color: white;
   }
   
+`
+export const Wrapper = styled.div`
+  padding: 90px 0 12px;
+`
+export const YanMenu = styled.div`
+  width: ${props => props.acik ? '210px' : '60px'};
+  overflow-x: hidden;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  overflow-y: auto;
+  background-color: ${ArayuzRenkleri.yanMenu};
+  border-right: 1px solid ${Colors.LIGHT_GRAY3};
+  
+  
+`
+export const YanMenuIcon = styled.div`
+  padding-top: 60px;
+  left: 10%;
+  position: absolute;
+`
+export const MenuBaslik = styled.div`
+  font-size: 1em;
+  font-weight: 600;
 `
 
 
