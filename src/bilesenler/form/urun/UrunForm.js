@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useRecoilValue } from 'recoil'
-import { birimlerState, bultenlerState } from '../../store'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { birimlerState, bultenlerState, referanslarState, urunlerState } from '../../store'
 import { Button, ButtonGroup, Divider } from '@blueprintjs/core'
 import useSayfaIciGecis from '../../hook/useSayfaIciGecis'
 import { Container, Row, Col } from 'react-grid-system'
@@ -15,6 +15,7 @@ import { deleteLocalStorage } from '../ortak'
 import Footer from '../Footer'
 import UrunAPI from '../../servisler/UrunAPI'
 import useYanMenu from '../../yan-menu/useYanMenu'
+import { basariMesajiYayinla } from '../../bildirim/mesajlar'
 
 const Wrapper = styled.div`
   padding: 64px 16px;
@@ -28,9 +29,12 @@ const ButonGrup = styled(ButtonGroup)`
 
 export default function UrunForm ({ seciliUrun, history }) {
   const { boy } = useYanMenu()
-  // const setUrunler = useSetRecoilState(urunlerState)
+  const setUrunler = useSetRecoilState(urunlerState)
   const birimler = useRecoilValue(birimlerState)
   const bultenler = useRecoilValue(bultenlerState)
+  const referanslar = useRecoilValue(referanslarState)
+  const periyotlar = referanslar.PERIYOT
+  const cografiDuzeyler = referanslar.COGRAFI_DUZEY
   const {
     genel,
     cikti,
@@ -118,27 +122,25 @@ export default function UrunForm ({ seciliUrun, history }) {
     const yeniUrun = {
       adi: values.adi,
       kodu: values.kodu,
-      periyot: values.periyot,
-      cografiDuzey: values.cografiDuzey,
+      periyot: values.periyot && periyotlar.find(periyot => periyot.id === values.periyot.value),
+      cografiDuzey: values.cografiDuzey && cografiDuzeyler.find(duzey => duzey.id === values.cografiDuzey.value),
       zamanlilik: values.zamanlilik,
+      taslak:false,
+      uretiliyor:true,
       amac: values.amac,
       kapsam: values.kapsam,
       fayda: values.fayda,
       birim: values.birim && values.birim.value,
     }
 
-    console.log('ürün', values)
 
     const response = UrunAPI.urunEklemeIstek(yeniUrun)
-    console.log('response', response)
-
-    // if(response.data.success){
-    //   setUrunler(response.data)
-    //   history.goBack()
-    //   return (
-    //     basariMesajiYayinla("Ekleme İşlemi Başarılı!")
-    //   )
-    // }
+    
+    if(response.status === 200){
+      setUrunler(response.data)
+      history.goBack()
+      return basariMesajiYayinla("Ekleme İşlemi Başarılı!")
+    }
   }
   const handleSubmit = (event) => {
     event.preventDefault()
