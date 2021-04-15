@@ -10,12 +10,11 @@ export default function IdariKayitGuncellemeForm({match, history}){
   const idariKayitlar = useRecoilValue(idariKayitlarState)
   const seciliKayit = idariKayitlar.find(kayit => kayit.id === match.params.id)
   const {data} = useIdariKayitTabloBilgileri(seciliKayit)
-  const tablolar = data;
   const seciliIdariKayit = {
     ...seciliKayit,
-    tablolar
+    data
   }
-  console.log(seciliIdariKayit)
+  console.log("seciliIdariKayit", seciliIdariKayit)
   if(!seciliIdariKayit) return null
   return(
     <IdariKayitForm

@@ -285,7 +285,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
               )}
               {idariTablo && (
                 <TabloBilgileriForm
-                  seciliKayit={values.kodu}
+                  seciliKayit={seciliIdariKayit}
                 />
               )}
               <Footer>

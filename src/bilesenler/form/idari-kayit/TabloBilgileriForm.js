@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import TabloFormDialog from './TabloFormDialog'
 import { Container, Row, Col } from 'react-grid-system'
-import { Button, Card, HTMLTable, Icon } from '@blueprintjs/core'
+import { Button, Card, Colors, HTMLTable, Icon } from '@blueprintjs/core'
 import TabloGuncellemeFormDialog from './TabloGuncellemeFormDialog'
 import KolonBilgileriForm from './KolonBilgileriForm'
 import { Formik } from 'formik'
+import KolonBilgileriDrawer from '../../detaylar/KolonBilgileriDrawer'
 
 const Wrapper = styled.div`
   margin-top: 16px
@@ -32,16 +33,27 @@ const EylemDetay = styled.td`
   justify-content: space-around;
   align-items: center;
 `
-export default function TabloBilgileriForm ({ seciliKayit }) {
-  const [seciliTablo, setSeciliTablo] = useState(false)
 
+const AktifSatir = styled.tr`
+  &.active {
+    background-color: ${props => props.seciliTabloId === props.id ? Colors.LIGHT_GRAY5 : "white"};
+  }
+`
+export default function TabloBilgileriForm ({ seciliKayit }) {
+  const [seciliTablo, setSeciliTablo] = useState(null)
+  const [kolonAlani, setKolonAlani] = useState(false)
   const handleSecimTablo = (tablo) => {
     setSeciliTablo(tablo)
   }
 
+  const kolonAlaniAc = () => {
+    if(seciliTablo)
+      setKolonAlani(true)
+    else
+      setKolonAlani(false)
+  }
   const initialValues = {
-    tablolar:seciliKayit ? seciliKayit.tablolar : [],
-    kolonBilgileri:[]
+    tablolar:seciliKayit ? seciliKayit.data : []
   }
   const tabloSil = (values,setFieldValue ,id) => {
     const yeniTablolar = values.tablolar.filter(tablo => id !== tablo.id)
@@ -50,6 +62,7 @@ export default function TabloBilgileriForm ({ seciliKayit }) {
   const handleSubmit = (event) => {
     event.preventDefault()
   }
+  console.log("seciliTablo", seciliTablo)
   return (
     <Wrapper>
       <Formik
@@ -79,22 +92,21 @@ export default function TabloBilgileriForm ({ seciliKayit }) {
               <Col sm={12} md={12} lg={12}>
                 <Kart boyut={values.tablolar && values.tablolar.length}>
                   {values.tablolar && values.tablolar.length !== 0 ? (
-                    <HTMLTable striped style={{ width: '100%' }}>
+                    <HTMLTable width={'100%'}>
                       <thead>
                       <tr>
-                        <th style={{ width: '30%' }}>Adı</th>
-                        <th style={{ width: '40%' }}>Açıklama</th>
+                        <th>Adı</th>
+                        <th>Açıklama</th>
                         <EylemBaslik>Eylemler</EylemBaslik>
                       </tr>
                       </thead>
                       <tbody>
                       {values.tablolar.map(tablo => (
-                        <tr key={tablo.id}>
-                          <td style={{ width: '30%' }}>{tablo.adi}</td>
-                          <td style={{ width: '40%' }}>{tablo.aciklama}</td>
+                        <AktifSatir key={tablo.id} id={tablo.id} seciliTabloId={seciliTablo && seciliTablo.id} onClick={() => handleSecimTablo(tablo)} className={"active"}>
+                          <KolonBilgileriDrawer tablo={tablo}/>
+                          <td width={'40%'}>{tablo.aciklama}</td>
                           <EylemDetay>
-                            <Button minimal rightIcon={'plus'} intent={'primary'} text="Kolon Bilgileri Ekle"
-                                    onClick={() => handleSecimTablo(tablo)}/>
+                            <Button minimal rightIcon={'plus'} intent={'primary'} text="Kolon Bilgileri Ekle" onClick={kolonAlaniAc}/>
                             <TabloGuncellemeFormDialog
                               tablo={tablo}
                               handleChange={handleChange}
@@ -102,7 +114,7 @@ export default function TabloBilgileriForm ({ seciliKayit }) {
                             <Button minimal rightIcon={'trash'} intent={'danger'} text="Sil"
                                     onClick={() => tabloSil( values, setFieldValue,tablo.id)}/>
                           </EylemDetay>
-                        </tr>
+                        </AktifSatir>
                       ))}
                       </tbody>
                     </HTMLTable>
@@ -118,19 +130,18 @@ export default function TabloBilgileriForm ({ seciliKayit }) {
                 </Kart>
               </Col>
             </Row>
-            {console.log("kolonBilgileri" , values)}
             <Row>
               <Col>
-                <KolonBilgileriForm
-                  setFieldValue={setFieldValue}
-                  handleChange={handleChange}
-                  tablo={seciliTablo}
-                  kolonBilgileri={values.kolonBilgileri}
-                />
+                {kolonAlani && (
+                  <KolonBilgileriForm
+                    setFieldValue={setFieldValue}
+                    handleChange={handleChange}
+                    tablo={seciliTablo}
+                  />
+                )}
+
               </Col>
             </Row>
-
-
           </Container>
         )}
 

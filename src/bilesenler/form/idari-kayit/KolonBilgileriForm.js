@@ -42,7 +42,8 @@ const pkDurum = [
     label: 'Foreign Key', value: 1,
   }
 ]
-export default function KolonBilgileriForm ({ handleChange, setFieldValue, tablo, kolonBilgileri }) {
+export default function KolonBilgileriForm ({ handleChange, setFieldValue, tablo }) {
+  console.log("tablo", tablo)
   if(!tablo) return null
   const handleNewKolon = () => {
     const yeniKolon = {
@@ -53,17 +54,17 @@ export default function KolonBilgileriForm ({ handleChange, setFieldValue, tablo
       pkKontrol: false,
       iliskiTabloKolonAdi: ''
     }
-    setFieldValue(`kolonBilgileri`, [...kolonBilgileri, yeniKolon])
+    setFieldValue(`kolonBilgileri`, [...tablo.kolonBilgileri, yeniKolon])
   }
 
   const handleRemoveTabloKolonu = (key) => {
-    const yeniKolon = kolonBilgileri.filter((item, index) => index !== key)
+    const yeniKolon = tablo.kolonBilgileri.filter((item, index) => index !== key)
     setFieldValue(`kolonBilgileri`, yeniKolon)
   }
   return (
     <Kart>
       <Baslik>Kolon Bilgileri</Baslik>
-      <KartGovde boy={kolonBilgileri.length}>
+      <KartGovde boy={tablo.kolonBilgileri.length}>
         <Table striped>
           <thead>
           <tr>
@@ -76,7 +77,7 @@ export default function KolonBilgileriForm ({ handleChange, setFieldValue, tablo
           </tr>
           </thead>
           <tbody>
-          {kolonBilgileri && kolonBilgileri.map((value, index) => (
+          {tablo.kolonBilgileri && tablo.kolonBilgileri.map((value, index) => (
             <tr key={index}>
               <td><Button icon={'minus'} onClick={() => handleRemoveTabloKolonu(index)}/></td>
               <td><InputGroup name={`kolonBilgileri[${index}].adi`}
