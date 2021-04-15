@@ -11,7 +11,6 @@ import Footer from '../Footer'
 import Axios from 'axios'
 import { useSetRecoilState, useRecoilValue } from 'recoil'
 import { anketlerState, referanslarState } from '../../store'
-import { basariMesajiYayinla } from '../../bildirim/mesajlar'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -76,12 +75,12 @@ export default function AnketForm ({ seciliAnket, history }) {
       kontrolorSayisiBolge: values.kontrolorSayisiBolge
     }
 
-    Axios.post("api/anketler/ekle",  yeniAnket ).then(res => setAnketler(res.data))
-    basariMesajiYayinla("Ekleme İşlemi Başarılı")
+    Axios.post("/api/anketler/ekle",  yeniAnket )
+      .then(res => setAnketler(res.data))
+
   }
   const handleAnketSubmit = (values,event) => {
     event.preventDefault();
-
   }
   return (
     <Wrapper>
