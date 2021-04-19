@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, Container, Row } from 'react-grid-system'
 import styled from 'styled-components'
-import { Button, ButtonGroup, Card, Menu, MenuItem, Popover, Position } from '@blueprintjs/core'
+import { Button, ButtonGroup, Card} from '@blueprintjs/core'
 import IdariKayitTabloListe from '../listeler/IdariKayitTabloListe'
 import { DetayAlani, DetayBaslik, Icerik, IcerikAlani } from '../listeler/ortakStyle'
 import useSayfaIciGecis from '../hook/useSayfaIciGecis'
@@ -16,14 +16,13 @@ const Wrapper = styled.div`
 `
 const DetayKart = styled(Card)`
   padding: 0;
-  width: 50%;
 `
 const ButonAlani = styled.div`
   margin: 8px 16px;
   display: flex;
 `
 const Alan = styled.div`
-  flex:1;
+  flex: 1;
 `
 const ButonGrup = styled(ButtonGroup)`
   flex: 1;
@@ -56,32 +55,20 @@ export default function IdariKayitDetay ({ match }) {
             <ButonAlani>
               <Alan>
                 <ButonGrup fill>
-                  <Button intent={'danger'} minimal={!idariGenel} text={'Genel Bilgiler'} onClick={genelIdariSayfaClick}/>
+                  <Button intent={'danger'} minimal={!idariGenel} text={'Genel Bilgiler'}
+                          onClick={genelIdariSayfaClick}/>
                   <Button intent={'danger'} minimal={!idariTablo} text={'Tablo ve Kolon Bilgileri'}
                           onClick={tabloIdariSayfaClick}/>
                 </ButonGrup>
               </Alan>
-              <Popover content={
-                <Menu>
-                  <MenuItem text={(
-                    <Link to="/idari-kayitlar/yeni-idariKayit">
-                      <Button minimal intent="success" text="Yeni İdari Kayıt Ekle" rightIcon={'plus'}/>
-                    </Link>
-                  )}/>
-                  <MenuItem text={(
-                    <Link to={`/idari-kayitlar/guncelle/${seciliKayit.id}`}>
-                      <Button minimal intent="warning" text="Bilgileri Güncelle" rightIcon={'edit'}/>
-                    </Link>
-                  )}/>
-                </Menu>
-              } position={Position.RIGHT}>
-                <Button icon="properties" text="Eylemler"/>
-              </Popover>
+              <Link to={`/idari-kayitlar/guncelle/${seciliKayit.id}`}>
+                <Button minimal intent="warning" text="Bilgileri Güncelle" rightIcon={'edit'}/>
+              </Link>
             </ButonAlani>
           </Col>
         </Row>
         <Row>
-          <Col xs={12} sm={12} md={12} lg={12}>
+          <Col xs={12} sm={12} md={12} lg={6}>
             {idariGenel && (
               <DetayAlani>
                 <DetayKart>
@@ -139,16 +126,6 @@ export default function IdariKayitDetay ({ match }) {
         </Row>
       </Container>
 
-      {/*{seciliKayit && (*/}
-      {/*  <div>*/}
-      {/*    <IdariKayitTabloListe*/}
-      {/*      match={match}*/}
-      {/*      seciliKayit={seciliKayit}*/}
-      {/*    />*/}
-
-
-      {/*  </div>*/}
-      {/*)}*/}
     </Wrapper>
   )
 }

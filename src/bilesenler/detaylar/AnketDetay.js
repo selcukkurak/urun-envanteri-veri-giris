@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Container, Row, Col } from 'react-grid-system'
-import { Button, Card, Divider, Menu, MenuItem, Popover, Position } from '@blueprintjs/core'
+import { Button, Card, Divider} from '@blueprintjs/core'
 import { DetayAlani, DetayBaslik, Icerik, IcerikAlani } from '../listeler/ortakStyle'
 import { useRecoilValue } from 'recoil'
 import { anketlerState } from '../store'
@@ -16,6 +16,13 @@ const Baslik = styled.div`
   color: rgb(90, 111, 123);
   font-weight: bold;
   font-size: 1.4em;
+`
+const ButonAlani = styled.div`
+  margin: 8px 16px;
+  display: flex;
+`
+const Alan = styled.div`
+  flex: 1;
 `
 export default function AnketDetay ({ match }) {
   const anketler = useRecoilValue(anketlerState)
@@ -39,24 +46,13 @@ export default function AnketDetay ({ match }) {
       />
       <Container fluid>
         <Row>
-          <Col sm={12} md={12} lg={5}/>
-          <Col>
-            <Popover content={
-              <Menu>
-                <MenuItem text={(
-                  <Link to="/anketler/yeni-anket">
-                    <Button minimal intent="success" text="Yeni Anket Ekle" rightIcon={'plus'}/>
-                  </Link>
-                )}/>
-                <MenuItem text={(
-                  <Link to={`/anketler/guncelle/${seciliAnket.id}`}>
-                    <Button minimal intent="warning" text="Bilgileri Güncelle" rightIcon={'edit'}/>
-                  </Link>
-                )}/>
-              </Menu>
-            } position={Position.RIGHT}>
-              <Button icon="properties" intent="warning" minimal text="Eylemler"/>
-            </Popover>
+          <Col xs={12} sm={12} md={12} lg={6.3}>
+            <ButonAlani>
+              <Alan/>
+              <Link to={`/anketler/guncelle/${seciliAnket.id}`}>
+                <Button minimal intent="warning" text="Bilgileri Güncelle" icon={'edit'}/>
+              </Link>
+            </ButonAlani>
           </Col>
         </Row>
         <Row>
