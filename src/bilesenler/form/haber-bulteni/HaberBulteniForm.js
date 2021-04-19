@@ -8,6 +8,7 @@ import HaberBulteniKategoriForm from './HaberBulteniKategoriForm'
 import { PersistFormikValues } from 'formik-persist-values'
 import { deleteLocalStorage } from '../ortak'
 import Footer from '../Footer'
+import BultenAPI from '../../servisler/BultenAPI'
 
 const Wrapper = styled.div`
   padding: 70px 16px;
@@ -22,14 +23,22 @@ export default function HaberBulteniForm ({ history, seciliBulten }) {
   const initialValues = {
     adi: seciliBulten ? seciliBulten.adi : '',
     kodu: seciliBulten ? seciliBulten.kodu : '',
-    sonYayin: seciliBulten ? seciliBulten.sonYayin : {
-      id: 0,
-      donemi: '',
-      tarihi: '',
-    },
+    sonYayinId: seciliBulten ? seciliBulten.sonYayinId : "",
+    donemi:seciliBulten ? seciliBulten.donemi : "",
     tablolar: [],
     kategoriler: [],
     istatikselTablolar: [],
+  }
+
+  const bultenEkle = (values) => {
+    const yeniBulten = {
+      adi:values.adi,
+      kodu:values.kodu,
+      sonYayinId: values.sonYayinId,
+      donemi:values.donemi
+    }
+
+    BultenAPI.bultenEklemeIstek(yeniBulten)
   }
 
   const handleSubmit = (event) => {
@@ -52,24 +61,33 @@ export default function HaberBulteniForm ({ history, seciliBulten }) {
           <Form onSubmit={submitForm}>
             <Container fluid>
               <Satir>
-                <Col sm={3.5} md={3.5} lg={3.5}>
+                <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label={'Haber Bülteni Adı:'} labelFor="adi">
                     <InputGroup name={'adi'} id="adi" value={values.adi || ''} onChange={handleChange}/>
                   </FormGroup>
                 </Col>
                 <Col/>
-                <Col sm={3.5} md={3.5} lg={3.5}>
+                <Col sm={5.5} md={5.5} lg={5.5}>
                   <FormGroup label={'Haber Bülteni Kodu:'} labelFor="kodu">
                     <InputGroup name={'kodu'} id="kodu" value={values.kodu || ''} onChange={handleChange}/>
                   </FormGroup>
                 </Col>
-                <Col/>
-                <Col sm={3.5} md={3.5} lg={3.5}>
-                  <FormGroup label={'Haber Bülteni Son Yayın Dönemi:'} labelFor="donem">
-                    <InputGroup name={'sonYayin.donemi'} id="donem" value={values.sonYayin.donemi || ''}
-                                onChange={handleChange}/>
-                  </FormGroup>
-                </Col>
+                <Satir>
+                  <Col sm={5.5} md={5.5} lg={5.5}>
+                    <FormGroup label={'Haber Bülteni Son Yayın Id:'} labelFor="sonYayinId">
+                      <InputGroup name={'sonYayinId'} id="sonYayinId" value={values.sonYayinId || ''}
+                                  onChange={handleChange}/>
+                    </FormGroup>
+                  </Col>
+                  <Col/>
+                  <Col sm={5.5} md={5.5} lg={5.5}>
+                    <FormGroup label={'Haber Bülteni Son Yayın Dönemi:'} labelFor="donemi">
+                      <InputGroup name={'donemi'} id="donemi" value={values.donemi || ''}
+                                  onChange={handleChange}/>
+                    </FormGroup>
+                  </Col>
+                </Satir>
+
               </Satir>
               <Satir/>
               <Satir/>
@@ -98,7 +116,9 @@ export default function HaberBulteniForm ({ history, seciliBulten }) {
                   <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
                 </Col>
                 <Col>
-                  <Button fill intent='success' text={seciliBulten ? "Güncelle" : 'Kaydet'}/>
+                  <Button fill intent='success' text={seciliBulten ? "Güncelle" : 'Kaydet'}
+                    onClick={() => bultenEkle(values)}
+                  />
                 </Col>
               </Footer>
             </Container>

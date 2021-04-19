@@ -14,6 +14,7 @@ import TabloBilgileriForm from './TabloBilgileriForm'
 import { PersistFormikValues } from 'formik-persist-values'
 import { deleteLocalStorage } from '../ortak'
 import Footer from '../Footer'
+import IdariKayitAPI  from '../../servisler/IdariKayitAPI'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -44,7 +45,13 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
     cografiDuzeyOptions,
     veriBirimDuzeyiOption,
     veriTutulanYerOption,
-    veriTalepBicimiOption
+    veriTalepBicimiOption,
+    veriBirimDuzeyleri,
+    veriTalepBicimleri,
+    transferFormatlari,
+    cografiDuzeyler,
+    periyotlar,
+    verininTutulduguYerler
   } = useSecenekler()
 
   const birimler = useRecoilValue(birimlerState)
@@ -96,6 +103,27 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
   }
   const handleSubmit = (event) => {
     event.preventDefault()
+  }
+
+  const idariKayitEkleme = (values) => {
+    const yeniKayit = {
+      id: values.kodu,
+      adi: values.adi,
+      transferdenSorumluBirimId: values.sorumluBirim && values.sorumluBirim.value,
+      epostaGruplari: values.eposta,
+      sema: values.sema,
+      kaynakKurum: values.kaynakKurum && kurumlar.find(kurum => kurum.id === values.kaynakKurum.value),
+      transferSikligi:values.transferSikligi && periyotlar.find(periyot => periyot.id === values.transferSikligi.value),
+      kisitlar: values.kisitlar,
+      transferVerisininFormati:values.transferVerisininFormati && transferFormatlari.find(format => format.id === values.transferVerisininFormati.value),
+      cografiDuzey: values.cografiDuzeyi && cografiDuzeyler.find(duzey => duzey.id === values.cografiDuzeyi.value),
+      veriDuzeyi: values.veriDuzeyi && veriBirimDuzeyleri.find(duzey => duzey.id === values.veriDuzeyi.value),
+      yasalHukum: values.yasalHukum,
+      verininTutulduguYer: values.verininTutulduguYer && verininTutulduguYerler.find(veri => veri.id === values.verininTutulduguYer.value),
+      talepBicimi: values.veriTalepBicimi && veriTalepBicimleri.find(talep => talep.id === values.veriTalepBicimi.value),
+      birimDuzeyi: values.veriBirimDuzeyi && veriBirimDuzeyleri.find(duzey => duzey.id === values.veriBirimDuzeyi.value),
+    }
+    IdariKayitAPI.kayitEklemeIstek(yeniKayit)
   }
 
   function reactQuillHandleChange (name, icerik, setFieldValue) {
@@ -294,7 +322,8 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                   <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
                 </Col>
                 <Col>
-                  <Button fill intent='success' text={seciliIdariKayit ? "Güncelle" : 'Kaydet'}/>
+                  <Button fill intent='success' text={seciliIdariKayit ? "Güncelle" : 'Kaydet'}
+                  onClick={() => idariKayitEkleme(values)}/>
                 </Col>
               </Footer>
             </Container>

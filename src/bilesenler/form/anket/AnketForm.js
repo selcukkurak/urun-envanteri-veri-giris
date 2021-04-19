@@ -8,9 +8,9 @@ import useSecenekler from '../useSecenekler'
 import { PersistFormikValues } from 'formik-persist-values'
 import { deleteLocalStorage } from '../ortak'
 import Footer from '../Footer'
-import Axios from 'axios'
-import { useSetRecoilState, useRecoilValue } from 'recoil'
-import { anketlerState, referanslarState } from '../../store'
+import {useRecoilValue } from 'recoil'
+import { referanslarState } from '../../store'
+import AnketAPI from '../../servisler/AnketAPI'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -22,7 +22,6 @@ const Satir = styled(Row)`
 
 
 export default function AnketForm ({ seciliAnket, history }) {
-  const setAnketler = useSetRecoilState(anketlerState)
   const periyotlar = useRecoilValue(referanslarState).PERIYOT
   const cografiDuzeyler = useRecoilValue(referanslarState).COGRAFI_DUZEY
   const veriBirimDuzeyleri = useRecoilValue(referanslarState).ISTATISTIKI_BIRIM_DUZEY
@@ -61,7 +60,7 @@ export default function AnketForm ({ seciliAnket, history }) {
     const yeniAnket = {
       id:values.kodu,
       adi:values.adi,
-      taslak:false,
+      taslak:true,
       periyot:periyotlar.find(periyot => periyot.id === values.periyot.value),
       cografiDuzey:cografiDuzeyler.find(duzey => duzey.id === values.cografiDuzeyi.value),
       birimDuzey:veriBirimDuzeyleri.find(duzey => duzey.id === values.birimDuzeyi.value),
@@ -75,9 +74,7 @@ export default function AnketForm ({ seciliAnket, history }) {
       kontrolorSayisiBolge: values.kontrolorSayisiBolge
     }
 
-    Axios.post("/api/anketler/ekle",  yeniAnket )
-      .then(res => setAnketler(res.data))
-
+    AnketAPI.anketEklemeIstek(yeniAnket);
   }
   const handleAnketSubmit = (values,event) => {
     event.preventDefault();

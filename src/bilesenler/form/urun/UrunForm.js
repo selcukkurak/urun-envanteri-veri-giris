@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { birimlerState, bultenlerState, referanslarState, urunlerState } from '../../store'
+import { useRecoilValue } from 'recoil'
+import { birimlerState, bultenlerState, referanslarState } from '../../store'
 import { Button, ButtonGroup, Divider } from '@blueprintjs/core'
 import useSayfaIciGecis from '../../hook/useSayfaIciGecis'
 import { Container, Row, Col } from 'react-grid-system'
@@ -15,7 +15,6 @@ import { deleteLocalStorage } from '../ortak'
 import Footer from '../Footer'
 import UrunAPI from '../../servisler/UrunAPI'
 import useYanMenu from '../../yan-menu/useYanMenu'
-import { basariMesajiYayinla } from '../../bildirim/mesajlar'
 
 const Wrapper = styled.div`
   padding: 64px 16px;
@@ -29,7 +28,6 @@ const ButonGrup = styled(ButtonGroup)`
 
 export default function UrunForm ({ seciliUrun, history }) {
   const { boy } = useYanMenu()
-  const setUrunler = useSetRecoilState(urunlerState)
   const birimler = useRecoilValue(birimlerState)
   const bultenler = useRecoilValue(bultenlerState)
   const referanslar = useRecoilValue(referanslarState)
@@ -125,7 +123,7 @@ export default function UrunForm ({ seciliUrun, history }) {
       periyot: values.periyot && periyotlar.find(periyot => periyot.id === values.periyot.value),
       cografiDuzey: values.cografiDuzey && cografiDuzeyler.find(duzey => duzey.id === values.cografiDuzey.value),
       zamanlilik: values.zamanlilik,
-      taslak:false,
+      taslak:true,
       uretiliyor:true,
       amac: values.amac,
       kapsam: values.kapsam,
@@ -134,13 +132,8 @@ export default function UrunForm ({ seciliUrun, history }) {
     }
 
 
-    const response = UrunAPI.urunEklemeIstek(yeniUrun)
-    
-    if(response.status === 200){
-      setUrunler(response.data)
-      history.goBack()
-      return basariMesajiYayinla("Ekleme İşlemi Başarılı!")
-    }
+    UrunAPI.urunEklemeIstek(yeniUrun)
+
   }
   const handleSubmit = (event) => {
     event.preventDefault()
