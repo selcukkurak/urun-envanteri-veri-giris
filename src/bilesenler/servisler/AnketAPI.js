@@ -7,6 +7,10 @@ class AnketAPI {
   anketEklemeIstek(anket){
     Axios.post(`${this.baseUrl}/ekle`, anket)
   }
+
+  enketGuncellemeIstek(anket, id){
+    Axios.put(`${this.baseUrl}/guncelle/${id}`, anket)
+  }
 }
 
 export default new AnketAPI();

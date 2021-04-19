@@ -76,6 +76,26 @@ export default function AnketForm ({ seciliAnket, history }) {
 
     AnketAPI.anketEklemeIstek(yeniAnket);
   }
+
+  const guncelleAnket = (values,id) => {
+    const guncelAnket = {
+      ...seciliAnket,
+      adi:values.adi,
+      periyot:periyotlar.find(periyot => periyot.id === values.periyot.value),
+      cografiDuzey:cografiDuzeyler.find(duzey => duzey.id === values.cografiDuzeyi.value),
+      birimDuzey:veriBirimDuzeyleri.find(duzey => duzey.id === values.birimDuzeyi.value),
+      orneklemSayisi:values.orneklemSayisi,
+      sema:values.sema,
+      harzemliDurum: values.harzemliDurum ? 1 : 0,
+      ustDurum: values.ustDurum ? 1 : 0,
+      anketorSayisiMerkez: values.anketorSayisiMerkez,
+      anketorSayisiBolge: values.anketorSayisiBolge,
+      kontrolorSayisiMerkez: values.kontrolorSayisiMerkez,
+      kontrolorSayisiBolge: values.kontrolorSayisiBolge
+    }
+
+    AnketAPI.enketGuncellemeIstek(guncelAnket,id)
+  }
   const handleAnketSubmit = (values,event) => {
     event.preventDefault();
   }
@@ -199,7 +219,8 @@ export default function AnketForm ({ seciliAnket, history }) {
                   <Button fill intent='danger' text={'Geri Dön'} onClick={() => deleteLocalStorage(history)}/>
                 </Col>
                 <Col>
-                  <Button fill intent='success' text={seciliAnket ? "Güncelle" : 'Kaydet'} onClick={() => anketEkleIstek(values)}/>
+                  <Button fill intent='success' text={seciliAnket ? "Güncelle" : 'Kaydet'}
+                          onClick={() => seciliAnket ? guncelleAnket(values, seciliAnket.id) : anketEkleIstek(values)}/>
                 </Col>
               </Footer>
             </Container>

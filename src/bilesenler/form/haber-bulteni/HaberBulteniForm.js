@@ -40,6 +40,17 @@ export default function HaberBulteniForm ({ history, seciliBulten }) {
 
     BultenAPI.bultenEklemeIstek(yeniBulten)
   }
+  const guncelleBulten = (values, id) => {
+    const guncelBulten = {
+      ...seciliBulten,
+      adi:values.adi,
+      kodu:values.kodu,
+      sonYayinId: values.sonYayinId,
+      donemi:values.donemi
+    }
+
+    BultenAPI.bultenGuncellemeIstek(guncelBulten, id)
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -117,7 +128,7 @@ export default function HaberBulteniForm ({ history, seciliBulten }) {
                 </Col>
                 <Col>
                   <Button fill intent='success' text={seciliBulten ? "Güncelle" : 'Kaydet'}
-                    onClick={() => bultenEkle(values)}
+                    onClick={() => seciliBulten ? guncelleBulten(values, seciliBulten.id) : bultenEkle(values)}
                   />
                 </Col>
               </Footer>

@@ -126,6 +126,27 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
     IdariKayitAPI.kayitEklemeIstek(yeniKayit)
   }
 
+  const guncelleKayit = (values, id) => {
+    const guncelKayit = {
+      ...seciliIdariKayit,
+      adi: values.adi,
+      transferdenSorumluBirimId: values.sorumluBirim && values.sorumluBirim.value,
+      epostaGruplari: values.eposta,
+      sema: values.sema,
+      kaynakKurum: values.kaynakKurum && kurumlar.find(kurum => kurum.id === values.kaynakKurum.value),
+      transferSikligi:values.transferSikligi && periyotlar.find(periyot => periyot.id === values.transferSikligi.value),
+      kisitlar: values.kisitlar,
+      transferVerisininFormati:values.transferVerisininFormati && transferFormatlari.find(format => format.id === values.transferVerisininFormati.value),
+      cografiDuzey: values.cografiDuzeyi && cografiDuzeyler.find(duzey => duzey.id === values.cografiDuzeyi.value),
+      veriDuzeyi: values.veriDuzeyi && veriBirimDuzeyleri.find(duzey => duzey.id === values.veriDuzeyi.value),
+      yasalHukum: values.yasalHukum,
+      verininTutulduguYer: values.verininTutulduguYer && verininTutulduguYerler.find(veri => veri.id === values.verininTutulduguYer.value),
+      talepBicimi: values.veriTalepBicimi && veriTalepBicimleri.find(talep => talep.id === values.veriTalepBicimi.value),
+      birimDuzeyi: values.veriBirimDuzeyi && veriBirimDuzeyleri.find(duzey => duzey.id === values.veriBirimDuzeyi.value),
+    }
+    IdariKayitAPI.kayitGuncellemeIstek(guncelKayit, id)
+  }
+
   function reactQuillHandleChange (name, icerik, setFieldValue) {
     setFieldValue(name, icerik)
   }
@@ -323,7 +344,7 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
                 </Col>
                 <Col>
                   <Button fill intent='success' text={seciliIdariKayit ? "Güncelle" : 'Kaydet'}
-                  onClick={() => idariKayitEkleme(values)}/>
+                  onClick={() => seciliIdariKayit ? guncelleKayit(values, seciliIdariKayit.id) : idariKayitEkleme(values)}/>
                 </Col>
               </Footer>
             </Container>

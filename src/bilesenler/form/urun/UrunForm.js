@@ -130,10 +130,25 @@ export default function UrunForm ({ seciliUrun, history }) {
       fayda: values.fayda,
       birim: values.birim && values.birim.value,
     }
-
-
     UrunAPI.urunEklemeIstek(yeniUrun)
+  }
+  const guncelleUrun = (values, id) => {
+    const guncelurun = {
+      ...seciliUrun,
+      adi: values.adi,
+      kodu: values.kodu,
+      periyot: values.periyot && periyotlar.find(periyot => periyot.id === values.periyot.value),
+      cografiDuzey: values.cografiDuzey && cografiDuzeyler.find(duzey => duzey.id === values.cografiDuzey.value),
+      zamanlilik: values.zamanlilik,
+      taslak:true,
+      uretiliyor:true,
+      amac: values.amac,
+      kapsam: values.kapsam,
+      fayda: values.fayda,
+      birim: values.birim && values.birim.value,
+    }
 
+    UrunAPI.urunGuncellemeIstek(guncelurun, id)
   }
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -203,7 +218,7 @@ export default function UrunForm ({ seciliUrun, history }) {
               </Col>
               <Col>
                 <Button fill intent='success' text={seciliUrun ? 'Güncelle' : 'Kaydet'}
-                        onClick={() => urunEkle(values)}/>
+                        onClick={() => seciliUrun ? guncelleUrun(values, seciliUrun.id) : urunEkle(values)}/>
               </Col>
             </Footer>
             <PersistFormikValues name="urun-form" persistInvalid hashInitials/>
