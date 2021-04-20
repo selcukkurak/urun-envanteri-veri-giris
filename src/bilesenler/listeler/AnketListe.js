@@ -58,7 +58,7 @@ export default function AnketListe ({ match }) {
               <SolaYasli>Anketler</SolaYasli>
               <SagaYasli>
                 <BaslikMetin>TOPLAM</BaslikMetin>
-                <SayiGosterge>{anketler.length}</SayiGosterge>
+                <SayiGosterge>{secili.durum === 0 ? filtreliAnketler.length : secili.durum === 2 ? taslakOlmayanAnketler.length : taslakAnketler.length}</SayiGosterge>
               </SagaYasli>
             </ListeBaslik>
             {secili.durum === 0 && (
