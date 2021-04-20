@@ -41,7 +41,7 @@ const AktifSatir = styled.tr`
   cursor: default;
 `
 
-function Liste ({ dizi, url, handleSeciliItem, secili }) {
+function Liste ({ dizi, url, handleSeciliItem, secili, taslakYapFunc }) {
   moment.locale('tr')
   const tarih = (tarihItem) => {
     return moment(tarihItem)
@@ -74,7 +74,7 @@ function Liste ({ dizi, url, handleSeciliItem, secili }) {
               <Link to={`${url}/guncelle/${item.id}`}>
                 <Button style={{ flex: 1 }} minimal icon={'edit'} intent={'primary'}/>
               </Link>
-              <Button minimal icon={'trash'} intent={'danger'}/>
+              <Button minimal icon={'trash'} intent={'danger'} onClick={() => !item.taslak && taslakYapFunc(item.id)}/>
             </td>
           </AktifSatir>
         ))}

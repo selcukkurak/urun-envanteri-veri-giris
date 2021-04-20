@@ -10,6 +10,10 @@ class UrunAPI {
   urunGuncellemeIstek(urun, id) {
     return Axios.put(`${this.baseUrl}/guncelle/${id}`, urun)
   }
+
+  urunTaslakYap(id){
+    return Axios.put(`${this.baseUrl}/version/${id}`)
+  }
 }
 
 export default new UrunAPI();

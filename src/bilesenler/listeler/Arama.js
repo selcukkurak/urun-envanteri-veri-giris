@@ -9,7 +9,7 @@ import useYanMenu from '../yan-menu/useYanMenu'
 export default function Arama ({  setAranan, placeholder, secili, setSecili, setSeciliId }) {
   const {boy} = useYanMenu()
   const [sorgu, setSorgu] = useState('')
-  const sorgulama = _.debounce(args => setAranan(args), 1000)
+  const sorgulama = _.debounce(args => setAranan(args), 600)
   const debouncedSave = useRef(sorgulama)
     .current
 

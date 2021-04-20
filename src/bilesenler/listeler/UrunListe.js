@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { localSort } from '../util/sort'
-import { useRecoilValue } from 'recoil'
-import {  tumUrunlerState, urunlerState } from '../store'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import {  tumUrunlerState } from '../store'
 import { Container, Row, Col } from 'react-grid-system'
 import { Link } from 'react-router-dom'
 import Liste from './Liste'
@@ -17,6 +17,7 @@ import {
 import Arama from './Arama'
 import { taslakDurumlar } from './ortak'
 import useYanMenu from '../yan-menu/useYanMenu'
+import UrunAPI from '../servisler/UrunAPI'
 
 
 
@@ -26,9 +27,10 @@ export default function UrunListe ({ match }) {
   const [secili, setSecili] = useState(taslakDurumlar[0])
   const [aranan, setAranan] = useState("")
 
-  const urunler = localSort(useRecoilValue(urunlerState), 'adi')
-    .filter(urun => urun.adi.toLowerCase().includes(aranan.toLowerCase()))
+  const setTumUrunler= useSetRecoilState(tumUrunlerState)
   const tumUrunler = localSort(useRecoilValue(tumUrunlerState), 'adi')
+    .filter(urun => urun.adi.toLowerCase().includes(aranan.toLowerCase()))
+  const urunler = tumUrunler.filter(urun => !urun.taslak)
     .filter(urun => urun.adi.toLowerCase().includes(aranan.toLowerCase()))
   const taslakUrunler = tumUrunler.filter(urun => urun.taslak)
     .filter(urun => urun.adi.toLowerCase().includes(aranan.toLowerCase()))
@@ -39,6 +41,12 @@ export default function UrunListe ({ match }) {
     setSeciliUrunId(key)
   }
 
+  const taslagaCevirmeFunc = (id) => {
+    UrunAPI.urunTaslakYap(id)
+      .then(res => {
+        setTumUrunler(res.data)
+      })
+  }
   return (
     <WrapperListe>
       <Container fluid>
@@ -68,6 +76,7 @@ export default function UrunListe ({ match }) {
                 url={match.url}
                 secili={seciliUrunId}
                 handleSeciliItem={handleSeciliItem}
+                taslakYapFunc={taslagaCevirmeFunc}
               />
             ) : (
               secili.durum === 1 ? (
@@ -83,6 +92,7 @@ export default function UrunListe ({ match }) {
                   url={match.url}
                   secili={seciliUrunId}
                   handleSeciliItem={handleSeciliItem}
+                  taslakYapFunc={taslagaCevirmeFunc}
                 />
               )
             )}

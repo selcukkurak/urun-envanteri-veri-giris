@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { idariKayitlarState } from '../store'
 import Liste from './Liste'
 import { localSort } from '../util/sort'
@@ -16,18 +16,28 @@ import {
 import { Link } from 'react-router-dom'
 import Arama from './Arama'
 import { taslakDurumlar } from './ortak'
+import IdariKayitAPI from '../servisler/IdariKayitAPI'
 
 
 
 export default function IdariKayitListe ({ match }) {
   const [aranan, setAranan] = useState('')
   const [secili, setSecili] = useState(taslakDurumlar[0])
+  const setIdariKayitlar = useSetRecoilState(idariKayitlarState)
   const idariKayitlar = localSort(useRecoilValue(idariKayitlarState), 'adi')
     .filter(kayit => kayit.adi.toLowerCase().includes(aranan.toLowerCase()))
+  const taslakKayitlar = idariKayitlar.filter(kayit => kayit.taslak === true)
+  const taslakOlmayanKayitlar = idariKayitlar.filter(kayit => !kayit.taslak)
   const [seciliKayitId, setSeciliKayitId] = useState(0)
 
   const handleSeciliItem = (key) => {
     setSeciliKayitId(key)
+  }
+  const taslagaCevirmeFunc = (id) => {
+    IdariKayitAPI.kayitTaslakYap(id)
+      .then(res => {
+        setIdariKayitlar(res.data)
+      })
   }
   return (
     <WrapperListe>
@@ -49,15 +59,35 @@ export default function IdariKayitListe ({ match }) {
               <SolaYasli>İdari Kayıtlar</SolaYasli>
               <SagaYasli>
                 <BaslikMetin>TOPLAM</BaslikMetin>
-                <SayiGosterge>{idariKayitlar.length}</SayiGosterge>
+                <SayiGosterge>{secili.durum === 0 ? idariKayitlar.length : secili.durum === 2 ? taslakOlmayanKayitlar.length : taslakKayitlar.length}</SayiGosterge>
               </SagaYasli>
             </ListeBaslik>
-            <Liste
-              dizi={idariKayitlar}
-              url={match.url}
-              secili={seciliKayitId}
-              handleSeciliItem={handleSeciliItem}
-            />
+            {secili.durum === 0 ? (
+              <Liste
+                dizi={idariKayitlar}
+                url={match.url}
+                secili={seciliKayitId}
+                handleSeciliItem={handleSeciliItem}
+                taslakYapFunc={taslagaCevirmeFunc}
+              />
+            ) : (
+              secili.durum === 1 ? (
+                <Liste
+                  dizi={taslakKayitlar}
+                  url={match.url}
+                  secili={seciliKayitId}
+                  handleSeciliItem={handleSeciliItem}
+                />
+              ) : (
+                <Liste
+                  dizi={taslakOlmayanKayitlar}
+                  url={match.url}
+                  secili={seciliKayitId}
+                  handleSeciliItem={handleSeciliItem}
+                  taslakYapFunc={taslagaCevirmeFunc}
+                />
+              )
+            )}
           </Col>
         </Row>
       </Container>

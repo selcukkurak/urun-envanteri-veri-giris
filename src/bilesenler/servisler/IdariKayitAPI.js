@@ -10,5 +10,9 @@ class IdariKayitAPI {
   kayitGuncellemeIstek(kayit, id){
     Axios.put(`${this.baseUrl}/guncelle/${id} `, kayit)
   }
+
+  kayitTaslakYap(id){
+    return Axios.put(`${this.baseUrl}/version/${id}`)
+  }
 }
 export default new IdariKayitAPI();

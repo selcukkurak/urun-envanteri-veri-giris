@@ -33,7 +33,7 @@ export default function HaberBulteniForm ({ history, seciliBulten }) {
   const bultenEkle = (values) => {
     const yeniBulten = {
       adi:values.adi,
-      kodu:values.kodu,
+      kodu:values.id,
       sonYayinId: values.sonYayinId,
       donemi:values.donemi
     }
@@ -83,22 +83,21 @@ export default function HaberBulteniForm ({ history, seciliBulten }) {
                     <InputGroup name={'kodu'} id="kodu" value={values.kodu || ''} onChange={handleChange}/>
                   </FormGroup>
                 </Col>
-                <Satir>
-                  <Col sm={5.5} md={5.5} lg={5.5}>
-                    <FormGroup label={'Haber Bülteni Son Yayın Id:'} labelFor="sonYayinId">
-                      <InputGroup name={'sonYayinId'} id="sonYayinId" value={values.sonYayinId || ''}
-                                  onChange={handleChange}/>
-                    </FormGroup>
-                  </Col>
-                  <Col/>
-                  <Col sm={5.5} md={5.5} lg={5.5}>
-                    <FormGroup label={'Haber Bülteni Son Yayın Dönemi:'} labelFor="donemi">
-                      <InputGroup name={'donemi'} id="donemi" value={values.donemi || ''}
-                                  onChange={handleChange}/>
-                    </FormGroup>
-                  </Col>
-                </Satir>
-
+              </Satir>
+              <Satir>
+                <Col sm={5.5} md={5.5} lg={5.5}>
+                  <FormGroup label={'Haber Bülteni Son Yayın Id:'} labelFor="sonYayinId">
+                    <InputGroup name={'sonYayinId'} id="sonYayinId" value={values.sonYayinId || ''}
+                                onChange={handleChange}/>
+                  </FormGroup>
+                </Col>
+                <Col/>
+                <Col sm={5.5} md={5.5} lg={5.5}>
+                  <FormGroup label={'Haber Bülteni Son Yayın Dönemi:'} labelFor="donemi">
+                    <InputGroup name={'donemi'} id="donemi" value={values.donemi || ''}
+                                onChange={handleChange}/>
+                  </FormGroup>
+                </Col>
               </Satir>
               <Satir/>
               <Satir/>

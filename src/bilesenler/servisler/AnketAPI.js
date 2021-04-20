@@ -11,6 +11,9 @@ class AnketAPI {
   enketGuncellemeIstek(anket, id){
     Axios.put(`${this.baseUrl}/guncelle/${id}`, anket)
   }
+  anketTaslakYap(id){
+    Axios.put(`${this.baseUrl}/version/${id}`)
+  }
 }
 
 export default new AnketAPI();

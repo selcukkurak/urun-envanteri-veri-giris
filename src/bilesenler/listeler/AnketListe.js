@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { anketlerState } from '../store'
 import Liste from './Liste'
 import { localSort } from '../util/sort'
@@ -16,10 +16,12 @@ import {
 } from './ortakStyle'
 import Arama from './Arama'
 import { taslakDurumlar } from './ortak'
+import AnketAPI from '../servisler/AnketAPI'
 
 export default function AnketListe ({ match }) {
   const [aranan, setAranan] = useState('')
   const [secili, setSecili] = useState(taslakDurumlar[0])
+  const setAnketler = useSetRecoilState(anketlerState)
   const anketler = localSort(useRecoilValue(anketlerState), 'adi')
   const filtreliAnketler = anketler
     .filter(anket => anket.adi.toLowerCase().includes(aranan.toLowerCase()))
@@ -31,7 +33,12 @@ export default function AnketListe ({ match }) {
   const handleSeciliItem = (key) => {
     setSeciliAnketId(key)
   }
-
+  const taslagaCevirmeFunc = (id) => {
+    AnketAPI.anketTaslakYap(id)
+      .then(res => {
+        setAnketler(res.data)
+      })
+  }
   return (
     <WrapperListe>
       <Container fluid>
@@ -60,6 +67,7 @@ export default function AnketListe ({ match }) {
                 url={match.url}
                 secili={seciliAnketId}
                 handleSeciliItem={handleSeciliItem}
+                taslakYapFunc={taslagaCevirmeFunc}
               />
             )}
             {secili.durum === 1 && (
@@ -76,6 +84,7 @@ export default function AnketListe ({ match }) {
                 url={match.url}
                 secili={seciliAnketId}
                 handleSeciliItem={handleSeciliItem}
+                taslakYapFunc={taslagaCevirmeFunc}
               />
             )}
           </Col>
