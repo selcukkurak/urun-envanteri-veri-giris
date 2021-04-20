@@ -15,6 +15,7 @@ import { PersistFormikValues } from 'formik-persist-values'
 import { deleteLocalStorage } from '../ortak'
 import Footer from '../Footer'
 import IdariKayitAPI  from '../../servisler/IdariKayitAPI'
+import { basariMesajiYayinla, hataMesajiYayinla } from '../../bildirim/mesajlar'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -124,6 +125,12 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
       birimDuzeyi: values.veriBirimDuzeyi && veriBirimDuzeyleri.find(duzey => duzey.id === values.veriBirimDuzeyi.value),
     }
     IdariKayitAPI.kayitEklemeIstek(yeniKayit)
+      .then(res => {
+        if (res.status === 200)
+          return basariMesajiYayinla("Ekleme İşlemi Başarılı")
+        else
+          return hataMesajiYayinla("Ekleme İşlemi Başarısız")
+      })
   }
 
   const guncelleKayit = (values, id) => {
@@ -145,6 +152,12 @@ export default function IdariKayitForm ({ history, seciliIdariKayit }) {
       birimDuzeyi: values.veriBirimDuzeyi && veriBirimDuzeyleri.find(duzey => duzey.id === values.veriBirimDuzeyi.value),
     }
     IdariKayitAPI.kayitGuncellemeIstek(guncelKayit, id)
+      .then(res => {
+        if (res.status === 200)
+          return basariMesajiYayinla("Güncelleme İşlemi Başarılı")
+        else
+          return hataMesajiYayinla("Güncelleme İşlemi Başarısız")
+      })
   }
 
   function reactQuillHandleChange (name, icerik, setFieldValue) {

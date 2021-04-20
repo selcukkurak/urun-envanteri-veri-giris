@@ -9,6 +9,7 @@ import { PersistFormikValues } from 'formik-persist-values'
 import { deleteLocalStorage } from '../ortak'
 import Footer from '../Footer'
 import BultenAPI from '../../servisler/BultenAPI'
+import { basariMesajiYayinla, hataMesajiYayinla } from '../../bildirim/mesajlar'
 
 const Wrapper = styled.div`
   padding: 70px 16px;
@@ -39,6 +40,12 @@ export default function HaberBulteniForm ({ history, seciliBulten }) {
     }
 
     BultenAPI.bultenEklemeIstek(yeniBulten)
+      .then(res => {
+        if (res.status === 200)
+          return basariMesajiYayinla("Ekleme İşlemi Başarılı")
+        else
+          return hataMesajiYayinla("Ekleme İşlemi Başarısız")
+      })
   }
   const guncelleBulten = (values, id) => {
     const guncelBulten = {
@@ -50,6 +57,12 @@ export default function HaberBulteniForm ({ history, seciliBulten }) {
     }
 
     BultenAPI.bultenGuncellemeIstek(guncelBulten, id)
+      .then(res => {
+        if (res.status === 200)
+          return basariMesajiYayinla("Güncelleme İşlemi Başarılı")
+        else
+          return hataMesajiYayinla("Güncelleme İşlemi Başarısız")
+      })
   }
 
   const handleSubmit = (event) => {

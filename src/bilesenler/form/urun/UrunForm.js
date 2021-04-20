@@ -15,6 +15,7 @@ import { deleteLocalStorage } from '../ortak'
 import Footer from '../Footer'
 import UrunAPI from '../../servisler/UrunAPI'
 import useYanMenu from '../../yan-menu/useYanMenu'
+import { basariMesajiYayinla, hataMesajiYayinla } from '../../bildirim/mesajlar'
 
 const Wrapper = styled.div`
   padding: 64px 16px;
@@ -130,7 +131,14 @@ export default function UrunForm ({ seciliUrun, history }) {
       fayda: values.fayda,
       birim: values.birim && values.birim.value,
     }
+
     UrunAPI.urunEklemeIstek(yeniUrun)
+      .then(res => {
+        if (res.status === 200)
+          return basariMesajiYayinla("Ekleme İşlemi Başarılı")
+        else
+          return hataMesajiYayinla("Ekleme İşlemi Başarısız")
+      })
   }
   const guncelleUrun = (values, id) => {
     const guncelurun = {
@@ -149,6 +157,12 @@ export default function UrunForm ({ seciliUrun, history }) {
     }
 
     UrunAPI.urunGuncellemeIstek(guncelurun, id)
+      .then(res => {
+        if (res.status === 200)
+          return basariMesajiYayinla("Güncelleme İşlemi Başarılı")
+        else
+          return hataMesajiYayinla("Güncelleme İşlemi Başarısız")
+      })
   }
   const handleSubmit = (event) => {
     event.preventDefault()

@@ -11,6 +11,7 @@ import Footer from '../Footer'
 import {useRecoilValue } from 'recoil'
 import { referanslarState } from '../../store'
 import AnketAPI from '../../servisler/AnketAPI'
+import { basariMesajiYayinla, hataMesajiYayinla } from '../../bildirim/mesajlar'
 
 const Wrapper = styled.div`
   padding: 70px 0;
@@ -74,7 +75,13 @@ export default function AnketForm ({ seciliAnket, history }) {
       kontrolorSayisiBolge: values.kontrolorSayisiBolge
     }
 
-    AnketAPI.anketEklemeIstek(yeniAnket);
+    AnketAPI.anketEklemeIstek(yeniAnket)
+      .then(res => {
+        if (res.status === 200)
+          return basariMesajiYayinla("Ekleme İşlemi Başarılı")
+        else
+          return hataMesajiYayinla("Ekleme İşlemi Başarısız")
+      })
   }
 
   const guncelleAnket = (values,id) => {
@@ -95,6 +102,12 @@ export default function AnketForm ({ seciliAnket, history }) {
     }
 
     AnketAPI.enketGuncellemeIstek(guncelAnket,id)
+      .then(res => {
+        if (res.status === 200)
+          return basariMesajiYayinla("Güncelleme İşlemi Başarılı")
+        else
+          return hataMesajiYayinla("Güncelleme İşlemi Başarısız")
+      })
   }
   const handleAnketSubmit = (values,event) => {
     event.preventDefault();
